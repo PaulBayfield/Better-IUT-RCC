@@ -1,0 +1,35 @@
+{
+  "name": "Better IUT RCC",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "description": "Calculez vos moyennes sur l'intranet de l'IUT RCC.",
+  "icons": {
+    "16": "assets/img/logo.png",
+    "48": "assets/img/logo.png",
+    "128": "assets/img/logo.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://iut-rcc-intranet.univ-reims.fr/fr/tableau-de-bord"
+      ],
+      "js": [
+        "assets/js/lib/apexchart.js",
+        "assets/js/utils.js",
+        "assets/js/functions.js",
+        "assets/js/main.js"
+      ],
+      "css": [
+        "assets/css/animation.css"
+      ]
+    }
+  ],
+  "action": {
+    "default_title": "Better IUT RCC - Calculer mes moyennes",
+    "default_popup": "popup.html",
+    "default_icon": "assets/img/logo.png"
+  },
+  "permissions": [
+    "storage"
+  ]
+}

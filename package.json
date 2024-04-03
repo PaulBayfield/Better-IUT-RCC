@@ -1,0 +1,24 @@
+{
+  "name": "better-iut-rcc",
+  "version": "1.0.0",
+  "description": "Calculez vos moyennes sur l'intranet de l'IUT RCC.",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Paul Bayfield & Simon Ledoux",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulBayfield/Better-IUT-RCC.git"
+  },
+  "keywords": [
+    "iut",
+    "rcc",
+    "marks"
+  ],
+  "bugs": {
+    "url": "https://github.com/PaulBayfield/Better-IUT-RCC/issues"
+  },
+  "homepage": "https://github.com/PaulBayfield/Better-IUT-RCC#readme"
+}
