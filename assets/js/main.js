@@ -24,4 +24,7 @@ window.addEventListener('load', () => {
     // Ajout des styles et des boutons
     applyStyle();
     addButtons();
+
+    // Ajout du bouton de sauvegarde
+    addSaveButton();
 });

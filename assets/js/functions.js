@@ -59,6 +59,26 @@ function addButtons() {
 }
 
 /**
+ * Fonction pour ajouter le bouton de sauvegarde
+ * 
+ * @returns {HTMLElement}
+ */
+function addSaveButton() {
+    const button = document.createElement("button");
+    button.classList.add('btn', 'btn-sm', 'btn-pink');
+
+    button.innerHTML = `
+        <i class="fas fa-save"></i>
+        Sauvegarder les notes connues
+    `;
+
+    const actions = document.querySelector("#mainContent > div > div:nth-child(4) > div > header > div")
+    actions.prepend(button)
+
+    return button;
+}
+
+/**
  * Fonction pour appliquer le style
  * 
  * @returns {void}
