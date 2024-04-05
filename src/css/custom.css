@@ -1,0 +1,16 @@
+.new-note {
+    background-color: orange !important;
+}
+
+.new-note td {
+    background-color: orange !important;
+}
+
+#save-notes-btn{
+    margin-left: 1rem;
+}
+
+tr.moyenne {
+    border-bottom: solid black 3px;
+    font-weight: bold;
+}

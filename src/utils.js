@@ -1,4 +1,4 @@
-const Utils = {
+export const Utils = {
     /**
      * Fonction permettant de vérifier si une ou plusieurs valeurs sont vides
      * 

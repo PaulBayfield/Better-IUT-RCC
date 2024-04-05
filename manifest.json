@@ -14,13 +14,10 @@
         "https://iut-rcc-intranet.univ-reims.fr/fr/tableau-de-bord"
       ],
       "js": [
-        "assets/js/lib/apexchart.js",
-        "assets/js/utils.js",
-        "assets/js/functions.js",
-        "assets/js/main.js"
+        "dist/bundle.js"
       ],
       "css": [
-        "assets/css/animation.css"
+        "dist/main.css"
       ]
     }
   ],
