@@ -4,9 +4,9 @@
   "manifest_version": 3,
   "description": "Calculez vos moyennes sur l'intranet de l'IUT RCC.",
   "icons": {
-    "16": "assets/img/logo.png",
-    "48": "assets/img/logo.png",
-    "128": "assets/img/logo.png"
+    "16": "assets/img/logo_16.png",
+    "48": "assets/img/logo_48.png",
+    "128": "assets/img/logo_128.png"
   },
   "content_scripts": [
     {
@@ -28,5 +28,14 @@
   },
   "permissions": [
     "storage"
-  ]
+  ],
+  "host_permissions": [
+    "https://iut-rcc-intranet.univ-reims.fr/*"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "betteriutrcc@simon511000.fr",
+      "strict_min_version": "48.0"
+    }
+  }
 }
