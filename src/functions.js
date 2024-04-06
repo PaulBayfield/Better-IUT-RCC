@@ -1,5 +1,6 @@
 import ApexCharts from 'apexcharts'
 import { Utils } from "./utils";
+import * as browser from 'webextension-polyfill';
 
 /**
  * Fonction pour créer un bouton
@@ -197,32 +198,44 @@ function createChart(data, type, xaxiscategories) {
 /**
  * Fonction pour créer la carte du bilan
  * 
- * @returns {void}
+ * @returns {Promise<void>}
  */
-export function createBilanCard() {
-    fetch("https://iut-rcc-intranet.univ-reims.fr/fr/utilisateur/mon-profil")
-    .then(response => response.text())
-    .then(data => {
+export async function createBilanCard() {
+    const userAvatar = document.querySelector('.topbar-right .topbar-btn-avatar img');
+    const userId = /.*\/(\d*)\.jpg/g.exec(userAvatar.src)[1];
+    
+    const cache = await browser.storage.local.get('userBilanCache');
+    let href = null;
+
+    if(cache.userBilanCache[userId] !== undefined) {
+        href = cache.userBilanCache[userId];
+    } else {
+        const profileRequest = await fetch("https://iut-rcc-intranet.univ-reims.fr/fr/utilisateur/mon-profil");
+        const data = await profileRequest.text();
         const page = document.createElement('div');
         page.innerHTML = data.trim();
         const nav = page.querySelector(".nav");
-        const href = nav.children[2].getAttribute('href');
+        href = nav.children[2].getAttribute('href');
 
-        if (!href) return;
-
-        fetch('https://iut-rcc-intranet.univ-reims.fr/' + href)
-        .then(response => response.text())
-        .then(data => {
-            const content = document.querySelector("#mainContent > div:first-child");
-            const before = document.querySelector("#mainContent > div:first-child > div:nth-child(5)");
-
-            var card = document.createElement('div');
-            card.innerHTML = data.trim();
-            card.querySelector(".card-header-actions").remove();
-            content.insertBefore(card, before);
-            applyStyle();
+        await browser.storage.local.set({
+            userBilanCache: {
+                [userId]: href,
+            }
         })
-    })
+    }
+
+    if (!href) return;
+
+    const bilanRequest = await fetch('https://iut-rcc-intranet.univ-reims.fr/' + href);
+    const bilanData = await bilanRequest.text();
+    const content = document.querySelector("#mainContent > div:first-child");
+    const before = document.querySelector("#mainContent > div:first-child > div:nth-child(5)");
+
+    var card = document.createElement('div');
+    card.innerHTML = bilanData.trim();
+    card.querySelector(".card-header-actions").remove();
+    content.insertBefore(card, before);
+    applyStyle();
 }
 
 /**
