@@ -207,7 +207,7 @@ export async function createBilanCard() {
     const cache = await browser.storage.local.get('userBilanCache');
     let href = null;
 
-    if(cache.userBilanCache[userId] !== undefined) {
+    if(cache.userBilanCache !== undefined && cache.userBilanCache[userId] !== undefined) {
         href = cache.userBilanCache[userId];
     } else {
         const profileRequest = await fetch("https://iut-rcc-intranet.univ-reims.fr/fr/utilisateur/mon-profil");
