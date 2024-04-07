@@ -19,9 +19,34 @@ Better IUT RCC est une extension navigateurs qui améliore l'interface de l'intr
 - **Validation** : Affiche si le semestre est validé ou non.
 - **Bilan** : Affiche le bilan des notes et des absences.
 
-## Compilation
+## Installation
 
 Vous devez disposer des dernières versions LTS de node/npm (node v20, npm v10)
-- `npm install`
-- `npm run dev/prod/watch`
-- `npm run zip`
+
+```bash
+npm install
+```
+
+## Compilation
+
+Pour compiler le projet en mode développement.
+
+```bash
+npm run dev
+```
+
+Pour compiler le projet en mode production.
+
+```bash
+npm run prod
+```
+
+Pour compiler le projet en mode production et générer une archive zip.
+
+```bash
+npm run zip
+```
+
+## License
+
+Ce projet est sous licence [MIT](/LICENSE).
