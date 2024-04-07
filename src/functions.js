@@ -38,7 +38,7 @@ export function addButtons() {
     });
     card_header.append(buttonMoyennes);
 
-    const buttonAbsences = createButton("Vos absences", "warning", "ban");
+    const buttonAbsences = createButton("Vos absences", "warning", "calendar");
     buttonAbsences.addEventListener('click', () => {
         const absences = document.getElementById("absences");
         if (absences) {
@@ -546,14 +546,15 @@ export function recreerTableau(notesTriees, notesConnues) {
 }
 
 export function ajouterBoutonSauvegarde() {
-    let button = document.createElement("button");
-    button.classList.add('btn', 'btn-sm', 'btn-danger');
+    let button = createButton('Sauvegarder les notes connues', 'pink', 'save')
+    let actions = document.querySelector("#mainContent > div > div:nth-child(4) > div > header > div")
+    actions.prepend(button)
 
-    button.innerHTML = `
-        <i class="fas fa-save"></i>
-        Sauvegarder les notes connues
-    `;
+    return button;
+}
 
+export function ajouterBoutonReset() {
+    let button = createButton("Réinitialiser les notes connues", "danger", "trash-can")
     let actions = document.querySelector("#mainContent > div > div:nth-child(4) > div > header > div")
     actions.prepend(button)
 

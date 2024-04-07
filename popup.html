@@ -9,8 +9,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter" rel="stylesheet">
 
-    <script src="popup.js"></script>
-
     <style>
         html
         {
@@ -46,11 +44,14 @@
         }
 
         .button {
+            display: flex;
+            justify-content: center;
             padding: 10px 20px;
             background-color: #cce5ff;
             border: none;
             border-radius: 10px;
             cursor: pointer;
+            transition: all 0.3s;
         }
 
         .button:hover {
@@ -72,7 +73,6 @@
 </head>
 
 <body>
-    <button type="button" id="requestPermissionBtn" style="display: none">Autoriser l'extension à accèder à l'intranet</button>
     <h1>Better IUT RCC</h1>
     <p>Ce projet est une fusion de deux extensions déjà existante : <a class="underline" href="https://chromewebstore.google.com/detail/obsol%C3%A8te-miaounotes/bkkaabfnclmnaahnmjpnofbccifckmhm" target="_blank">Miaou Notes</a> et <a class="underline" href="https://chromewebstore.google.com/detail/calcule-ta-moyenne-iut-re/jfjbpknmfmdkpajggkahlcnlbokfamin" target="_blank">Calcule ta moyenne</a>.</p>
     <p class="no-margin-bottom">Réalisé par :</p>
@@ -91,8 +91,6 @@
     <a class="button" href="https://iut-rcc-intranet.univ-reims.fr/fr/tableau-de-bord" target="_blank">
         Ouvrir l'intranet de l'IUT RCC
     </a>
-
-    <button type="button" id="resetbtn">Réinitialiser les notes connues</button>
 </body>
 
 </html>

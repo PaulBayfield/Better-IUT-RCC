@@ -29,9 +29,6 @@
   "permissions": [
     "storage"
   ],
-  "host_permissions": [
-    "https://iut-rcc-intranet.univ-reims.fr/*"
-  ],
   "browser_specific_settings": {
     "gecko": {
       "id": "betteriutrcc@simon511000.fr",
