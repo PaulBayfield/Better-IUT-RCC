@@ -1,0 +1,28 @@
+on:
+   push:
+     branches:
+       - main
+name: release-please
+permissions: {}
+jobs:
+  release-please:
+    permissions:
+      contents: write # to create release commit
+      pull-requests: write # to create release PR
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 20
+      - run: npm install npm@latest -g
+
+      - run: npm install
+      - run: npm run prod
+      - run: npm run zip
