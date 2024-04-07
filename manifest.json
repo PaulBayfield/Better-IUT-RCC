@@ -35,7 +35,10 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "betteriutrcc@simon511000.fr",
-      "strict_min_version": "48.0"
+      "strict_min_version": "109.0"
+    },
+    "gecko_android": {
+      "strict_min_version": "120.0"
     }
   }
 }
