@@ -9,6 +9,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
   entry: {
     bundle: path.join(srcDir, 'main.js'),
+    popup: path.join(srcDir, 'popup.js'),
   },
   resolve: {
     extensions: ['.js'],
