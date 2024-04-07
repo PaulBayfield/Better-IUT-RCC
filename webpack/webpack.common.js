@@ -1,7 +1,10 @@
 const path = require('path');
-const srcDir = path.join(__dirname, "..", "src");
-const distDir = path.join(__dirname, "..", "dist");
+const rootDir = path.join(__dirname, "..");
+const srcDir = path.join(rootDir, "src");
+const distDir = path.join(rootDir, "dist");
+const assetsDir = path.join(rootDir, "assets");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -26,5 +29,16 @@ module.exports = {
       },
     ],
   },
-  plugins: [new MiniCssExtractPlugin()]
+  plugins: [
+    new MiniCssExtractPlugin(),
+    new CopyPlugin({
+      patterns: [
+        { from:  path.join(rootDir, 'popup.html') },
+        { from: assetsDir, to: 'assets' },
+        { from:  path.join(rootDir, 'manifest.json') },
+        { from:  path.join(rootDir, 'LICENSE') },
+        { from:  path.join(rootDir, 'README.md') },
+      ]
+    })
+  ]
 };

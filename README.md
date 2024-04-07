@@ -18,3 +18,10 @@ Better IUT RCC est une extension navigateurs qui améliore l'interface de l'intr
 - **Interface** : Améliore l'interface de l'intranet en supprimant notamment les éléments inutiles.
 - **Validation** : Affiche si le semestre est validé ou non.
 - **Bilan** : Affiche le bilan des notes et des absences.
+
+## Compilation
+
+Vous devez disposer des dernières versions LTS de node/npm (node v20, npm v10)
+- `npm install`
+- `npm run dev/prod/watch`
+- `npm run zip`

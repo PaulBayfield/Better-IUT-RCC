@@ -1,12 +1,13 @@
 {
   "name": "better-iut-rcc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Calculez vos moyennes sur l'intranet de l'IUT RCC.",
   "main": "src/main.js",
   "scripts": {
     "watch": "webpack --config webpack/webpack.dev.js --watch",
     "dev": "webpack --config webpack/webpack.dev.js",
-    "prod": "webpack --config webpack/webpack.prod.js"
+    "prod": "webpack --config webpack/webpack.prod.js",
+    "zip": "npm-build-zip --source=dist --name=Better-IUT-RCC --name_only=true"
   },
   "author": "Paul Bayfield & Simon Ledoux",
   "license": "MIT",
@@ -24,8 +25,10 @@
   },
   "homepage": "https://github.com/PaulBayfield/Better-IUT-RCC#readme",
   "devDependencies": {
+    "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^7.0.0",
     "mini-css-extract-plugin": "^2.8.1",
+    "npm-build-zip": "^1.0.4",
     "webextension-polyfill": "^0.10.0",
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4"
