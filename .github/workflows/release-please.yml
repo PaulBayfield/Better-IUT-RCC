@@ -50,3 +50,4 @@ jobs:
           extensionId: ${{ secrets.FF_EXTENSION_ID }}
           jwtIssuer: ${{ secrets.FF_JWT_ISSUER }}
           jwtSecret: ${{ secrets.FF_JWT_SECRET }}
+        if: ${{ steps.release.outputs.release_created }}
