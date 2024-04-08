@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/better-iut-rcc-v1.1.0...better-iut-rcc-v1.2.0) (2024-04-08)
+
+
+### Features
+
+* Ajout des liens des stores dans le Readme ([1e6e770](https://github.com/PaulBayfield/Better-IUT-RCC/commit/1e6e7706861f4e062fc6e0b5b2709c57308c57ec))
+* Publication automatique de l'extension sur le Chrome Web Store ([fc156a5](https://github.com/PaulBayfield/Better-IUT-RCC/commit/fc156a5e378f85e463f3dbd6e9a0254d11a84307))
+* Publication automatique de l'extension sur le Firefox Addons Store ([b0035ca](https://github.com/PaulBayfield/Better-IUT-RCC/commit/b0035ca1d2c741b56bbb979c0ebc50de3dde93c5))
+
+
+### Bug Fixes
+
+* J'avais oublié de mettre les liens sur les images 🤡 ([b0f2e8d](https://github.com/PaulBayfield/Better-IUT-RCC/commit/b0f2e8df052968b4b19b00ea4a58f456b567ddf3))
+
 ## [1.1.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/better-iut-rcc-v1.0.1...better-iut-rcc-v1.1.0) (2024-04-07)
 
 
