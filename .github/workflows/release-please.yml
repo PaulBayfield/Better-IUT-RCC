@@ -27,8 +27,12 @@ jobs:
       - run: npm run prod
       - run: npm run zip
 
+      - name: Create source zip
+        run: zip -r Better-IUT-RCC-sources.zip assets/ src/ webpack/ CHANGELOG.md LICENSE manifest.json package-lock.json package.json popup.html README.md
+
       - name: Publish to Chrome Web Store
         uses: mobilefirstllc/cws-publish@latest
+        continue-on-error: true
         with:
           action: 'publish' 
           client_id: ${{ secrets.GOOGLE_CLIENT }}
@@ -37,3 +41,12 @@ jobs:
           extension_id: ${{ secrets.EXTENSION_ID }}
           zip_file: 'Better-IUT-RCC.zip'
         if: ${{ steps.release.outputs.release_created }}
+      
+      - name: Publish to Firefox Addons Store
+        uses: cardinalby/webext-buildtools-firefox-addons-action@v1
+        with:
+          zipFilePath: 'Better-IUT-RCC.zip'
+          sourcesZipFilePath: 'Better-IUT-RCC-sources.zip'
+          extensionId: ${{ secrets.FF_EXTENSION_ID }}
+          jwtIssuer: ${{ secrets.FF_JWT_ISSUER }}
+          jwtSecret: ${{ secrets.FF_JWT_SECRET }}
