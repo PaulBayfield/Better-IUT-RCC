@@ -44,6 +44,7 @@ jobs:
       
       - name: Publish to Firefox Addons Store
         uses: cardinalby/webext-buildtools-firefox-addons-action@v1
+        continue-on-error: true
         with:
           zipFilePath: 'Better-IUT-RCC.zip'
           sourcesZipFilePath: 'Better-IUT-RCC-sources.zip'
@@ -51,3 +52,12 @@ jobs:
           jwtIssuer: ${{ secrets.FF_JWT_ISSUER }}
           jwtSecret: ${{ secrets.FF_JWT_SECRET }}
         if: ${{ steps.release.outputs.release_created }}
+
+      - name: Publish to Edge Addons Store
+        uses: wdzeng/edge-addon@v1
+        with:
+        product-id: ${{ secrets.EDGE_EXTENSION_ID }}
+        zip-path: 'Better-IUT-RCC.zip'
+        client-id: ${{ secrets.EDGE_CLIENT_ID }}
+        client-secret: ${{ secrets.EDGE_CLIENT_SECRET }}
+        access-token-url: ${{ secrets.EDGE_ACCESS_TOKEN_URL }}
