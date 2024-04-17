@@ -52,6 +52,9 @@ jobs:
           client-secret: ${{ secrets.EDGE_CLIENT_SECRET }}
           access-token-url: ${{ secrets.EDGE_ACCESS_TOKEN_URL }}
         if: ${{ steps.release.outputs.release_created }}
+      
+      - name: Create web-ext-artifacts folder
+        run: mkdir web-ext-artifacts
 
       - name: Sign Firefox Addon
         id: web-ext-sign
