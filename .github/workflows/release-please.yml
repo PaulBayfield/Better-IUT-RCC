@@ -54,12 +54,12 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
 
       - name: Sign Firefox Addon
-        uses: cardinalby/webext-buildtools-firefox-addons-action@v1
+        id: web-ext-sign
+        uses: kewisch/action-web-ext@v1.2
         with:
           cmd: sign
           source: 'Better-IUT-RCC.xpi'
           channel: unlisted
-          extensionId: ${{ secrets.FF_EXTENSION_ID }}
           apiKey: ${{ secrets.FF_JWT_ISSUER }}
           apiSecret: ${{ secrets.FF_JWT_SECRET }}
           timeout: 900000
@@ -71,7 +71,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: 'Better-IUT-RCC-${{ steps.release.outputs.tag_name }}.xpi'
+          asset_path: ${{ steps.web-ext-sign.outputs.target }}
+          asset_name: Better-IUT-RCC-${{ steps.release.outputs.tag_name }}.xpi
         if: ${{ steps.release.outputs.release_created }}
 
       - name: Generate the update manifest
