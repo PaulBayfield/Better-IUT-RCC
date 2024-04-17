@@ -26,9 +26,9 @@ jobs:
       - run: npm install
       - run: npm run prod
       - run: npm run zip
-
-      - name: Create source zip
-        run: zip -r Better-IUT-RCC-sources.zip assets/ src/ webpack/ CHANGELOG.md LICENSE manifest.json package-lock.json package.json popup.html README.md
+      
+      - name: Create xpi file
+        run: cp Better-IUT-RCC.zip Better-IUT-RCC.xpi
 
       - name: Publish to Chrome Web Store
         uses: mobilefirstllc/cws-publish@latest
@@ -41,23 +41,51 @@ jobs:
           extension_id: ${{ secrets.EXTENSION_ID }}
           zip_file: 'Better-IUT-RCC.zip'
         if: ${{ steps.release.outputs.release_created }}
-      
-      - name: Publish to Firefox Addons Store
-        uses: cardinalby/webext-buildtools-firefox-addons-action@v1
-        continue-on-error: true
-        with:
-          zipFilePath: 'Better-IUT-RCC.zip'
-          sourcesZipFilePath: 'Better-IUT-RCC-sources.zip'
-          extensionId: ${{ secrets.FF_EXTENSION_ID }}
-          jwtIssuer: ${{ secrets.FF_JWT_ISSUER }}
-          jwtSecret: ${{ secrets.FF_JWT_SECRET }}
-        if: ${{ steps.release.outputs.release_created }}
 
       - name: Publish to Edge Addons Store
         uses: wdzeng/edge-addon@v1
+        continue-on-error: true
         with:
-        product-id: ${{ secrets.EDGE_EXTENSION_ID }}
-        zip-path: 'Better-IUT-RCC.zip'
-        client-id: ${{ secrets.EDGE_CLIENT_ID }}
-        client-secret: ${{ secrets.EDGE_CLIENT_SECRET }}
-        access-token-url: ${{ secrets.EDGE_ACCESS_TOKEN_URL }}
+          product-id: ${{ secrets.EDGE_EXTENSION_ID }}
+          zip-path: 'Better-IUT-RCC.zip'
+          client-id: ${{ secrets.EDGE_CLIENT_ID }}
+          client-secret: ${{ secrets.EDGE_CLIENT_SECRET }}
+          access-token-url: ${{ secrets.EDGE_ACCESS_TOKEN_URL }}
+        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Sign Firefox Addon
+        uses: cardinalby/webext-buildtools-firefox-addons-action@v1
+        with:
+          cmd: sign
+          source: 'Better-IUT-RCC.xpi'
+          channel: unlisted
+          apiKey: ${{ secrets.FF_JWT_ISSUER }}
+          apiSecret: ${{ secrets.FF_JWT_SECRET }}
+          timeout: 900000
+        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Upload the signed xpi
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: 'Better-IUT-RCC-${{ steps.release.outputs.tag_name }}.xpi'
+        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Generate the update manifest
+        uses: 2zqa/generate-update-manifest@v1
+        with:
+          addon-id: ${{ secrets.FF_EXTENSION_ID }}
+          output-file: .ff_updates.json
+          asset-filter: "*.xpi"
+        if: ${{ steps.release.outputs.release_created }}
+      
+      - name: Commit and Push the update manifest
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .ff_updates.json
+          git commit -m "Update Firefox self hosted manifest to version ${{ steps.release.outputs.tag_name }}"
+          git push -u origin master
+        if: ${{ steps.release.outputs.release_created }}
