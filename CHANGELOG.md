@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.5](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.3.4...v1.3.5) (2024-04-17)
+
+
+### Bug Fixes
+
+* ajout de asset_content_type ([8870f99](https://github.com/PaulBayfield/Better-IUT-RCC/commit/8870f9986ea2d80c54ba02381cea24fafd24a80a))
+
 ## [1.3.4](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.3.3...v1.3.4) (2024-04-17)
 
 
