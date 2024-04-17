@@ -59,6 +59,7 @@ jobs:
           cmd: sign
           source: 'Better-IUT-RCC.xpi'
           channel: unlisted
+          extensionId: ${{ secrets.FF_EXTENSION_ID }}
           apiKey: ${{ secrets.FF_JWT_ISSUER }}
           apiSecret: ${{ secrets.FF_JWT_SECRET }}
           timeout: 900000
