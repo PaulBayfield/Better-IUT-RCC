@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.4](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.3.3...v1.3.4) (2024-04-17)
+
+
+### Bug Fixes
+
+* create web-ext-artifacts folder ([eacf90c](https://github.com/PaulBayfield/Better-IUT-RCC/commit/eacf90c1e256619b1d7d8fae9b589fd7469e1ea6))
+
 ## [1.3.3](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.3.2...v1.3.3) (2024-04-17)
 
 
