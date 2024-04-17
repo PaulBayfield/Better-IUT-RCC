@@ -87,5 +87,5 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add .ff_updates.json
           git commit -m "Update Firefox self hosted manifest to version ${{ steps.release.outputs.tag_name }}"
-          git push -u origin master
+          git push -u origin main
         if: ${{ steps.release.outputs.release_created }}
