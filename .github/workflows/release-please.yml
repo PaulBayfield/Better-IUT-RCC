@@ -76,6 +76,7 @@ jobs:
           upload_url: ${{ steps.release.outputs.upload_url }}
           asset_path: ${{ steps.web-ext-sign.outputs.target }}
           asset_name: Better-IUT-RCC-${{ steps.release.outputs.tag_name }}.xpi
+          asset_content_type: application/zip
         if: ${{ steps.release.outputs.release_created }}
 
       - name: Generate the update manifest
