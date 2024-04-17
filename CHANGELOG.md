@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.3.1...v1.3.2) (2024-04-17)
+
+
+### Bug Fixes
+
+* ajout de extensionId dans le workflow ([6f2174a](https://github.com/PaulBayfield/Better-IUT-RCC/commit/6f2174a9848ba6335aa7492e0230d47f0269cd89))
+
 ## [1.3.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.3.0...v1.3.1) (2024-04-17)
 
 
