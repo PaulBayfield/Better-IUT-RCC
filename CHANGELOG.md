@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.3.6...v1.4.0) (2024-05-28)
+
+
+### Features
+
+* ajout de nouveaux boutons ([b7a2cc4](https://github.com/PaulBayfield/Better-IUT-RCC/commit/b7a2cc4f03b23349e4478e5bb764adbba6d1aae1))
+* ajout du mode minimal ([6436346](https://github.com/PaulBayfield/Better-IUT-RCC/commit/6436346bb41c3499e68f79155897a3e779845ecd))
+
 ## [1.3.6](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.3.5...v1.3.6) (2024-05-28)
 
 
