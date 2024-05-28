@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.6](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.3.5...v1.3.6) (2024-05-28)
+
+
+### Bug Fixes
+
+* Bilan du semestre ([7550c96](https://github.com/PaulBayfield/Better-IUT-RCC/commit/7550c96fb6a65e9993ce3d0fa82ea84d0a32642d))
+* pop up ([a529430](https://github.com/PaulBayfield/Better-IUT-RCC/commit/a5294300868c6405484bf8e7254529e430b1fda1))
+
 ## [1.3.5](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.3.4...v1.3.5) (2024-04-17)
 
 
