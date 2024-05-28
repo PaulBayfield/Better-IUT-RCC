@@ -22,6 +22,7 @@ Better IUT RCC est une extension navigateurs qui améliore l'interface de l'intr
 - **Interface** : Améliore l'interface de l'intranet en supprimant notamment les éléments inutiles.
 - **Validation** : Affiche si le semestre est validé ou non.
 - **Bilan** : Affiche le bilan des notes et des absences.
+- **Mode minimal** : Permet de cacher les éléments redondants.
 
 ## Installation
 
