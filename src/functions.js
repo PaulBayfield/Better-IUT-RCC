@@ -20,23 +20,37 @@ function createButton(text, color, icon) {
 /**
  * Fonction pour ajouter les boutons
  * 
- * @returns {void}
+ * @returns {Promise<void>}
  */
-export function addButtons() {
+export async function addButtons() {
+    const userAvatar = document.querySelector('.topbar-right .topbar-btn-avatar img');
+    const userId = /.*\/(\d*)\.jpg/g.exec(userAvatar.src)[1];
+
     const headerInfo = document.querySelector('.header-info');
     const card_header = document.createElement('div');
+    const col1 = document.querySelector("#mainContent > div:first-child > div:nth-child(2)");
+    const col2 = document.querySelector("#mainContent > div:first-child > div:nth-child(3)");
+
     card_header.classList.add('right', 'card-header-actions');
     card_header.style.display = 'flex';
 
     // Création des boutons
     const buttonMoyennes = createButton("Vos notes & moyennes", "success", "graduation-cap");
     buttonMoyennes.addEventListener('click', () => {
-        const moyennes = document.getElementById("moyennes");
-        if (moyennes) {
-            moyennes.scrollIntoView({ behavior: "smooth" });
+        if (col1.style.display === 'none') {
+            const notes = document.getElementById("notes");
+            if (notes) {
+                notes.scrollIntoView({ behavior: "smooth" });
+            }
+        } else {
+            const moyennes = document.getElementById("moyennes");
+            if (moyennes) {
+                moyennes.scrollIntoView({ behavior: "smooth" });
+            }
         }
     });
     card_header.append(buttonMoyennes);
+
 
     const buttonAbsences = createButton("Vos absences", "warning", "calendar");
     buttonAbsences.addEventListener('click', () => {
@@ -47,6 +61,7 @@ export function addButtons() {
     });
     card_header.append(buttonAbsences);
 
+
     const buttonDetails = createButton("Informations utiles", "info", "eye");
     buttonDetails.addEventListener('click', () => {
         const details = document.getElementById("details");
@@ -56,6 +71,68 @@ export function addButtons() {
         }
     });
     card_header.append(buttonDetails);
+
+
+    const toggleMoreDetails = createButton("Minimal", "purple", "window-restore");
+    toggleMoreDetails.addEventListener('click', async () => {
+        let showMore = false;
+
+        if (col1.style.display === 'none') {
+            col1.style.display = 'block';
+            col2.style.display = 'block';
+
+            toggleMoreDetails.innerHTML = '<i class="fa-solid fa-window-minimize"></i> Minimal';
+
+            showMore = true;
+        } else {
+            col1.style.display = 'none';
+            col2.style.display = 'none';
+
+            const details = document.getElementById("details");
+            details.open = false;
+
+            toggleMoreDetails.innerHTML = '<i class="fa-solid fa-window-restore"></i> Maximal';
+
+            showMore = false;
+        }
+
+        await browser.storage.local.set({
+            showMoreDetails: {
+                [userId]: showMore,
+            }
+        })
+    });
+    card_header.append(toggleMoreDetails);
+
+
+    const github = createButton("Code", "dark", "code-fork");
+    github.addEventListener('click', () => {
+        window.open("https://github.com/PaulBayfield/Better-IUT-RCC", "_blank");
+    });
+    card_header.append(github);
+
+
+    const cache = await browser.storage.local.get('showMoreDetails');
+    let showMore = false;
+
+    if (cache.showMoreDetails !== undefined && cache.showMoreDetails[userId] !== undefined) {
+        showMore = cache.showMoreDetails[userId];
+
+        if (showMore) {
+            col1.style.display = 'block';
+            col2.style.display = 'block';
+            
+            toggleMoreDetails.innerHTML = '<i class="fa-solid fa-window-minimize"></i> Minimal';
+        } else {
+            col1.style.display = 'none';
+            col2.style.display = 'none';
+
+            const details = document.getElementById("details");
+            details.open = false;
+
+            toggleMoreDetails.innerHTML = '<i class="fa-solid fa-window-restore"></i> Maximal';
+        }
+    }
 
 
     // Ajout des boutons
@@ -250,6 +327,8 @@ export function orderCards() {
     const statut = document.querySelector("#mainContent > div:first-child > div:nth-child(3)");
     const graph = document.querySelector("#mainContent > div:first-child > div:nth-child(4)");
     const notes = document.querySelector("#mainContent > div:first-child > div:nth-child(5)");
+    notes.id = "notes";
+    notes.style.scrollMarginTop = '90px';
 
     const competences = document.querySelector("#mainContent > div:first-child > div:nth-child(6)");
     const liens = document.querySelector("#mainContent > div:first-child > div:nth-child(7)");

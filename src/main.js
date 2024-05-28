@@ -56,6 +56,6 @@ import * as browser from 'webextension-polyfill';
     await createBilanCard();
     
     // Ajout des styles et des boutons
-    addButtons();
+    await addButtons();
     applyStyle();
 })();
