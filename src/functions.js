@@ -205,28 +205,29 @@ export async function createBilanCard() {
     const userId = /.*\/(\d*)\.jpg/g.exec(userAvatar.src)[1];
     
     const cache = await browser.storage.local.get('userBilanCache');
-    let href = null;
+    let user = null;
 
     if(cache.userBilanCache !== undefined && cache.userBilanCache[userId] !== undefined) {
-        href = cache.userBilanCache[userId];
+        user = cache.userBilanCache[userId];
     } else {
         const profileRequest = await fetch("https://iut-rcc-intranet.univ-reims.fr/fr/utilisateur/mon-profil");
         const data = await profileRequest.text();
         const page = document.createElement('div');
         page.innerHTML = data.trim();
         const nav = page.querySelector(".nav");
-        href = nav.children[2].getAttribute('href');
+
+        user = nav.children[0].getAttribute('href').split('/')[4].split('/')[0];
 
         await browser.storage.local.set({
             userBilanCache: {
-                [userId]: href,
+                [userId]: user,
             }
         })
     }
 
-    if (!href) return;
+    if (!user) return;
 
-    const bilanRequest = await fetch('https://iut-rcc-intranet.univ-reims.fr/' + href);
+    const bilanRequest = await fetch('https://iut-rcc-intranet.univ-reims.fr/fr/etudiant/profil/' + user + '/apc_notes');
     const bilanData = await bilanRequest.text();
     const content = document.querySelector("#mainContent > div:first-child");
     const before = document.querySelector("#mainContent > div:first-child > div:nth-child(5)");
