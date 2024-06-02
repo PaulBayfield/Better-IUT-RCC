@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.4.0...v1.5.0) (2024-06-02)
+
+
+### Features
+
+* ajout du menu des RUs à proximité des IUT ([670457d](https://github.com/PaulBayfield/Better-IUT-RCC/commit/670457db13fbc28b1dbe986609317e08e29e4521))
+
 ## [1.4.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.3.6...v1.4.0) (2024-05-28)
 
 
