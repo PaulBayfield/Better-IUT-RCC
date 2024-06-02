@@ -2,60 +2,85 @@ import 'apexcharts/dist/apexcharts.css';
 import './css/animation.css';
 import './css/custom.css';
 
-import { addButtons, ajouterBoutonSauvegarde, ajouterBoutonReset, applyStyle, cleanCards, createBilanCard, generateHtml, getAverage, orderCards, recreerTableau, recupererToutesLesNotesTriees } from "./functions";
+import { addButtons, ajouterBoutonSauvegarde, ajouterBoutonReset, applyStyle, cleanCards, createBilanCard, generateHtml, getAverage, orderCards, recreerTableau, recupererToutesLesNotesTriees, updateMenu } from "./functions";
 import { Utils } from './utils';
 import * as browser from 'webextension-polyfill';
 
 (async () => {
-    // Récupération des notes connues
-    browser.storage.sync.get('notesAlreadyKnow').then((result) => {
-        const notesConnues = result.notesAlreadyKnow || []
-        
-        const tableau = document.querySelector("#mainContent > div.row > div:nth-child(4) > div > div > table")
-        let notes = recupererToutesLesNotesTriees(tableau)
-        
-        let tableauTrie = recreerTableau(notes, notesConnues)
-    
-        tableau.replaceWith(tableauTrie)
+    // Mise à jour de la sidebar dès le chargement de la page pour que le menu soit toujours à jour
+    await updateMenu();
 
-        const boutonReset = ajouterBoutonReset()
-        boutonReset.addEventListener('click', async (e) => {
-            e.preventDefault();
-            await browser.storage.sync.clear();
-            location.reload();
+    if (window.location.pathname === "/fr/tableau-de-bord") {
+        // Récupération des notes connues
+        browser.storage.sync.get('notesAlreadyKnow').then((result) => {
+            const notesConnues = result.notesAlreadyKnow || []
+            
+            const tableau = document.querySelector("#mainContent > div.row > div:nth-child(4) > div > div > table")
+            let notes = recupererToutesLesNotesTriees(tableau)
+            
+            let tableauTrie = recreerTableau(notes, notesConnues)
+        
+            tableau.replaceWith(tableauTrie)
+
+            const boutonReset = ajouterBoutonReset()
+            boutonReset.addEventListener('click', async (e) => {
+                e.preventDefault();
+                await browser.storage.sync.clear();
+                location.reload();
+            })
+            
+            const boutonSauvegarde = ajouterBoutonSauvegarde()
+            boutonSauvegarde.addEventListener('click', (e) => {
+                e.preventDefault();
+        
+                let ids = []
+                notes.forEach((note) => {
+                    ids.push(note.id)
+                })
+        
+                browser.storage.sync.set({notesAlreadyKnow: ids}).then(() => {
+                    location.reload()
+                })
+            })
         })
         
-        const boutonSauvegarde = ajouterBoutonSauvegarde()
-        boutonSauvegarde.addEventListener('click', (e) => {
-            e.preventDefault();
-    
-            let ids = []
-            notes.forEach((note) => {
-                ids.push(note.id)
-            })
-    
-            browser.storage.sync.set({notesAlreadyKnow: ids}).then(() => {
-                location.reload()
-            })
-        })
-    })
-    
-    // Récupération des données et génération du graphique
-    const averageDataByUE = getAverage();
-    const title = document.querySelector("#mainContent > div > div:nth-child(6) > div > h4");
-    
-    if (!Utils.isEmpty(title, averageDataByUE) && title.textContent === "Modalités de Contrôle des Connaissances") {
-        generateHtml(averageDataByUE);
+        // Récupération des données et génération du graphique
+        const averageDataByUE = getAverage();
+        const title = document.querySelector("#mainContent > div > div:nth-child(6) > div > h4");
+        
+        if (!Utils.isEmpty(title, averageDataByUE) && title.textContent === "Modalités de Contrôle des Connaissances") {
+            generateHtml(averageDataByUE);
+        }
+        
+        // Nettoyage des cartes et réorganisation
+        cleanCards();
+        orderCards();
+
+        // Création de la carte de bilan
+        await createBilanCard();
+
+        // Ajout des styles et des boutons
+        await addButtons();
+        applyStyle();
+    } else if (window.location.pathname === "/fr/crous") {
+        const request = await fetch("https://croustillant.bayfield.dev/api/intranet/menu");
+        let data = await request.text();
+        data = data.trim();
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data, "text/html");
+        const html = doc.querySelector("html").innerHTML;
+
+        document.open();
+        document.write(html);
+        document.close();
+
+        window.onload = function () {
+            document.getElementById("restaurant").addEventListener("change", function () {
+                var restaurant = this.value;
+                var img = document.getElementById("image-menu");
+                img.src ="https://croustillant.bayfield.dev/api/intranet?restaurant=" + restaurant;
+            });
+        };
     }
-    
-    // Nettoyage des cartes et réorganisation
-    cleanCards();
-    orderCards();
-    
-    // Création de la carte de bilan
-    await createBilanCard();
-    
-    // Ajout des styles et des boutons
-    await addButtons();
-    applyStyle();
 })();

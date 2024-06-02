@@ -2,6 +2,37 @@ import ApexCharts from 'apexcharts'
 import { Utils } from "./utils";
 import * as browser from 'webextension-polyfill';
 
+
+/**
+ * Fonction pour mettre à jour le menu
+ * 
+ * @returns {void}
+ */
+export function updateMenu() {
+    const menu = document.querySelector("nav.sidebar-navigation > ul");
+    if (!menu) return;
+
+    const li = document.createElement('li');
+    li.classList.add('menu-item');
+    li.id = 'menu-crous';
+
+    const a = document.createElement('a');
+    a.classList.add('menu-link');
+    a.href = '/fr/crous';
+
+    const i = document.createElement('i');
+    i.classList.add('fas', 'fa-utensils', 'fa-2x');
+
+    const span = document.createElement('span');
+    span.classList.add('title');
+    span.textContent = 'Restaurants';
+
+    a.append(i, span);
+    li.append(a);
+
+    menu.insertBefore(li, menu.childNodes[2]);
+}
+
 /**
  * Fonction pour créer un bouton
  * 
