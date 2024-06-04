@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.5.0...v1.5.1) (2024-06-04)
+
+
+### Bug Fixes
+
+* correction affichage des menus sous firefox ([f3401ea](https://github.com/PaulBayfield/Better-IUT-RCC/commit/f3401ea46442a550a7c2bdf743669142ce5c633c))
+* correction de l'icone pour le mode minimal ([9c80308](https://github.com/PaulBayfield/Better-IUT-RCC/commit/9c8030822c8782b7e24059496cf71b594705d464))
+
 ## [1.5.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.4.0...v1.5.0) (2024-06-02)
 
 
