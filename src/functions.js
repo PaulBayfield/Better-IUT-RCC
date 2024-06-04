@@ -104,7 +104,7 @@ export async function addButtons() {
     card_header.append(buttonDetails);
 
 
-    const toggleMoreDetails = createButton("Minimal", "purple", "window-restore");
+    const toggleMoreDetails = createButton("Minimal", "purple", "window-minimize");
     toggleMoreDetails.addEventListener('click', async () => {
         let showMore = false;
 
