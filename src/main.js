@@ -69,18 +69,14 @@ import * as browser from 'webextension-polyfill';
 
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, "text/html");
-        const html = doc.querySelector("html").innerHTML;
+        const html = doc.querySelector("html");
 
-        document.open();
-        document.write(html);
-        document.close();
+        document.documentElement.innerHTML = html.innerHTML;
 
-        window.onload = function () {
-            document.getElementById("restaurant").addEventListener("change", function () {
-                var restaurant = this.value;
-                var img = document.getElementById("image-menu");
-                img.src ="https://croustillant.bayfield.dev/api/intranet?restaurant=" + restaurant;
-            });
-        };
+        document.getElementById("restaurant").addEventListener("change", function () {
+            var restaurant = this.value;
+            var img = document.getElementById("image-menu");
+            img.src ="https://croustillant.bayfield.dev/api/intranet?restaurant=" + restaurant;
+        });
     }
 })();
