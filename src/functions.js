@@ -43,8 +43,8 @@ export function updateMenu() {
  */
 function createButton(text, color, icon) {
     const button = document.createElement('a');
-    button.classList.add('btn', 'btn-sm', 'btn-'+color);
-    button.innerHTML = `<i class="fa-solid fa-${icon}"></i> ${text}`
+    button.classList.add('btn', 'btn-sm', `btn-${color}`);
+    button.innerHTML = `<i class="fa-solid fa-${icon}"></i> ${text}`;
     return button;
 }
 
@@ -58,40 +58,27 @@ export async function addButtons() {
     const userId = /.*\/(\d*)\.jpg/g.exec(userAvatar.src)[1];
 
     const headerInfo = document.querySelector('.header-info');
-    const card_header = document.createElement('div');
+    const cardHeader = document.createElement('div');
     const col1 = document.querySelector("#mainContent > div:first-child > div:nth-child(2)");
     const col2 = document.querySelector("#mainContent > div:first-child > div:nth-child(3)");
 
-    card_header.classList.add('right', 'card-header-actions');
-    card_header.style.display = 'flex';
+    cardHeader.classList.add('right', 'card-header-actions');
+    cardHeader.style.display = 'flex';
 
-    // Création des boutons
+    // Create buttons
     const buttonMoyennes = createButton("Vos notes & moyennes", "success", "graduation-cap");
     buttonMoyennes.addEventListener('click', () => {
-        if (col1.style.display === 'none') {
-            const notes = document.getElementById("notes");
-            if (notes) {
-                notes.scrollIntoView({ behavior: "smooth" });
-            }
-        } else {
-            const moyennes = document.getElementById("moyennes");
-            if (moyennes) {
-                moyennes.scrollIntoView({ behavior: "smooth" });
-            }
-        }
+        const notes = col1.style.display === 'none' ? document.getElementById("notes") : document.getElementById("moyennes");
+        if (notes) notes.scrollIntoView({ behavior: "smooth" });
     });
-    card_header.append(buttonMoyennes);
-
+    cardHeader.append(buttonMoyennes);
 
     const buttonAbsences = createButton("Vos absences", "warning", "calendar");
     buttonAbsences.addEventListener('click', () => {
         const absences = document.getElementById("absences");
-        if (absences) {
-            absences.scrollIntoView({ behavior: "smooth" });
-        }
+        if (absences) absences.scrollIntoView({ behavior: "smooth" });
     });
-    card_header.append(buttonAbsences);
-
+    cardHeader.append(buttonAbsences);
 
     const buttonDetails = createButton("Informations utiles", "info", "eye");
     buttonDetails.addEventListener('click', () => {
@@ -101,73 +88,35 @@ export async function addButtons() {
             details.scrollIntoView({ behavior: "smooth" });
         }
     });
-    card_header.append(buttonDetails);
-
+    cardHeader.append(buttonDetails);
 
     const toggleMoreDetails = createButton("Minimal", "purple", "window-minimize");
     toggleMoreDetails.addEventListener('click', async () => {
-        let showMore = false;
-
-        if (col1.style.display === 'none') {
-            col1.style.display = 'block';
-            col2.style.display = 'block';
-
-            toggleMoreDetails.innerHTML = '<i class="fa-solid fa-window-minimize"></i> Minimal';
-
-            showMore = true;
-        } else {
-            col1.style.display = 'none';
-            col2.style.display = 'none';
-
-            const details = document.getElementById("details");
-            details.open = false;
-
-            toggleMoreDetails.innerHTML = '<i class="fa-solid fa-window-restore"></i> Maximal';
-
-            showMore = false;
-        }
-
-        await browser.storage.local.set({
-            showMoreDetails: {
-                [userId]: showMore,
-            }
-        })
+        const showMore = col1.style.display === 'none';
+        col1.style.display = showMore ? 'block' : 'none';
+        col2.style.display = showMore ? 'block' : 'none';
+        toggleMoreDetails.innerHTML = showMore 
+            ? '<i class="fa-solid fa-window-minimize"></i> Minimal' 
+            : '<i class="fa-solid fa-window-restore"></i> Maximal';
+        if (!showMore) document.getElementById("details").open = false;
+        await browser.storage.local.set({ showMoreDetails: { [userId]: showMore } });
     });
-    card_header.append(toggleMoreDetails);
-
+    cardHeader.append(toggleMoreDetails);
 
     const github = createButton("Code", "dark", "code-fork");
     github.addEventListener('click', () => {
         window.open("https://github.com/PaulBayfield/Better-IUT-RCC", "_blank");
     });
-    card_header.append(github);
-
+    cardHeader.append(github);
 
     const cache = await browser.storage.local.get('showMoreDetails');
-    let showMore = false;
+    const showMore = cache.showMoreDetails?.[userId];
+    col1.style.display = col2.style.display = showMore ? 'block' : 'none';
+    toggleMoreDetails.innerHTML = showMore 
+        ? '<i class="fa-solid fa-window-minimize"></i> Minimal' 
+        : '<i class="fa-solid fa-window-restore"></i> Maximal';
 
-    if (cache.showMoreDetails !== undefined && cache.showMoreDetails[userId] !== undefined) {
-        showMore = cache.showMoreDetails[userId];
-
-        if (showMore) {
-            col1.style.display = 'block';
-            col2.style.display = 'block';
-            
-            toggleMoreDetails.innerHTML = '<i class="fa-solid fa-window-minimize"></i> Minimal';
-        } else {
-            col1.style.display = 'none';
-            col2.style.display = 'none';
-
-            const details = document.getElementById("details");
-            details.open = false;
-
-            toggleMoreDetails.innerHTML = '<i class="fa-solid fa-window-restore"></i> Maximal';
-        }
-    }
-
-
-    // Ajout des boutons
-    headerInfo.append(card_header);
+    headerInfo.append(cardHeader);
 }
 
 /**
@@ -176,30 +125,19 @@ export async function addButtons() {
  * @returns {void}
  */
 export function applyStyle() {
-    // Ajout des styles pour les cartes
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-        card.style.borderRadius = '10px';
-        card.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
-    });
+    const addStyles = (elements, styles) => {
+        elements.forEach(el => {
+            Object.assign(el.style, styles);
+        });
+    };
 
-    // Ajout des styles pour les alertes
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(alert => {
-        alert.style.borderRadius = '10px';
+    addStyles(document.querySelectorAll('.card'), {
+        borderRadius: '10px',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
     });
-
-    // Ajout des styles pour les boutons
-    const btns = document.querySelectorAll('.btn');
-    btns.forEach(btn => {
-        btn.style.borderRadius = '10px';
-    });
-
-    // Ajout des styles pour les modals
-    const modals = document.querySelectorAll('.modal-content');
-    modals.forEach(modal => {
-        modal.style.borderRadius = '10px';
-    });
+    addStyles(document.querySelectorAll('.alert'), { borderRadius: '10px' });
+    addStyles(document.querySelectorAll('.btn'), { borderRadius: '10px' });
+    addStyles(document.querySelectorAll('.modal-content'), { borderRadius: '10px' });
 }
 
 /**
@@ -222,7 +160,7 @@ export function cleanCards() {
 /**
  * Fonction pour créer un carte
  * 
- * @param {String} content 
+ * @param {String|HTMLElement} content 
  * @param {String} title 
  * @param {Number} colLength
  * @param {String} id
@@ -230,12 +168,12 @@ export function cleanCards() {
  */
 function createCardBody(content, title, colLength = 6, id = "") {
     const col = document.createElement('div');
-    col.classList.add('col-sm-12', 'col-md-' + colLength, 'fade-in');
+    col.classList.add('col-sm-12', `col-md-${colLength}`, 'fade-in');
     col.style.margin = "0 auto";
 
     const card = document.createElement('div');
     card.classList.add('card');
-    if (id !== "") {
+    if (id) {
         card.id = id;
         card.style.scrollMarginTop = '90px';
     }
@@ -243,17 +181,17 @@ function createCardBody(content, title, colLength = 6, id = "") {
 
     const header = document.createElement('header');
     header.classList.add('card-header');
-    header.innerHTML = '<h4 class="card-title">' + title + '</h4>';
+    header.innerHTML = `<h4 class="card-title">${title}</h4>`;
 
-    const card_body = document.createElement('div');
-    card_body.classList.add('card-body');
-    card_body.style.overflow = 'auto';
-    card.append(header, card_body);
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    cardBody.style.overflow = 'auto';
+    card.append(header, cardBody);
 
     if (content instanceof HTMLElement)
-        card_body.appendChild(content);
+        cardBody.appendChild(content);
     else
-        card_body.innerHTML = content;
+        cardBody.innerHTML = content;
 
     return col;
 }
@@ -261,42 +199,21 @@ function createCardBody(content, title, colLength = 6, id = "") {
 /**
  * Fonction pour créer un graphique
  * 
- * @param {String} data 
+ * @param {Array} data 
  * @param {String} type 
- * @param {String} xaxiscategories 
- * @returns {void}
+ * @param {Array} xaxiscategories 
+ * @returns {Promise<void>}
  */
 function createChart(data, type, xaxiscategories) {
     const options = {
-        series: [{
-            data: data
-        }],
-        chart: {
-            type: type,
-            height: 245
-        },
+        series: [{ data }],
+        chart: { type, height: 245 },
         colors: [
-            function ({ value }) {
-                if (value < 8)
-                    return "#f96868"
-                else if (value <= 10)
-                    return "#faa64b";
-                else
-                    return "#15c377";
-            }
+            ({ value }) => (value < 8 ? "#f96868" : value <= 10 ? "#faa64b" : "#15c377"),
         ],
-        plotOptions: {
-            bar: {
-                borderRadius: 4,
-                horizontal: false,
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        xaxis: {
-            categories: xaxiscategories
-        },
+        plotOptions: { bar: { borderRadius: 4, horizontal: false } },
+        dataLabels: { enabled: false },
+        xaxis: { categories: xaxiscategories },
     };
 
     const chart = new ApexCharts(document.querySelector("#chart"), options);
@@ -348,315 +265,448 @@ export async function createBilanCard() {
 }
 
 /**
- * Fonction pour ordonner les cartes
+ * Fonction pour récupérer et trier toutes les notes d'un tableau HTML.
+ * 
+ * @param {HTMLTableElement} htmlTable - Le tableau HTML contenant les notes.
+ * @returns {Array} - Tableau trié d'objets de note.
+ */
+export function fetchAllSortedGrades(htmlTable) {
+    const tbody = htmlTable.querySelector("tbody");
+    let grades = [];
+
+    const rows = tbody.querySelectorAll('tr');
+    rows.forEach(row => {
+        let buttonUrl = row.querySelector('td:nth-child(7) > button').getAttribute('data-modal-modal-url-value').split('/');
+        let gradeId = parseInt(buttonUrl[buttonUrl.length - 1]);
+        let gradeSubject = row.querySelector("td:nth-child(1)").textContent;
+        let gradeEvaluation = row.querySelector("td:nth-child(2)").textContent;
+        let gradeDate = row.querySelector("td:nth-child(3)").textContent;
+        let gradeComment = row.querySelector("td:nth-child(4)").textContent;
+        let gradeValue = Number(row.querySelector('td:nth-child(5) .badge').textContent.replace(',', '.'));
+        gradeValue = isNaN(gradeValue) ? -1 : gradeValue;
+        let gradeCoefficient = Number(row.querySelector('td:nth-child(6)').textContent);
+
+        let grade = {
+            id: gradeId,
+            subject: gradeSubject,
+            evaluation: gradeEvaluation,
+            date: gradeDate,
+            comment: gradeComment,
+            grade: gradeValue,
+            coefficient: gradeCoefficient
+        };
+
+        grades.push(grade);
+    });
+
+    grades.sort((a, b) => a.subject.localeCompare(b.subject));
+
+    return grades;
+}
+
+/**
+ * Fonction pour calculer les moyennes par matière.
+ * 
+ * @returns {Object} Un objet contenant les moyennes par UE (Unité d'Enseignement).
+ */
+export function getAverage() {
+    const lignesNotes = document.querySelectorAll("#mainContent > div.row > div:nth-child(5) > div > div > table > tbody tr");
+    const lignesModalites = document.querySelectorAll("#mainContent > div.row > div:nth-child(6) > div > div > table > tbody tr");
+
+    const donneesNotes = {};
+    for (const ligne of lignesNotes) {
+        let nomUE = ligne.children[0].textContent.trim();
+        let note = Number.parseFloat(ligne.children[4].children[0].textContent.replace(',', '.'));
+        let coef = Number.parseFloat(ligne.children[5].textContent.replace(',', '.'));
+
+        if (!donneesNotes[nomUE]) {
+            donneesNotes[nomUE] = [];
+        };
+        donneesNotes[nomUE].push({ note: note, coef: coef });
+    };
+
+    const donneesMatieres = {};
+    lignesModalites.forEach(ligne => {
+        let nomMatiere = ligne.children[0].textContent.split('|')[0].trim();
+        for (const ue of ligne.children[1].children) {
+            let nomUE = ue.textContent.split('(')[0].trim();
+            let coefUE = ue.textContent.match(/\((.*?)\)/)[1];
+
+            if (!donneesMatieres[nomMatiere]) {
+                donneesMatieres[nomMatiere] = [];
+            };
+            donneesMatieres[nomMatiere].push({
+                nomUE: nomUE,
+                coefUE: parseFloat(coefUE)
+            });
+        };
+    });
+
+    const donneesResultatsParUE = {};
+    for (const idUE in donneesNotes) {
+        if (donneesMatieres.hasOwnProperty(idUE)) {
+            const infosMatiere = donneesMatieres[idUE];
+            const infoNote = Utils.calculateAverageWeight(donneesNotes[idUE]);
+            if (!Number.isNaN(infoNote)) {
+                infosMatiere.forEach(matiere => {
+                    const nomUE = matiere.nomUE;
+                    const coefUE = matiere.coefUE;
+
+                    if (!donneesResultatsParUE.hasOwnProperty(nomUE)) {
+                        donneesResultatsParUE[nomUE] = {
+                            totalNote: 0,
+                            totalCoefficient: 0
+                        };
+                    }
+                    
+                    donneesResultatsParUE[nomUE].totalNote += infoNote * coefUE;
+                    donneesResultatsParUE[nomUE].totalCoefficient += coefUE;
+                });
+            };
+        }
+    }
+
+    const moyennesParUE = {};
+
+    for (const nomUE in donneesResultatsParUE) {
+        const donneesUE = donneesResultatsParUE[nomUE];
+        const moyenne = donneesUE.totalNote / donneesUE.totalCoefficient;
+        if (!Number.isNaN(moyenne)) {
+            moyennesParUE[nomUE] = moyenne;
+        };
+    }
+    return moyennesParUE;
+}
+
+/**
+ * Fonction pour générer le code HTML des moyennes.
+ * 
+ * @param {Object} moyennesParUE Les moyennes par UE.
+ * @returns {void}
+ */
+export function generateHtml(moyennesParUE) {
+    const sortedDomaines = Object.keys(moyennesParUE).sort();
+
+    let estValide = true;
+    for (const domaine of sortedDomaines) {
+        if (Number.parseFloat(moyennesParUE[domaine]) < 10) {
+            estValide = false;
+        };
+    }
+
+    // Génération du code HTML
+    const contenu = document.querySelector("#mainContent > div:nth-child(2)");
+    const premierElement = document.querySelector("#mainContent > div:nth-child(2) > div:nth-child(5)");
+
+    // Tableau des moyennes
+    const tableau = document.createElement('table');
+    tableau.classList.add('table', 'table-border', 'table-striped');
+
+    const entete = document.createElement('thead');
+    const ligneEntete = document.createElement('tr');
+
+    for (const domaine of sortedDomaines) {
+        const enteteCellule = document.createElement('th');
+        enteteCellule.classList.add('text-center');
+        enteteCellule.innerHTML = domaine;
+        ligneEntete.append(enteteCellule);
+    };
+    entete.append(ligneEntete);
+
+    const corps = document.createElement('tbody');
+    const ligneCorps = document.createElement('tr');
+
+    for (const domaine of sortedDomaines) {
+        const cellule = document.createElement('td');
+        cellule.classList.add('text-center');
+        cellule.innerHTML = `<span class="fs-11 badge ${parseFloat(moyennesParUE[domaine]) < 8 ? "bg-danger" : parseFloat(moyennesParUE[domaine]) <= 10 ? "bg-warning" : "bg-success"}">${Utils.roundValue(moyennesParUE[domaine], 2)}</span>`;
+        ligneCorps.append(cellule);
+    }
+    corps.append(ligneCorps);
+    tableau.append(entete, corps);
+
+    const htmlTableauMoyennes = createCardBody(tableau, 'Vos moyennes', 12, 'moyennes');
+
+    // Carte de validation
+    const listeValidation = document.createElement('ol')
+    listeValidation.className = 'timeline timeline-activity timeline-point-sm timeline-content-right text-left w-100';
+    const elementValidation = document.createElement('li');
+    elementValidation.className = 'alert alert-' + (estValide ? 'success' : 'danger');
+    elementValidation.innerHTML = '<strong class="fw-semibold">Validation : </strong> ' + Utils.boolToValue(estValide);
+    listeValidation.append(elementValidation);
+    const htmlValidation = createCardBody(listeValidation, 'Validation du semestre', 12);
+
+    // Carte du graphique
+    const divGraphique = document.createElement('div')
+    divGraphique.id = "chart";
+    divGraphique.style.scrollMarginTop = '90px';
+
+    const colonneGauche = document.createElement('div');
+    colonneGauche.classList.add('col-sm-12', 'col-md-6', 'fade-in');
+    colonneGauche.append(htmlTableauMoyennes, htmlValidation);
+
+    contenu.insertBefore(colonneGauche, premierElement);
+    contenu.insertBefore(createCardBody(divGraphique, 'Aperçu de vos moyennes', 6, 'graph'), premierElement);
+
+    let donneesNotes = [];
+    let domaines = [];
+
+    for (const domaine of sortedDomaines) {
+        donneesNotes.push(Utils.roundValue(moyennesParUE[domaine], 2));
+        domaines.push(domaine);
+    };
+
+    createChart(donneesNotes, 'bar', domaines);
+}
+
+/**
+ * Fonction pour ordonner les cartes sur la page principale.
  * 
  * @returns {void}
  */
 export function orderCards() {
+    // Sélection des éléments HTML à réorganiser
     const content = document.querySelector("#mainContent > div:first-child");
     const absences = document.querySelector("#mainContent > div:first-child > div:nth-child(2)");
     const statut = document.querySelector("#mainContent > div:first-child > div:nth-child(3)");
     const graph = document.querySelector("#mainContent > div:first-child > div:nth-child(4)");
     const notes = document.querySelector("#mainContent > div:first-child > div:nth-child(5)");
-    notes.id = "notes";
-    notes.style.scrollMarginTop = '90px';
-
+    notes.id = "notes"; // Ajout de l'ID "notes" pour identifier cet élément
+    notes.style.scrollMarginTop = '90px'; // Ajout d'une marge supérieure pour la navigation
     const competences = document.querySelector("#mainContent > div:first-child > div:nth-child(6)");
     const liens = document.querySelector("#mainContent > div:first-child > div:nth-child(7)");
     const contact = document.querySelector("#mainContent > div:first-child > div:nth-child(8)");
 
+    // Modification de l'ID et de la marge supérieure pour les éléments "absences" et "statut"
     absences.id = "absences";
     absences.style.scrollMarginTop = '90px';
+
+    // Réorganisation des éléments
     content.insertBefore(statut, absences);
     content.insertBefore(graph, absences);
     content.insertBefore(notes, absences);
 
+    // Suppression de la classe "col-md-6" des éléments "liens" et "contact"
     liens.classList.remove('col-md-6');
     contact.classList.remove('col-md-6');
 
+    // Création d'un élément "details" pour regrouper les compétences, contacts et liens utiles
     const details = document.createElement("details");
-    details.id = "details";
-    details.style.scrollMarginTop = '90px';
+    details.id = "details"; // Ajout de l'ID "details" pour identifier cet élément
+    details.style.scrollMarginTop = '90px'; // Ajout d'une marge supérieure pour la navigation
     details.innerHTML = '<summary class="card"><div class="card-header">Compétences, contacts et liens utiles. Voir plus... <i class="fa-solid fa-chevron-down"></i></div></summary>';
     details.append(competences, contact, liens);
     content.append(details);
 }
 
 /**
- * Fonction qui calcule la moyenne
+ * Fonction pour recréer le tableau avec les notes triées.
  * 
- * @returns {Object}
+ * @param {Array} sortedGrades - Tableau d'objets de notes triées.
+ * @param {Array} knownGrades - Tableau d'identifiants de notes connues.
+ * @returns {HTMLTableElement} - Élément de tableau HTML recréé.
  */
-export function getAverage() {
-    const listNote = document.querySelectorAll("#mainContent > div.row > div:nth-child(5) > div > div > table > tbody tr");
-    const listModal = document.querySelectorAll("#mainContent > div.row > div:nth-child(6) > div > div > table > tbody tr");
+export function recreateTable(sortedGrades, knownGrades) {
+    let table = document.createElement('table');
+    table.classList.add('table', 'table-border', 'table-striped');
 
-    const notesData = {}
-    for (const elt of listNote) {
-        let nameMoy = elt.children[0].textContent.trim();
-        let note = Number.parseFloat(elt.children[4].children[0].textContent.replace(',', '.'));
-        let coef = Number.parseFloat(elt.children[5].textContent.replace(',', '.'));
+    let thead = document.createElement('thead');
+    table.appendChild(thead);
 
-        if (!notesData[nameMoy]) {
-            notesData[nameMoy] = [];
-        };
-        notesData[nameMoy].push({ note: note, coef: coef });
-    };
+    let trHead = document.createElement('tr');
+    thead.appendChild(trHead);
 
-    const coursesData = {};
-    listModal.forEach(elt => {
-        let name = elt.children[0].textContent.split('|')[0].trim();
-        for (const ue of elt.children[1].children) {
-            let nameUe = ue.textContent.split('(')[0].trim();
-            let coefUe = ue.textContent.match(/\((.*?)\)/)[1];
-
-            if (!coursesData[name]) {
-                coursesData[name] = [];
-            };
-            coursesData[name].push({
-                nameUe: nameUe,
-                coefUe: parseFloat(coefUe)
-            });
-        };
+    const headers = ['Matière', 'Évaluation', 'Date', 'Commentaire de l\'évaluation', 'Note', 'Coefficient', 'Informations'];
+    headers.forEach(header => {
+        let th = document.createElement('th');
+        th.textContent = header;
+        trHead.appendChild(th);
     });
-    // Créez un objet pour stocker les résultats par UE
-    const resultDataByUE = {};
-    // Parcourez les clés du deuxième objet (notesData)
-    for (const courseId in notesData) {
-        // Vérifiez si le cours existe dans le premier objet (coursesData)
-        if (coursesData.hasOwnProperty(courseId)) {
-            // Obtenez les données du cours du premier objet
-            const courseInfo = coursesData[courseId];
 
-            // Obtenez les données de notes du deuxième objet
-            const noteInfo = Utils.calculateAverageWeight(notesData[courseId]);
+    let tbody = document.createElement('tbody');
+    table.appendChild(tbody);
 
-            // Regarde si la note est bien un entier (et non une phrase)
-            if (!Number.isNaN(noteInfo)) {
-                // Parcourez les cours du premier objet pour regrouper par UE
-                courseInfo.forEach(course => {
-                    const ueName = course.nameUe;
-                    const ueCoefficient = course.coefUe;
+    sortedGrades.forEach((grade, i) => {
+        let isNew = !knownGrades.includes(grade.id);
+        let tr = createRow(grade, false, isNew);
+        tbody.appendChild(tr);
 
-                    // Vérifiez si l'UE existe dans le résultat par UE
-                    if (!resultDataByUE.hasOwnProperty(ueName)) {
-                        // Si elle n'existe pas, initialisez-la avec un objet vide
-                        resultDataByUE[ueName] = {
-                            totalNote: 0,
-                            totalCoefficient: 0
-                        };
-                    }
-                    
-                    // Ajoutez la note pondérée et le coefficient de ce cours à l'UE correspondante
-                    resultDataByUE[ueName].totalNote += noteInfo * ueCoefficient;
-                    resultDataByUE[ueName].totalCoefficient += ueCoefficient;
-                });
-            };
+        if (i === sortedGrades.length - 1 || sortedGrades[i + 1].subject !== grade.subject) {
+            let trAverage = createRow({
+                subject: grade.subject,
+                evaluation: 'Moyenne',
+                grade: calculateSubjectAverage(sortedGrades, grade.subject)
+            }, true);
+            tbody.appendChild(trAverage);
         }
-    }
+    });
 
-    // Maintenant, calculez la moyenne pour chaque UE
-    const averageDataByUE = {};
+    let trGeneralAverage = createRow({
+        subject: '',
+        evaluation: 'Moyenne Générale',
+        grade: calculateOverallAverage(sortedGrades)
+    }, true);
+    tbody.appendChild(trGeneralAverage);
 
-    for (const ueName in resultDataByUE) {
-        const ueData = resultDataByUE[ueName];
-        const average = ueData.totalNote / ueData.totalCoefficient;
-        if (!Number.isNaN(average)) {
-            averageDataByUE[ueName] = average;
-        };
-    }
-    return averageDataByUE;
+    return table;
 }
 
 /**
- * Fonction pour générer le code HTML
+ * Fonction pour calculer la moyenne pondérée des notes.
  * 
- * @param {Object} averageDataByUE
- * @returns {void}
+ * @param {Array} grades - Tableau des valeurs de notes.
+ * @param {Array} coefficients - Tableau des coefficients correspondants.
+ * @returns {number} - Moyenne calculée ou -1 si aucune note valide.
  */
-export function generateHtml(averageDataByUE) {
-    let isAccepted = true;
-    for (const [domaine, note] of Object.entries(averageDataByUE)) {
-        if (Number.parseFloat(note) < 10) {
-            isAccepted = false;
-        };
-    };
+export function calculateAverage(grades, coefficients) {
+    let numerator = 0;
+    let denominator = 0;
+    let hasValidGrade = false;
 
-    // Generation du code HTML
-    const content = document.querySelector("#mainContent > div:nth-child(2)");
-    const firstChild = document.querySelector("#mainContent > div:nth-child(2) > div:nth-child(5)");
-
-    // Carte des moyennes
-    const table = document.createElement('table');
-    table.classList.add('table', 'table-border', 'table-striped');
-
-    const thead = document.createElement('thead');
-    const trHead = document.createElement('tr');
-
-    for (const [domaine] of Object.entries(averageDataByUE)) {
-        const th = document.createElement('th');
-        th.classList.add('text-center');
-        th.innerHTML = domaine;
-        trHead.append(th);
-    };
-    thead.append(trHead);
-
-    const tbody = document.createElement('tbody');
-    const trBody = document.createElement('tr');
-    for (const [domaine, note] of Object.entries(averageDataByUE)) {
-        const td = document.createElement('td');
-        td.classList.add('text-center');
-        td.innerHTML = `<span class="fs-11 badge ${parseFloat(note) < 8 ? "bg-danger" : parseFloat(note) <= 10 ? "bg-warning" : "bg-success"}">${Utils.roundValue(note, 2)}</span>`;
-        trBody.append(td);
-    };
-    tbody.append(trBody);
-    table.append(thead, tbody);
-
-    const tableMarkHtml = createCardBody(table, 'Vos moyennes', 12, 'moyennes');
-
-    // Carte de validation
-    const olIsAccepted = document.createElement('ol')
-    olIsAccepted.className = 'timeline timeline-activity timeline-point-sm timeline-content-right text-left w-100';
-    const liIsAccepted = document.createElement('li');
-    liIsAccepted.className = 'alert alert-' + (isAccepted ? 'success' : 'danger');
-    liIsAccepted.innerHTML = '<strong class="fw-semibold">Validation : </strong> ' + Utils.boolToValue(isAccepted);
-    olIsAccepted.append(liIsAccepted);
-    const isAcceptedHtml = createCardBody(olIsAccepted, 'Validation du semestre', 12);
-
-    // Carte du graphique
-    const divChart = document.createElement('div')
-    divChart.id = "chart";
-    divChart.style.scrollMarginTop = '90px';
-
-    const colLeft = document.createElement('div');
-    colLeft.classList.add('col-sm-12', 'col-md-6', 'fade-in');
-    colLeft.append(tableMarkHtml, isAcceptedHtml);
-
-    content.insertBefore(colLeft, firstChild);
-    content.insertBefore(createCardBody(divChart, 'Aperçu de vos moyennes', 6, 'graph'), firstChild);
-
-    let dataMarks = [];
-    let dataDomain = [];
-    for (const [domaine, note] of Object.entries(averageDataByUE)) {
-        dataMarks.push(Utils.roundValue(note, 2));
-        dataDomain.push(domaine);
-    };
-
-    createChart(dataMarks, 'bar', dataDomain);
-}
-
-export function recupererToutesLesNotesTriees(tableauHtml) {
-    const tbody = tableauHtml.querySelector("tbody")
-    let notes = []
-
-    const lignes = tbody.querySelectorAll('tr')
-    lignes.forEach(ligne => {
-        let buttonUrl = ligne.querySelector('td:nth-child(7) > button').getAttribute('data-modal-modal-url-value').split('/')
-        let noteId = parseInt(buttonUrl[buttonUrl.length-1])
-        let noteMatiere = ligne.querySelector("td:nth-child(1)").textContent
-        let noteEvaluation = ligne.querySelector("td:nth-child(2)").textContent
-        let noteDate = ligne.querySelector("td:nth-child(3)").textContent
-        let noteCommentaire = ligne.querySelector("td:nth-child(4)").textContent
-        let noteNote = Number(ligne.querySelector('td:nth-child(5) .badge').textContent.replace(',', '.'))
-        noteNote = isNaN(noteNote) ? -1 : noteNote
-        let noteCoefficient = Number(ligne.querySelector('td:nth-child(6)').textContent)
-
-
-        let note = {
-            id: noteId,
-            matiere: noteMatiere,
-            evaluation: noteEvaluation,
-            date: noteDate,
-            commentaire: noteCommentaire,
-            note: noteNote,
-            coefficient: noteCoefficient
+    grades.forEach((grade, index) => {
+        if (grade >= 0) {
+            numerator += grade * coefficients[index];
+            denominator += coefficients[index];
+            hasValidGrade = true;
         }
+    });
 
-        notes.push(note)
-    })
-
-    notes.sort((a, b) => (a.matiere > b.matiere) ? 1 : -1)
-
-    return notes
+    return hasValidGrade ? (numerator / denominator) : -1;
 }
 
-export function recreerTableau(notesTriees, notesConnues) {
-    let table = document.createElement('table')
-    table.classList.add('table', 'table-border', 'table-striped')
+/**
+ * Fonction pour calculer la moyenne des notes pour une matière spécifique.
+ * 
+ * @param {Array} allGrades - Tableau de tous les objets de notes.
+ * @param {string} subject - La matière pour laquelle calculer la moyenne.
+ * @returns {number} - Moyenne calculée pour la matière.
+ */
+export function calculateSubjectAverage(allGrades, subject) {
+    let grades = [];
+    let coefficients = [];
 
-
-    let thead = document.createElement('thead')
-    table.appendChild(thead)
-
-
-    let trHead = document.createElement('tr')
-    thead.appendChild(trHead)
-
-
-    let thMatiere = document.createElement('th')
-    thMatiere.textContent = 'Matière'
-    trHead.appendChild(thMatiere)
-    
-    let thEvaluation = document.createElement('th')
-    thEvaluation.textContent = 'Evaluation'
-    trHead.appendChild(thEvaluation)
-
-    let thDate = document.createElement('th')
-    thDate.textContent = 'date'
-    trHead.appendChild(thDate)
-
-    let thCommentaire = document.createElement('th')
-    thCommentaire.textContent = 'Commentaire de l\'évaluation'
-    trHead.appendChild(thCommentaire)
-
-    let thNote = document.createElement('th')
-    thNote.textContent = 'Note'
-    trHead.appendChild(thNote)
-
-    let thCoefficient = document.createElement('th')
-    thCoefficient.textContent = 'coefficient'
-    trHead.appendChild(thCoefficient)
-    
-    let thInformation = document.createElement('th')
-    thInformation.textContent = 'Informations'
-    trHead.appendChild(thInformation)
-
-
-    let tbody = document.createElement('tbody')
-    table.appendChild(tbody)
-
-
-    notesTriees.forEach((note, i) => {
-        let estNouveau = !notesConnues.includes(note.id)
-        let tr = creerLigne(note, false, estNouveau)
-        tbody.appendChild(tr)
-
-        // Si on a atteint la fin des notes d'une matière
-        if(i == notesTriees.length-1 || notesTriees[i+1].matiere != note.matiere) {
-            let tr = creerLigne({
-                matiere: note.matiere,
-                evaluation: 'Moyenne',
-                note: calculerMoyenneMatiere(notesTriees, note.matiere)
-            }, true)
-
-            tbody.appendChild(tr)
-
+    allGrades.forEach(grade => {
+        if (grade.subject === subject) {
+            grades.push(grade.grade);
+            coefficients.push(grade.coefficient);
         }
-    })
+    });
 
-
-    // Ajout de la moyenne générale
-    let tr = creerLigne({
-        matiere: '',
-        evaluation: 'Moyenne Générale',
-        note: calculerMoyenneGenerale(notesTriees)
-    }, true)
-    tbody.appendChild(tr)
-
-    return table
+    return calculateAverage(grades, coefficients);
 }
 
-export function ajouterBoutonSauvegarde() {
+/**
+ * Fonction pour calculer la moyenne générale des notes toutes matières confondues.
+ * 
+ * @param {Array} allGrades - Tableau de tous les objets de notes.
+ * @returns {number} - Moyenne générale calculée.
+ */
+export function calculateOverallAverage(allGrades) {
+    let subjectAverages = [];
+    let coefficients = [];
+
+    let previousSubject = '';
+    allGrades.forEach(grade => {
+        if (previousSubject !== grade.subject) {
+            let average = calculateSubjectAverage(allGrades, grade.subject);
+            if (average >= 0) {
+                subjectAverages.push(average);
+                coefficients.push(1);
+                previousSubject = grade.subject;
+            }
+        }
+    });
+
+    return calculateAverage(subjectAverages, coefficients);
+}
+
+/**
+ * Fonction pour créer une ligne de tableau.
+ * 
+ * @param {Object} grade - Objet de note.
+ * @param {boolean} isAverage - Indique si la ligne représente une moyenne.
+ * @param {boolean} isNew - Indique si la note est nouvelle.
+ * @returns {HTMLTableRowElement} - Élément de ligne de tableau HTML créé.
+ */
+export function createRow(grade, isAverage, isNew = false) {
+    let tr = document.createElement('tr');
+    if (isAverage) tr.classList.add('moyenne');
+    if (isNew) tr.classList.add('new-note');
+
+    const columns = [
+        grade.subject, 
+        grade.evaluation, 
+        isAverage ? '' : grade.date, 
+        isAverage ? '' : grade.comment, 
+        formatGrade(grade.grade), 
+        isAverage ? '' : grade.coefficient.toString(), 
+        isAverage ? '' : createInfoButton(grade.id)
+    ];
+
+    columns.forEach(content => {
+        let td = document.createElement('td');
+        if (typeof content === 'string' || content instanceof String) {
+            td.textContent = content;
+        } else {
+            td.appendChild(content);
+        }
+        tr.appendChild(td);
+    });
+
+    return tr;
+}
+
+/**
+ * Fonction pour formater une note en ajoutant un badge HTML.
+ * 
+ * @param {number} grade - La note à formater.
+ * @returns {HTMLElement} - Élément span HTML avec le badge de note.
+ */
+function formatGrade(grade) {
+    let span = document.createElement('span');
+    if (grade >= 10) {
+        span.classList.add('badge', 'bg-success');
+        span.textContent = grade.toPrecision(4).toString();
+    } else if (grade == -1) {
+        span.classList.add('badge', 'bg-warning');
+        span.textContent = 'Pas de note ou pas de saisie ?';
+    } else {
+        span.classList.add('badge', 'bg-warning');
+        span.textContent = grade.toPrecision(4).toString();
+    }
+    return span;
+}
+
+/**
+ * Fonction pour créer un bouton d'information pour une note.
+ * 
+ * @param {number} gradeId - L'identifiant de la note.
+ * @returns {HTMLButtonElement} - Élément de bouton HTML avec les informations sur la note.
+ */
+function createInfoButton(gradeId) {
+    let button = document.createElement('button');
+    button.classList.add('btn', 'btn-info', 'btn-outline', 'btn-square', 'btn-xs');
+    button.setAttribute('data-controller', 'modal');
+    button.setAttribute('data-modal-modal-title-value', 'Détails de la note');
+    button.setAttribute('data-modal-modal-url-value', '/fr/application/etudiant/note/details/' + gradeId);
+    button.setAttribute('data-action', 'click->modal#openModal');
+    button.setAttribute('data-bs-toggle', 'tooltip');
+    button.setAttribute('data-bs-placement', 'bottom');
+    button.setAttribute('data-bs-original-title', 'Détails');
+
+    let icon = document.createElement('i');
+    icon.classList.add('fas', 'fa-info');
+    button.appendChild(icon);
+
+    return button;
+}
+
+/**
+ * Fonction pour ajouter un bouton de sauvegarde.
+ * 
+ * @returns {HTMLButtonElement} - Élément de bouton HTML créé.
+ */
+export function addSaveButton() {
     let button = createButton('Sauvegarder les notes connues', 'pink', 'save')
     let actions = document.querySelector("#mainContent > div > div:nth-child(4) > div > header > div")
     actions.prepend(button)
@@ -664,141 +714,15 @@ export function ajouterBoutonSauvegarde() {
     return button;
 }
 
-export function ajouterBoutonReset() {
+/**
+ * Fonction pour ajouter un bouton de réinitialisation.
+ * 
+ * @returns {HTMLButtonElement} - Élément de bouton HTML créé.
+ */
+export function addResetButton() {
     let button = createButton("Réinitialiser les notes connues", "danger", "trash-can")
     let actions = document.querySelector("#mainContent > div > div:nth-child(4) > div > header > div")
     actions.prepend(button)
 
     return button;
-}
-
-export function calculerMoyenne(notes, coefficients) {
-    // numérateur : n1*c1 + n2*c2 + n3*c3
-    let numerateur = 0
-    let denominateur = 0
-    let change = false
-    for (let i = 0; i < notes.length; i++) {
-        if(notes[i] >= 0){
-            numerateur += notes[i] * coefficients[i]
-            denominateur += coefficients[i]
-            change = true
-        }
-    }
-
-    // dénominateur : c1 + c2 + c3
-    let moyenne = -1
-    if(change) {
-        if(numerateur != -1) {    
-            moyenne = numerateur / denominateur
-        }
-    }
-
-    return moyenne
-}
-
-export function calculerMoyenneMatiere(toutesLesNotes, matiere) {
-    let notes = []
-    let coefficients = []
-    
-    // récupération des notes et coefficients de toutes les notes de la matière
-    toutesLesNotes.forEach((note) => {
-        if(note.matiere == matiere){
-            notes.push(note.note)
-            coefficients.push(note.coefficient)
-        }
-    })
-
-    let moyenne = calculerMoyenne(notes, coefficients)
-    
-    return moyenne
-}
-
-export function calculerMoyenneGenerale(toutesLesNotes) {
-    let notes = []
-    let coefficients = []
-
-    // récupération des notes et coefficients de toutes les notes
-    let oldMatiere = ''
-    toutesLesNotes.forEach((note) => {
-        if(oldMatiere != note.matiere){
-            let moyenne = calculerMoyenneMatiere(toutesLesNotes, note.matiere)
-            if(moyenne >= 0){
-                notes.push(calculerMoyenneMatiere(toutesLesNotes, note.matiere))
-                coefficients.push(1)
-                oldMatiere = note.matiere
-            }
-        }
-    })
-
-    let moyenne = calculerMoyenne(notes, coefficients)
-
-    return moyenne
-}
-
-export function creerLigne(note, estUneMoyenne, nouveau = false) {
-    let tr = document.createElement('tr')
-    if(estUneMoyenne) tr.classList.add('moyenne')
-    if(nouveau) tr.classList.add('new-note')
-
-    let tdMatiere = document.createElement('td')
-    tdMatiere.textContent = note.matiere
-    tr.appendChild(tdMatiere)
-
-    let tdEvaluation = document.createElement('td')
-    tdEvaluation.textContent = note.evaluation
-    tr.appendChild(tdEvaluation)
-
-    let tdDate = document.createElement('td')
-    tdDate.classList.add('hide')
-    if(!estUneMoyenne) tdDate.textContent = note.date
-    tr.appendChild(tdDate)
-
-    let tdCommentaire = document.createElement('td')
-    tdCommentaire.classList.add('hide')
-    if(!estUneMoyenne) tdCommentaire.textContent = note.commentaire
-    tr.appendChild(tdCommentaire)
-
-    let tdNote = document.createElement('td')
-    let span = document.createElement('span')
-    if(note.note >= 10) {
-        span.classList.add('badge', 'bg-success')
-        span.textContent = note.note.toPrecision(4).toString()
-    } else if(note.note == -1) {
-        span.classList.add('badge', 'bg-warning')
-        span.textContent = 'Pas de note ou pas de saisie ?'
-    } else {
-        span.classList.add('badge', 'bg-warning')
-        if(note.note < 0) {
-            span.textContent = note.note.toString()
-        } else {
-            span.textContent = note.note.toPrecision(4).toString()
-        }
-    }
-    tdNote.appendChild(span)
-    tr.appendChild(tdNote)
-
-    let tdCoefficient = document.createElement('td')
-    tdCoefficient.classList.add('hide')
-    if(!estUneMoyenne) tdCoefficient.textContent = note.coefficient.toString()
-    tr.appendChild(tdCoefficient)
-
-    let tdInformation = document.createElement('td')
-    if(!estUneMoyenne) {
-        let buttonInformation = document.createElement('button')
-        buttonInformation.classList.add('btn', 'btn-info', 'btn-outline', 'btn-square', 'btn-xs')
-        buttonInformation.setAttribute('data-controller', 'modal')
-        buttonInformation.setAttribute('data-modal-modal-title-value', 'Détails d\'une note')
-        buttonInformation.setAttribute('data-modal-modal-url-value', '/fr/application/etudiant/note/details/' + note.id)
-        buttonInformation.setAttribute('data-action', 'click->modal#openModal')
-        buttonInformation.setAttribute('data-bs-toggle', 'tooltip')
-        buttonInformation.setAttribute('data-bs-placement', 'bottom')
-        buttonInformation.setAttribute('data-bs-original-title', 'Détails')
-        let iButtonInformation = document.createElement('i')
-        iButtonInformation.classList.add('fas', 'fa-info')
-        buttonInformation.appendChild(iButtonInformation)
-        tdInformation.appendChild(buttonInformation)
-    }
-    tr.appendChild(tdInformation)
-
-    return tr
 }

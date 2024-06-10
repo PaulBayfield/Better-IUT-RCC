@@ -2,7 +2,7 @@ import 'apexcharts/dist/apexcharts.css';
 import './css/animation.css';
 import './css/custom.css';
 
-import { addButtons, ajouterBoutonSauvegarde, ajouterBoutonReset, applyStyle, cleanCards, createBilanCard, generateHtml, getAverage, orderCards, recreerTableau, recupererToutesLesNotesTriees, updateMenu } from "./functions";
+import { addButtons, applyStyle, cleanCards, createBilanCard, generateHtml, getAverage, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSaveButton, addResetButton } from "./functions";
 import { Utils } from './utils';
 import * as browser from 'webextension-polyfill';
 
@@ -13,24 +13,18 @@ import * as browser from 'webextension-polyfill';
     if (window.location.pathname === "/fr/tableau-de-bord") {
         // Récupération des notes connues
         browser.storage.sync.get('notesAlreadyKnow').then((result) => {
-            const notesConnues = result.notesAlreadyKnow || []
-            
             const tableau = document.querySelector("#mainContent > div.row > div:nth-child(4) > div > div > table")
-            let notes = recupererToutesLesNotesTriees(tableau)
-            
-            let tableauTrie = recreerTableau(notes, notesConnues)
+            let notes = fetchAllSortedGrades(tableau)
         
-            tableau.replaceWith(tableauTrie)
+            tableau.replaceWith(recreateTable(notes, result.notesAlreadyKnow || []))
 
-            const boutonReset = ajouterBoutonReset()
-            boutonReset.addEventListener('click', async (e) => {
+            addResetButton().addEventListener('click', async (e) => {
                 e.preventDefault();
                 await browser.storage.sync.clear();
                 location.reload();
             })
-            
-            const boutonSauvegarde = ajouterBoutonSauvegarde()
-            boutonSauvegarde.addEventListener('click', (e) => {
+
+            addSaveButton().addEventListener('click', (e) => {
                 e.preventDefault();
         
                 let ids = []
