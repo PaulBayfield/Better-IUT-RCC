@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.5.1...v1.6.0) (2024-06-10)
+
+
+### Features
+
+* Optimisation du code & suppression de certaines fonctions inutiles ([2be92a2](https://github.com/PaulBayfield/Better-IUT-RCC/commit/2be92a23a6cd96a3d09f65cdf4e9bdf33d1f723c))
+
 ## [1.5.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.5.0...v1.5.1) (2024-06-04)
 
 
