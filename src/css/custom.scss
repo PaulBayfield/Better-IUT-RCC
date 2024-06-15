@@ -1,0 +1,98 @@
+.new-note {
+    background-color: orange !important;
+}
+
+.new-note td {
+    background-color: orange !important;
+}
+
+#save-notes-btn{
+    margin-left: 1rem;
+}
+
+tr.moyenne {
+    border-bottom: solid black 3px;
+    font-weight: bold;
+}
+
+body.rcc.dark-theme {
+    tr.moyenne {
+        border-bottom: inherit;
+    }
+
+    .dropdown-menu {
+        background-color: var(--body) !important;
+    }
+
+    .dropdown-item {
+        color: white;
+    }
+
+    .main-container {
+        background-color: var(--body);
+    }
+    
+    .sidebar-header {
+        background-color: inherit !important;
+    }
+    
+    .div_logo {
+        background-color: inherit !important;
+    }
+    
+    .table > :not(caption) > * > * {
+        background-color: inherit !important;
+        color: white;
+    }
+
+    .bg-pale-success {
+        background-color: inherit !important;
+    }
+
+    .alert-success {
+        background-color: rgb(26, 62, 41) !important;
+        color: white !important;
+    }
+
+    .alert-secondary {
+        background-color: #004daa !important;
+        color: #e8e6e3 !important;
+    }
+
+    .alert-danger {
+        background-color: #004daa !important;
+        color: #e8e6e3 !important;
+    }
+
+    .alert-warning {
+        background-color: #004daa !important;
+        color: #e8e6e3 !important;
+    }
+
+    .alert-info {
+        background-color: #004daa !important;
+        color: #e8e6e3 !important;
+    }
+
+    svg text {
+        fill: white !important;
+    }
+
+    .apexcharts-tooltip {
+        background-color: var(--body) !important;
+
+        span {
+            color: white !important;
+        }
+
+        .apexcharts-tooltip-title {
+            background-color: var(--body) !important;
+            color: white !important;
+        }
+    }
+
+    .apexcharts-menu {
+        background-color: var(--body) !important;
+        color: white !important;
+    }
+}

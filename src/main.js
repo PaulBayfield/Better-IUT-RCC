@@ -1,6 +1,6 @@
 import 'apexcharts/dist/apexcharts.css';
 import './css/animation.css';
-import './css/custom.css';
+import './css/custom.scss';
 
 import { addButtons, applyStyle, cleanCards, createBilanCard, generateHtml, getAverage, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSaveButton, addResetButton } from "./functions";
 import { Utils } from './utils.js';
@@ -8,6 +8,13 @@ import { Average } from './average.js';
 import * as browser from 'webextension-polyfill';
 
 (async () => {
+    // Gestion du thème dark
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'light');
+    }
+
     // Mise à jour de la sidebar dès le chargement de la page pour s'assurer qu'il soit toujours à jour
     await updateMenu();
 
