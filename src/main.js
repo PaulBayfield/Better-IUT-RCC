@@ -3,74 +3,85 @@ import './css/animation.css';
 import './css/custom.css';
 
 import { addButtons, applyStyle, cleanCards, createBilanCard, generateHtml, getAverage, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSaveButton, addResetButton } from "./functions";
-import { Utils } from './utils';
+import { Utils } from './utils.js';
+import { Average } from './average.js';
 import * as browser from 'webextension-polyfill';
 
 (async () => {
-    // Mise à jour de la sidebar dès le chargement de la page pour que le menu soit toujours à jour
+    // Mise à jour de la sidebar dès le chargement de la page pour s'assurer qu'il soit toujours à jour
     await updateMenu();
 
+    // Vérifie si l'utilisateur est sur la page "tableau de bord"
     if (window.location.pathname === "/fr/tableau-de-bord") {
-        // Récupération des notes connues
+        const average = new Average();
+
+        // Nettoie les cartes et les réorganise
+        cleanCards();
+        orderCards();
+
+        // Récupère les données moyennes par UE et génère le graphique
+        const title = document.querySelector("#details > div > div > h4");
+
+        // Vérifie si le titre et les données moyennes ne sont pas vides et si le titre est correct, puis génère le HTML
+        if (!Utils.isEmpty(title, average.averageGradeData) && title.textContent === "Modalités de Contrôle des Connaissances") {
+            generateHtml(average);
+        }
+
+        // Crée une carte de bilan
+        await createBilanCard();
+
+        // Ajoute des styles et des boutons
+        await addButtons();
+
         browser.storage.sync.get('notesAlreadyKnow').then((result) => {
-            const tableau = document.querySelector("#mainContent > div.row > div:nth-child(4) > div > div > table")
-            let notes = fetchAllSortedGrades(tableau)
-        
-            tableau.replaceWith(recreateTable(notes, result.notesAlreadyKnow || []))
+            const tableau = document.querySelector("#mainContent > div:first-child > div:nth-child(4) > div > div > table");
+            const notes = fetchAllSortedGrades(tableau);
+            tableau.replaceWith(recreateTable(average, notes, result.notesAlreadyKnow || []));
 
             addResetButton().addEventListener('click', async (e) => {
                 e.preventDefault();
                 await browser.storage.sync.clear();
                 location.reload();
-            })
+            });
 
             addSaveButton().addEventListener('click', (e) => {
                 e.preventDefault();
         
-                let ids = []
+                let ids = [];
                 notes.forEach((note) => {
-                    ids.push(note.id)
-                })
+                    ids.push(note.id);
+                });
         
                 browser.storage.sync.set({notesAlreadyKnow: ids}).then(() => {
-                    location.reload()
-                })
-            })
-        })
-        
-        // Récupération des données et génération du graphique
-        const averageDataByUE = getAverage();
-        const title = document.querySelector("#mainContent > div > div:nth-child(6) > div > h4");
-        
-        if (!Utils.isEmpty(title, averageDataByUE) && title.textContent === "Modalités de Contrôle des Connaissances") {
-            generateHtml(averageDataByUE);
-        }
-        
-        // Nettoyage des cartes et réorganisation
-        cleanCards();
-        orderCards();
+                    location.reload();
+                });
+            });
 
-        // Création de la carte de bilan
-        await createBilanCard();
+            applyStyle();
+        });
 
-        // Ajout des styles et des boutons
-        await addButtons();
         applyStyle();
-    } else if (window.location.pathname === "/fr/crous") {
+    } 
+    // Vérifie si l'utilisateur est sur la page "crous"
+    else if (window.location.pathname === "/fr/crous") {
+        // Effectue une requête pour obtenir le menu du CROUS
         const request = await fetch("https://croustillant.bayfield.dev/api/intranet/menu");
         let data = await request.text();
         data = data.trim();
 
+        // Parse le HTML reçu de la requête
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, "text/html");
         const html = doc.querySelector("html");
 
+        // Remplace le contenu de la page actuelle par le contenu HTML reçu
         document.documentElement.innerHTML = html.innerHTML;
 
+        // Ajoute un écouteur d'événement pour changer l'image du menu en fonction du restaurant sélectionné
         document.getElementById("restaurant").addEventListener("change", function () {
             var restaurant = this.value;
             var img = document.getElementById("image-menu");
-            img.src ="https://croustillant.bayfield.dev/api/intranet?restaurant=" + restaurant;
+            img.src = "https://croustillant.bayfield.dev/api/intranet?restaurant=" + restaurant;
         });
     }
 })();

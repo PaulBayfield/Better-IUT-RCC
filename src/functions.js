@@ -1,6 +1,7 @@
 import ApexCharts from 'apexcharts'
 import { Utils } from "./utils";
 import * as browser from 'webextension-polyfill';
+import { Average } from './average';
 
 
 /**
@@ -58,9 +59,11 @@ export async function addButtons() {
     const userId = /.*\/(\d*)\.jpg/g.exec(userAvatar.src)[1];
 
     const headerInfo = document.querySelector('.header-info');
+    const firstChild = headerInfo.querySelector('.left');
     const cardHeader = document.createElement('div');
-    const col1 = document.querySelector("#mainContent > div:first-child > div:nth-child(2)");
-    const col2 = document.querySelector("#mainContent > div:first-child > div:nth-child(3)");
+    const col1 = document.querySelector("#mainContent > div:first-child > div:nth-child(1)");
+    const col2 = document.querySelector("#mainContent > div:first-child > div:nth-child(2)");
+    const col3 = document.querySelector("#mainContent > div:first-child > div:nth-child(3)");
 
     cardHeader.classList.add('right', 'card-header-actions');
     cardHeader.style.display = 'flex';
@@ -93,8 +96,7 @@ export async function addButtons() {
     const toggleMoreDetails = createButton("Minimal", "purple", "window-minimize");
     toggleMoreDetails.addEventListener('click', async () => {
         const showMore = col1.style.display === 'none';
-        col1.style.display = showMore ? 'block' : 'none';
-        col2.style.display = showMore ? 'block' : 'none';
+        col1.style.display = col2.style.display = col3.style.display = showMore ? 'block' : 'none';
         toggleMoreDetails.innerHTML = showMore 
             ? '<i class="fa-solid fa-window-minimize"></i> Minimal' 
             : '<i class="fa-solid fa-window-restore"></i> Maximal';
@@ -111,12 +113,29 @@ export async function addButtons() {
 
     const cache = await browser.storage.local.get('showMoreDetails');
     const showMore = cache.showMoreDetails?.[userId];
-    col1.style.display = col2.style.display = showMore ? 'block' : 'none';
+
+    col1.style.display = col2.style.display = col3.style.display = showMore ? 'block' : 'none';
     toggleMoreDetails.innerHTML = showMore 
         ? '<i class="fa-solid fa-window-minimize"></i> Minimal' 
         : '<i class="fa-solid fa-window-restore"></i> Maximal';
 
     headerInfo.append(cardHeader);
+
+    const credits = document.createElement('div');
+
+    const firstElement = document.createElement('span');
+    firstElement.innerHTML = "✨ Proposé par deux étudiant de l'IUT de Reims, Better IUT RCC est l'extension 100% gratuite qui ne vous réclame pas des dons !<br>"
+   
+    const secondElement = document.createElement('span');
+    const email = document.createElement('a');
+    email.href = "mailto:betteriutrrc@bayfield.dev";
+    email.textContent = "betteriutrrc@bayfield.dev";
+    secondElement.innerHTML = "💡 Une suggestion, un problème ? Contactez nous par mail : ";
+    secondElement.append(email);
+
+    credits.append(firstElement);
+    credits.append(secondElement);
+    firstChild.append(credits);
 }
 
 /**
@@ -151,10 +170,12 @@ export function cleanCards() {
     const contentRow = document.querySelector("#mainContent > div:nth-child(2)");
     const firstChild = document.querySelector("#mainContent > div:nth-child(2) > div:first-child");
     const secondChild = document.querySelector("#mainContent > div:nth-child(2) > div:nth-child(2)");
+    const thirdChild = document.querySelector("#mainContent > div:nth-child(2) > div:nth-child(3)");
 
     content.removeChild(row);
     contentRow.removeChild(firstChild);
     contentRow.removeChild(secondChild);
+    contentRow.removeChild(thirdChild);
 }
 
 /**
@@ -185,7 +206,7 @@ function createCardBody(content, title, colLength = 6, id = "") {
 
     const cardBody = document.createElement('div');
     cardBody.classList.add('card-body');
-    cardBody.style.overflow = 'auto';
+    cardBody.style.overflowX = 'auto';
     card.append(header, cardBody);
 
     if (content instanceof HTMLElement)
@@ -202,21 +223,43 @@ function createCardBody(content, title, colLength = 6, id = "") {
  * @param {Array} data 
  * @param {String} type 
  * @param {Array} xaxiscategories 
+ * @param {String} id
+ * @param {Number} height
+ * @param {Boolean} horizontal
  * @returns {Promise<void>}
  */
-function createChart(data, type, xaxiscategories) {
+function createChart(data, type, xaxiscategories, id, height = 245, horizontal = false) {
+    data = data.map(value => value < 0 ? 0 : value);
+
     const options = {
+        id: id,
         series: [{ data }],
-        chart: { type, height: 245 },
+        chart : { type, height: height},
         colors: [
-            ({ value }) => (value < 8 ? "#f96868" : value <= 10 ? "#faa64b" : "#15c377"),
+            ({ value }) => (value < 8 ? "#f96868" : value < 10 ? "#faa64b" : "#15c377"),
         ],
-        plotOptions: { bar: { borderRadius: 4, horizontal: false } },
+        plotOptions: { bar: { borderRadius: 4, horizontal: horizontal } },
         dataLabels: { enabled: false },
-        xaxis: { categories: xaxiscategories },
+        xaxis: {
+            labels: {
+                show: true,
+            },
+            categories: xaxiscategories
+        },
+        yaxis: {
+            labels: {
+                show: true,
+                align: 'left',
+                style: {
+                    fontSize: '12px',
+                    fontWeight: 400,
+                },
+            }
+        },
+            
     };
 
-    const chart = new ApexCharts(document.querySelector("#chart"), options);
+    const chart = new ApexCharts(document.querySelector("#" + id), options);
     return chart.render();
 }
 
@@ -279,6 +322,7 @@ export function fetchAllSortedGrades(htmlTable) {
         let buttonUrl = row.querySelector('td:nth-child(7) > button').getAttribute('data-modal-modal-url-value').split('/');
         let gradeId = parseInt(buttonUrl[buttonUrl.length - 1]);
         let gradeSubject = row.querySelector("td:nth-child(1)").textContent;
+        let gradeSubjectDescription = row.querySelector("td:nth-child(1)").querySelector('abbr')?.getAttribute('title');
         let gradeEvaluation = row.querySelector("td:nth-child(2)").textContent;
         let gradeDate = row.querySelector("td:nth-child(3)").textContent;
         let gradeComment = row.querySelector("td:nth-child(4)").textContent;
@@ -289,6 +333,7 @@ export function fetchAllSortedGrades(htmlTable) {
         let grade = {
             id: gradeId,
             subject: gradeSubject,
+            subjectDescription: gradeSubjectDescription,
             evaluation: gradeEvaluation,
             date: gradeDate,
             comment: gradeComment,
@@ -305,158 +350,89 @@ export function fetchAllSortedGrades(htmlTable) {
 }
 
 /**
- * Fonction pour calculer les moyennes par matière.
+ * Function to generate the HTML code for averages.
  * 
- * @returns {Object} Un objet contenant les moyennes par UE (Unité d'Enseignement).
- */
-export function getAverage() {
-    const lignesNotes = document.querySelectorAll("#mainContent > div.row > div:nth-child(5) > div > div > table > tbody tr");
-    const lignesModalites = document.querySelectorAll("#mainContent > div.row > div:nth-child(6) > div > div > table > tbody tr");
-
-    const donneesNotes = {};
-    for (const ligne of lignesNotes) {
-        let nomUE = ligne.children[0].textContent.trim();
-        let note = Number.parseFloat(ligne.children[4].children[0].textContent.replace(',', '.'));
-        let coef = Number.parseFloat(ligne.children[5].textContent.replace(',', '.'));
-
-        if (!donneesNotes[nomUE]) {
-            donneesNotes[nomUE] = [];
-        };
-        donneesNotes[nomUE].push({ note: note, coef: coef });
-    };
-
-    const donneesMatieres = {};
-    lignesModalites.forEach(ligne => {
-        let nomMatiere = ligne.children[0].textContent.split('|')[0].trim();
-        for (const ue of ligne.children[1].children) {
-            let nomUE = ue.textContent.split('(')[0].trim();
-            let coefUE = ue.textContent.match(/\((.*?)\)/)[1];
-
-            if (!donneesMatieres[nomMatiere]) {
-                donneesMatieres[nomMatiere] = [];
-            };
-            donneesMatieres[nomMatiere].push({
-                nomUE: nomUE,
-                coefUE: parseFloat(coefUE)
-            });
-        };
-    });
-
-    const donneesResultatsParUE = {};
-    for (const idUE in donneesNotes) {
-        if (donneesMatieres.hasOwnProperty(idUE)) {
-            const infosMatiere = donneesMatieres[idUE];
-            const infoNote = Utils.calculateAverageWeight(donneesNotes[idUE]);
-            if (!Number.isNaN(infoNote)) {
-                infosMatiere.forEach(matiere => {
-                    const nomUE = matiere.nomUE;
-                    const coefUE = matiere.coefUE;
-
-                    if (!donneesResultatsParUE.hasOwnProperty(nomUE)) {
-                        donneesResultatsParUE[nomUE] = {
-                            totalNote: 0,
-                            totalCoefficient: 0
-                        };
-                    }
-                    
-                    donneesResultatsParUE[nomUE].totalNote += infoNote * coefUE;
-                    donneesResultatsParUE[nomUE].totalCoefficient += coefUE;
-                });
-            };
-        }
-    }
-
-    const moyennesParUE = {};
-
-    for (const nomUE in donneesResultatsParUE) {
-        const donneesUE = donneesResultatsParUE[nomUE];
-        const moyenne = donneesUE.totalNote / donneesUE.totalCoefficient;
-        if (!Number.isNaN(moyenne)) {
-            moyennesParUE[nomUE] = moyenne;
-        };
-    }
-    return moyennesParUE;
-}
-
-/**
- * Fonction pour générer le code HTML des moyennes.
- * 
- * @param {Object} moyennesParUE Les moyennes par UE.
+ * @param {Average} average The averages per UE.
  * @returns {void}
  */
-export function generateHtml(moyennesParUE) {
-    const sortedDomaines = Object.keys(moyennesParUE).sort();
+export function generateHtml(average) {
+    // HTML generation
+    const content = document.querySelector("#mainContent > div:first-child");
+    const firstElement = document.querySelector("#mainContent > div:first-child > div:first-child");
 
-    let estValide = true;
-    for (const domaine of sortedDomaines) {
-        if (Number.parseFloat(moyennesParUE[domaine]) < 10) {
-            estValide = false;
-        };
+    // Averages table
+    const table = document.createElement('table');
+    table.classList.add('table', 'table-border', 'table-striped');
+
+    const header = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    const body = document.createElement('tbody');
+    const bodyRow = document.createElement('tr');
+
+    for (const [subject, avg] of Object.entries(average.averageSubjectData)) {
+        const headerCell = document.createElement('th');
+        headerCell.classList.add('text-center');
+        headerCell.innerHTML = subject;
+        headerRow.append(headerCell);
+
+        const cell = document.createElement('td');
+        cell.classList.add('text-center');
+        cell.innerHTML = `<span class="fs-11 badge ${avg < 8 ? "bg-danger" :avg < 10 ? "bg-warning" : "bg-success"}">${avg}</span>`;
+        bodyRow.append(cell);
     }
 
-    // Génération du code HTML
-    const contenu = document.querySelector("#mainContent > div:nth-child(2)");
-    const premierElement = document.querySelector("#mainContent > div:nth-child(2) > div:nth-child(5)");
+    header.append(headerRow);
+    body.append(bodyRow);
+    table.append(header, body);
 
-    // Tableau des moyennes
-    const tableau = document.createElement('table');
-    tableau.classList.add('table', 'table-border', 'table-striped');
+    const htmlAveragesTable = createCardBody(table, 'Vos moyennes', 12, 'moyennes');
 
-    const entete = document.createElement('thead');
-    const ligneEntete = document.createElement('tr');
+    // Validation ou non du semestre
+    const validationList = document.createElement('ol');
+    validationList.className = 'timeline timeline-activity timeline-point-sm timeline-content-right text-left w-100';
+    const validationElement = document.createElement('li');
+    validationElement.className = 'alert alert-' + (average.isValidSemester() ? 'success' : 'danger');
+    validationElement.innerHTML = '<strong class="fw-semibold">Validation: </strong> ' + Utils.boolToString(average.isValidSemester());
+    validationList.append(validationElement);
+    const htmlValidation = createCardBody(validationList, 'Validation du semestre', 12);
 
-    for (const domaine of sortedDomaines) {
-        const enteteCellule = document.createElement('th');
-        enteteCellule.classList.add('text-center');
-        enteteCellule.innerHTML = domaine;
-        ligneEntete.append(enteteCellule);
-    };
-    entete.append(ligneEntete);
+    const leftColumn = document.createElement('div');
+    leftColumn.classList.add('col-sm-12', 'col-md-6', 'fade-in');
+    leftColumn.append(htmlAveragesTable, htmlValidation);
+    content.insertBefore(leftColumn, firstElement);
 
-    const corps = document.createElement('tbody');
-    const ligneCorps = document.createElement('tr');
+    // Chart card
+    const chartDiv = document.createElement('div');
+    chartDiv.id = "chart";
 
-    for (const domaine of sortedDomaines) {
-        const cellule = document.createElement('td');
-        cellule.classList.add('text-center');
-        cellule.innerHTML = `<span class="fs-11 badge ${parseFloat(moyennesParUE[domaine]) < 8 ? "bg-danger" : parseFloat(moyennesParUE[domaine]) <= 10 ? "bg-warning" : "bg-success"}">${Utils.roundValue(moyennesParUE[domaine], 2)}</span>`;
-        ligneCorps.append(cellule);
-    }
-    corps.append(ligneCorps);
-    tableau.append(entete, corps);
+    // Create container for first chart
+    const chartDiv1 = document.createElement('div');
+    chartDiv1.id = "chart1";
+    chartDiv1.style.scrollMarginTop = '90px';
+    content.insertBefore(createCardBody(chartDiv1, 'Moyennes par Compétences', 6, 'graph1'), firstElement);
 
-    const htmlTableauMoyennes = createCardBody(tableau, 'Vos moyennes', 12, 'moyennes');
+    // Render first chart
+    createChart(
+        Object.values(average.averageSubjectData), 
+        'bar', 
+        Object.keys(average.averageSubjectData),
+        "chart1"
+    );
 
-    // Carte de validation
-    const listeValidation = document.createElement('ol')
-    listeValidation.className = 'timeline timeline-activity timeline-point-sm timeline-content-right text-left w-100';
-    const elementValidation = document.createElement('li');
-    elementValidation.className = 'alert alert-' + (estValide ? 'success' : 'danger');
-    elementValidation.innerHTML = '<strong class="fw-semibold">Validation : </strong> ' + Utils.boolToValue(estValide);
-    listeValidation.append(elementValidation);
-    const htmlValidation = createCardBody(listeValidation, 'Validation du semestre', 12);
+    // Create container for second chart
+    const chartDiv2 = document.createElement('div');
+    chartDiv2.id = "chart2";
+    content.insertBefore(createCardBody(chartDiv2, 'Moyennes par Matières', 12, 'graph2'), firstElement);
 
-    // Carte du graphique
-    const divGraphique = document.createElement('div')
-    divGraphique.id = "chart";
-    divGraphique.style.scrollMarginTop = '90px';
-
-    const colonneGauche = document.createElement('div');
-    colonneGauche.classList.add('col-sm-12', 'col-md-6', 'fade-in');
-    colonneGauche.append(htmlTableauMoyennes, htmlValidation);
-
-    contenu.insertBefore(colonneGauche, premierElement);
-    contenu.insertBefore(createCardBody(divGraphique, 'Aperçu de vos moyennes', 6, 'graph'), premierElement);
-
-    let donneesNotes = [];
-    let domaines = [];
-
-    for (const domaine of sortedDomaines) {
-        donneesNotes.push(Utils.roundValue(moyennesParUE[domaine], 2));
-        domaines.push(domaine);
-    };
-
-    createChart(donneesNotes, 'bar', domaines);
+    // Render second chart
+    createChart(
+        Object.values(average.averageGradeData), 
+        'bar', 
+        Object.keys(average.averageGradeData).map(key => average.subjectName(key)),
+        "chart2",
+        500,
+        true
+    );
 }
 
 /**
@@ -467,23 +443,19 @@ export function generateHtml(moyennesParUE) {
 export function orderCards() {
     // Sélection des éléments HTML à réorganiser
     const content = document.querySelector("#mainContent > div:first-child");
-    const absences = document.querySelector("#mainContent > div:first-child > div:nth-child(2)");
-    const statut = document.querySelector("#mainContent > div:first-child > div:nth-child(3)");
-    const graph = document.querySelector("#mainContent > div:first-child > div:nth-child(4)");
-    const notes = document.querySelector("#mainContent > div:first-child > div:nth-child(5)");
+    const absences = document.querySelector("#mainContent > div:first-child > div:nth-child(1)");
+    const notes = document.querySelector("#mainContent > div:first-child > div:nth-child(2)");
     notes.id = "notes"; // Ajout de l'ID "notes" pour identifier cet élément
     notes.style.scrollMarginTop = '90px'; // Ajout d'une marge supérieure pour la navigation
-    const competences = document.querySelector("#mainContent > div:first-child > div:nth-child(6)");
-    const liens = document.querySelector("#mainContent > div:first-child > div:nth-child(7)");
-    const contact = document.querySelector("#mainContent > div:first-child > div:nth-child(8)");
+    const competences = document.querySelector("#mainContent > div:first-child > div:nth-child(3)");
+    const liens = document.querySelector("#mainContent > div:first-child > div:nth-child(4)");
+    const contact = document.querySelector("#mainContent > div:first-child > div:nth-child(5)");
 
     // Modification de l'ID et de la marge supérieure pour les éléments "absences" et "statut"
     absences.id = "absences";
     absences.style.scrollMarginTop = '90px';
 
     // Réorganisation des éléments
-    content.insertBefore(statut, absences);
-    content.insertBefore(graph, absences);
     content.insertBefore(notes, absences);
 
     // Suppression de la classe "col-md-6" des éléments "liens" et "contact"
@@ -502,11 +474,12 @@ export function orderCards() {
 /**
  * Fonction pour recréer le tableau avec les notes triées.
  * 
+ * @param {Average} average - Objet de moyenne.
  * @param {Array} sortedGrades - Tableau d'objets de notes triées.
  * @param {Array} knownGrades - Tableau d'identifiants de notes connues.
  * @returns {HTMLTableElement} - Élément de tableau HTML recréé.
  */
-export function recreateTable(sortedGrades, knownGrades) {
+export function recreateTable(average, sortedGrades, knownGrades) {
     let table = document.createElement('table');
     table.classList.add('table', 'table-border', 'table-striped');
 
@@ -534,8 +507,9 @@ export function recreateTable(sortedGrades, knownGrades) {
         if (i === sortedGrades.length - 1 || sortedGrades[i + 1].subject !== grade.subject) {
             let trAverage = createRow({
                 subject: grade.subject,
+                subjectDescription: average.subjectDescription,
                 evaluation: 'Moyenne',
-                grade: calculateSubjectAverage(sortedGrades, grade.subject)
+                grade: average.subjectAverage(Utils.formatSubject(grade.subject.trim())),
             }, true);
             tbody.appendChild(trAverage);
         }
@@ -544,80 +518,11 @@ export function recreateTable(sortedGrades, knownGrades) {
     let trGeneralAverage = createRow({
         subject: '',
         evaluation: 'Moyenne Générale',
-        grade: calculateOverallAverage(sortedGrades)
+        grade: average.overallAverage()
     }, true);
     tbody.appendChild(trGeneralAverage);
 
     return table;
-}
-
-/**
- * Fonction pour calculer la moyenne pondérée des notes.
- * 
- * @param {Array} grades - Tableau des valeurs de notes.
- * @param {Array} coefficients - Tableau des coefficients correspondants.
- * @returns {number} - Moyenne calculée ou -1 si aucune note valide.
- */
-export function calculateAverage(grades, coefficients) {
-    let numerator = 0;
-    let denominator = 0;
-    let hasValidGrade = false;
-
-    grades.forEach((grade, index) => {
-        if (grade >= 0) {
-            numerator += grade * coefficients[index];
-            denominator += coefficients[index];
-            hasValidGrade = true;
-        }
-    });
-
-    return hasValidGrade ? (numerator / denominator) : -1;
-}
-
-/**
- * Fonction pour calculer la moyenne des notes pour une matière spécifique.
- * 
- * @param {Array} allGrades - Tableau de tous les objets de notes.
- * @param {string} subject - La matière pour laquelle calculer la moyenne.
- * @returns {number} - Moyenne calculée pour la matière.
- */
-export function calculateSubjectAverage(allGrades, subject) {
-    let grades = [];
-    let coefficients = [];
-
-    allGrades.forEach(grade => {
-        if (grade.subject === subject) {
-            grades.push(grade.grade);
-            coefficients.push(grade.coefficient);
-        }
-    });
-
-    return calculateAverage(grades, coefficients);
-}
-
-/**
- * Fonction pour calculer la moyenne générale des notes toutes matières confondues.
- * 
- * @param {Array} allGrades - Tableau de tous les objets de notes.
- * @returns {number} - Moyenne générale calculée.
- */
-export function calculateOverallAverage(allGrades) {
-    let subjectAverages = [];
-    let coefficients = [];
-
-    let previousSubject = '';
-    allGrades.forEach(grade => {
-        if (previousSubject !== grade.subject) {
-            let average = calculateSubjectAverage(allGrades, grade.subject);
-            if (average >= 0) {
-                subjectAverages.push(average);
-                coefficients.push(1);
-                previousSubject = grade.subject;
-            }
-        }
-    });
-
-    return calculateAverage(subjectAverages, coefficients);
 }
 
 /**
@@ -633,24 +538,35 @@ export function createRow(grade, isAverage, isNew = false) {
     if (isAverage) tr.classList.add('moyenne');
     if (isNew) tr.classList.add('new-note');
 
+    let subject = Utils.formatSubject(grade.subject.trim());
+    if (grade.subjectDescription) {
+        subject = [Utils.formatSubject(grade.subject.trim()), grade.subjectDescription]
+    };
+
     const columns = [
-        grade.subject, 
+        subject,
         grade.evaluation, 
         isAverage ? '' : grade.date, 
         isAverage ? '' : grade.comment, 
-        formatGrade(grade.grade), 
+        formatGrade(parseFloat(grade.grade)),
         isAverage ? '' : grade.coefficient.toString(), 
         isAverage ? '' : createInfoButton(grade.id)
     ];
 
     columns.forEach(content => {
         let td = document.createElement('td');
-        if (typeof content === 'string' || content instanceof String) {
-            td.textContent = content;
-        } else {
-            td.appendChild(content);
-        }
-        tr.appendChild(td);
+        if (Array.isArray(content)) {
+            let abbr = document.createElement('abbr');
+            abbr.textContent = content[0];
+            abbr.title = content[1];
+            td.appendChild(abbr);
+        } else
+            if (typeof content === 'string' || content instanceof String) {
+                td.textContent = content;
+            } else {
+                td.appendChild(content);
+            }
+            tr.appendChild(td);
     });
 
     return tr;
@@ -664,16 +580,21 @@ export function createRow(grade, isAverage, isNew = false) {
  */
 function formatGrade(grade) {
     let span = document.createElement('span');
+
     if (grade >= 10) {
         span.classList.add('badge', 'bg-success');
         span.textContent = grade.toPrecision(4).toString();
-    } else if (grade == -1) {
-        span.classList.add('badge', 'bg-warning');
-        span.textContent = 'Pas de note ou pas de saisie ?';
-    } else {
+    } else if (grade >= 8 ) {
         span.classList.add('badge', 'bg-warning');
         span.textContent = grade.toPrecision(4).toString();
+    } else if (grade == -1) {
+        span.classList.add('badge', 'bg-brown');
+        span.textContent = 'Pas de note ou pas de saisie ?';
+    } else {
+        span.classList.add('badge', 'bg-danger');
+        span.textContent = grade.toPrecision(4).toString();
     }
+
     return span;
 }
 
@@ -708,7 +629,7 @@ function createInfoButton(gradeId) {
  */
 export function addSaveButton() {
     let button = createButton('Sauvegarder les notes connues', 'pink', 'save')
-    let actions = document.querySelector("#mainContent > div > div:nth-child(4) > div > header > div")
+    let actions = document.querySelector("#mainContent > div:first-child > div:nth-child(4) > div > header > div")
     actions.prepend(button)
 
     return button;
@@ -721,7 +642,7 @@ export function addSaveButton() {
  */
 export function addResetButton() {
     let button = createButton("Réinitialiser les notes connues", "danger", "trash-can")
-    let actions = document.querySelector("#mainContent > div > div:nth-child(4) > div > header > div")
+    let actions = document.querySelector("#mainContent > div:first-child > div:nth-child(4) > div > header > div")
     actions.prepend(button)
 
     return button;
