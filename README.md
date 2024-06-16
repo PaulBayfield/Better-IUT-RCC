@@ -27,6 +27,7 @@ Better IUT RCC est une extension navigateurs qui améliore l'interface de l'intr
 - **Mode minimal** : Permet de cacher les éléments redondants.
 - **Menus** : Affiches les menus des restaurants universitaires à proximité des IUT.
 - **Graphiques** : Affiche des graphiques pour les moyennes.
+- **Dark mode** : Permet de passer 100% de l'intranet en mode sombre (en fonction des paramètres de la machine).
 
 
 ## Prévisualisation
@@ -34,6 +35,7 @@ Better IUT RCC est une extension navigateurs qui améliore l'interface de l'intr
 ![homepage](./assets/preview/homepage.png)
 ![grades](./assets/preview/grades.png)
 ![crous](./assets/preview/crous.png)
+![darkmode](./assets/preview/darkmode.png)
 
 ## Installation
 
@@ -70,8 +72,8 @@ Réalisé par :
 - [Simon Ledoux](https://github.com/simon511000)
 
 Ce projet est une fusion de deux extensions déjà existante : 
-- Miaou Notes, réalisé par [Simon Ledoux](https://github.com/simon511000)
-- Calcule ta moyenne [Enzo-Qlns](https://github.com/Enzo-Qlns/Iut-mark-calculator)
+- [Miaou Notes](https://github.com/simon511000/MiaouNotes), réalisé par [Simon Ledoux](https://github.com/simon511000)
+- [Calcule ta moyenne](https://github.com/Enzo-Qlns/Iut-mark-calculator), réalisé par [Enzo-Qlns](https://github.com/Enzo-Qlns/Iut-mark-calculator)
 
 ## License
 
