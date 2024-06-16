@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.7.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.6.0...v1.7.0) (2024-06-16)
+
+
+### Features
+
+* Correction du menu du CROUS en thème sombre ([32aca58](https://github.com/PaulBayfield/Better-IUT-RCC/commit/32aca582117614ad543adb14c4356dd6b2d3329e))
+* Correction du thème sombre ([f7fc20d](https://github.com/PaulBayfield/Better-IUT-RCC/commit/f7fc20d9406179e7fb60e8195f6e5d18511b01c3))
+* Correction du thème sombre sur toutes les pages, et suppression du bouton dark mode ([2357d11](https://github.com/PaulBayfield/Better-IUT-RCC/commit/2357d11057dfa8ee3bb332c340d8c016d29c419a))
+* modification README ([09b59fd](https://github.com/PaulBayfield/Better-IUT-RCC/commit/09b59fd7e22c9830ac98db1fddb795eb7fb1eb1d))
+* optimisation + nouveaux graphs ([cd0b8c6](https://github.com/PaulBayfield/Better-IUT-RCC/commit/cd0b8c64c5c7234a237b2b3faafa2a565c0db30a))
+
 ## [1.6.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.5.1...v1.6.0) (2024-06-10)
 
 
