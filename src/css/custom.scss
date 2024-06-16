@@ -20,8 +20,12 @@ body.rcc.dark-theme {
         border-bottom: inherit;
     }
 
-    .dropdown-menu {
+    .dropdown-menu, .dropdown-footer {
         background-color: var(--body) !important;
+
+        * {
+            color: white;
+        }
     }
 
     .dropdown-item {
@@ -94,5 +98,30 @@ body.rcc.dark-theme {
     .apexcharts-menu {
         background-color: var(--body) !important;
         color: white !important;
+    }
+
+    #image-menu {
+        filter: invert();
+    }
+
+    #restaurant {
+        background: var(--body);
+        color: white;
+    }
+
+    .card-body, .card-body p, .card-body li {
+        color: white;
+    }
+
+    .nav-link {
+        color: var(--colorTextA);
+    }
+
+    .bg-white, .media-new {
+        background-color: inherit !important;
+        
+        * {
+            color: white;
+        }
     }
 }

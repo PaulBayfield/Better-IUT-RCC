@@ -2,24 +2,22 @@ import 'apexcharts/dist/apexcharts.css';
 import './css/animation.css';
 import './css/custom.scss';
 
-import { addButtons, applyStyle, cleanCards, createBilanCard, generateHtml, getAverage, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSaveButton, addResetButton } from "./functions";
+import { addButtons, applyStyle, cleanCards, createBilanCard, generateHtml, getAverage, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSaveButton, addResetButton, applyDarkTheme } from "./functions";
 import { Utils } from './utils.js';
 import { Average } from './average.js';
 import * as browser from 'webextension-polyfill';
 
 (async () => {
-    // Gestion du thème dark
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        localStorage.setItem('theme', 'dark');
-    } else {
-        localStorage.setItem('theme', 'light');
-    }
+    // Gestion du thème sombre
+    applyDarkTheme();
 
     // Mise à jour de la sidebar dès le chargement de la page pour s'assurer qu'il soit toujours à jour
     await updateMenu();
 
     // Vérifie si l'utilisateur est sur la page "tableau de bord"
     if (window.location.pathname === "/fr/tableau-de-bord") {
+        document.querySelector('#darkMode').remove();
+
         const average = new Average();
 
         // Nettoie les cartes et les réorganise
@@ -83,6 +81,9 @@ import * as browser from 'webextension-polyfill';
 
         // Remplace le contenu de la page actuelle par le contenu HTML reçu
         document.documentElement.innerHTML = html.innerHTML;
+
+        // Gestion du thème sombre
+        applyDarkTheme();
 
         // Ajoute un écouteur d'événement pour changer l'image du menu en fonction du restaurant sélectionné
         document.getElementById("restaurant").addEventListener("change", function () {

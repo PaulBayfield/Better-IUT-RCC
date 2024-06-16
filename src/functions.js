@@ -3,6 +3,13 @@ import { Utils } from "./utils";
 import * as browser from 'webextension-polyfill';
 import { Average } from './average';
 
+export function applyDarkTheme() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector('body').classList.add('dark-theme');
+    } else {
+        document.querySelector('body').classList.remove('dark-theme');
+    }
+}
 
 /**
  * Fonction pour mettre à jour le menu
