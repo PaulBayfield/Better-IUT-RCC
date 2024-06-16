@@ -3,6 +3,11 @@ import { Utils } from "./utils";
 import * as browser from 'webextension-polyfill';
 import { Average } from './average';
 
+/**
+ * Fonction pour charger le thème
+ * 
+ * @returns {void}
+ */
 export function applyDarkTheme() {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.querySelector('body').classList.add('dark-theme');

@@ -16,6 +16,10 @@ tr.moyenne {
 }
 
 body.rcc.dark-theme {
+    #image-menu {
+        filter: none !important;
+    }
+
     tr.moyenne {
         border-bottom: inherit;
     }

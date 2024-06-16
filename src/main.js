@@ -69,8 +69,13 @@ import * as browser from 'webextension-polyfill';
     } 
     // Vérifie si l'utilisateur est sur la page "crous"
     else if (window.location.pathname === "/fr/crous") {
+        let theme = '?theme=light';
+        if (document.querySelector('body').classList.contains('dark-theme')) {
+            theme = '?theme=dark';
+        }
+
         // Effectue une requête pour obtenir le menu du CROUS
-        const request = await fetch("https://croustillant.bayfield.dev/api/intranet/menu");
+        const request = await fetch("https://croustillant.bayfield.dev/api/intranet/menu" + theme);
         let data = await request.text();
         data = data.trim();
 
@@ -89,7 +94,13 @@ import * as browser from 'webextension-polyfill';
         document.getElementById("restaurant").addEventListener("change", function () {
             var restaurant = this.value;
             var img = document.getElementById("image-menu");
-            img.src = "https://croustillant.bayfield.dev/api/intranet?restaurant=" + restaurant;
+
+            let theme = '&theme=light';
+            if (document.querySelector('body').classList.contains('dark-theme')) {
+                theme = '&theme=dark';
+            }
+
+            img.src = "https://croustillant.bayfield.dev/api/intranet?restaurant=" + restaurant + theme;
         });
     }
 })();
