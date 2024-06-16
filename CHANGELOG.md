@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.7.0...v1.7.1) (2024-06-16)
+
+
+### Bug Fixes
+
+* Correction README ([1af47c0](https://github.com/PaulBayfield/Better-IUT-RCC/commit/1af47c016c938a0733f52c96595a8d2d25dbe4ab))
+
 ## [1.7.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.6.0...v1.7.0) (2024-06-16)
 
 
