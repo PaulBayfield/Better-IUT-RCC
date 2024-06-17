@@ -16,8 +16,6 @@ import * as browser from 'webextension-polyfill';
 
     // Vérifie si l'utilisateur est sur la page "tableau de bord"
     if (window.location.pathname === "/fr/tableau-de-bord") {
-        document.querySelector('#darkMode').remove();
-
         const average = new Average();
 
         // Nettoie les cartes et les réorganise
