@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.7.1...v1.8.0) (2024-06-17)
+
+
+### Features
+
+* correction du CSS pour les notes à sauvegarder avec le thème sombre ([3bb01b6](https://github.com/PaulBayfield/Better-IUT-RCC/commit/3bb01b6bf8b3afa1121be128cbe2fa6ef1ab15b6))
+
 ## [1.7.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.7.0...v1.7.1) (2024-06-16)
 
 
