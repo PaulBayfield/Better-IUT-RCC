@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.8.0...v1.8.1) (2024-06-17)
+
+
+### Bug Fixes
+
+* corrections des moyennes ([b0f9ea4](https://github.com/PaulBayfield/Better-IUT-RCC/commit/b0f9ea4d703da236c3e15156f477e834631b6691))
+
 ## [1.8.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.7.1...v1.8.0) (2024-06-17)
 
 
