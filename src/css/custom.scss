@@ -97,8 +97,8 @@ body.rcc.dark-theme {
     }
 
     .table > :not(caption) > * > * {
-        background-color: #292A2E !important;
-        color: #EEEEF0 !important;
+        background-color: #292A2E;
+        color: #EEEEF0;
     }
 
     thead {
@@ -121,7 +121,7 @@ body.rcc.dark-theme {
         color: #EEEEF0 !important;
     }
 
-    .badge {
+    .badge > * {
         color: #EEEEF0 !important;
     }
 
