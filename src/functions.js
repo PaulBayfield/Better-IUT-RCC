@@ -521,7 +521,7 @@ export function recreateTable(average, sortedGrades, knownGrades) {
                 subject: grade.subject,
                 subjectDescription: average.subjectDescription,
                 evaluation: 'Moyenne',
-                grade: average.subjectAverage(Utils.formatSubject(grade.subject.trim())),
+                grade: average.subjectAverage(grade.subject.trim()),
             }, true);
             tbody.appendChild(trAverage);
         }
@@ -550,9 +550,9 @@ export function createRow(grade, isAverage, isNew = false) {
     if (isAverage) tr.classList.add('moyenne');
     if (isNew) tr.classList.add('new-note');
 
-    let subject = Utils.formatSubject(grade.subject.trim());
+    let subject = grade.subject;
     if (grade.subjectDescription) {
-        subject = [Utils.formatSubject(grade.subject.trim()), grade.subjectDescription]
+        subject = [grade.subject, grade.subjectDescription]
     };
 
     const columns = [

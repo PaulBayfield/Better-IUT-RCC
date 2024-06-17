@@ -29,9 +29,7 @@ class Average {
             let subjectCode = subject.children[0].textContent.split('|')[0].trim();
             let subjectName = subject.children[0].textContent.split('|')[1].trim();
 
-            let code = Utils.formatSubject(subjectCode);
-
-            let subjectFull = code + ' • ' + subjectName;
+            let subjectFull = subjectCode + ' • ' + subjectName;
 
             let subjectCoefficients = [];
             for (const ue of subject.children[1].children) {
@@ -44,11 +42,12 @@ class Average {
                         coefficient: coefficient
                     });
 
-                    this.proficiencies.push(name);
+                    if (!this.proficiencies.includes(name))
+                        this.proficiencies.push(name);
                 };
             };
 
-            this.subjectData[code] = {
+            this.subjectData[subjectCode] = {
                 full: subjectFull,
                 name: subjectName,
                 coefficients: subjectCoefficients
@@ -61,12 +60,14 @@ class Average {
             let gradeValue = Number.parseFloat(grade.children[4].children[0].textContent.replace(',', '.'));
             let coefficient = Number.parseFloat(grade.children[5].textContent.replace(',', '.'));
 
-            let code = Utils.formatSubject(subject);
+            if (!this.gradesData.hasOwnProperty(subject)) {
+                this.gradesData[subject] = []
+            };
 
-            this.gradesData[code] = {
+            this.gradesData[subject].push({
                 grade: gradeValue,
                 coefficient: coefficient
-            };
+            });
 
             if (this.subjectData.hasOwnProperty(subject)) {
                 this.gradesData[subject].name = this.subjectData[subject].name;
@@ -78,11 +79,11 @@ class Average {
             let subjectGrades = [];
             let subjectCoefficients = [];
 
-            for (const grade in this.gradesData) {
-                if (grade === subject) {
-                    subjectGrades.push(this.gradesData[grade].grade);
-                    subjectCoefficients.push(this.gradesData[grade].coefficient);
-                };
+            if (this.gradesData.hasOwnProperty(subject)) {
+                for (const gradeData of this.gradesData[subject]) {
+                    subjectGrades.push(gradeData.grade);
+                    subjectCoefficients.push(gradeData.coefficient);
+                }
             };
 
             this.averageGradeData[subject] = this.calculateAverage(subjectGrades, subjectCoefficients);
@@ -94,11 +95,13 @@ class Average {
             let proficiencyCoefficients = [];
 
             for (const grade in this.gradesData) {
-                for (const proficiencyData of this.subjectData[grade].coefficients) {
-                    if (proficiencyData.name === proficiency) {
-                        proficiencyGrades.push(this.gradesData[grade].grade);
-                        proficiencyCoefficients.push(proficiencyData.coefficient);
-                    };
+                for (const g of this.gradesData[grade]) {
+                    for (const proficiencyData of this.subjectData[grade].coefficients) {
+                        if (proficiencyData.name === proficiency) {
+                            proficiencyGrades.push(g.grade);
+                            proficiencyCoefficients.push(proficiencyData.coefficient);
+                        };
+                    }
                 }
             }
 
