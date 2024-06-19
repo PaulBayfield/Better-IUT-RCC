@@ -3,6 +3,10 @@
     "betteriutrcc@simon511000.fr": {
       "updates": [
         {
+          "version": "1.8.2",
+          "update_link": "https://github.com/PaulBayfield/Better-IUT-RCC/releases/download/v1.8.2/Better-IUT-RCC-v1.8.2.xpi"
+        },
+        {
           "version": "1.8.1",
           "update_link": "https://github.com/PaulBayfield/Better-IUT-RCC/releases/download/v1.8.1/Better-IUT-RCC-v1.8.1.xpi"
         },
