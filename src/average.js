@@ -64,6 +64,10 @@ class Average {
                 this.gradesData[subject] = []
             };
 
+            if (isNaN(gradeValue)) {
+                gradeValue = -1;
+            }
+
             this.gradesData[subject].push({
                 grade: gradeValue,
                 coefficient: coefficient
@@ -71,6 +75,14 @@ class Average {
 
             if (this.subjectData.hasOwnProperty(subject)) {
                 this.gradesData[subject].name = this.subjectData[subject].name;
+            };
+
+            if (!this.subjectData.hasOwnProperty(subject)) {
+                this.subjectData[subject] = {
+                    full: subject,
+                    name: subject,
+                    coefficients: []
+                };
             };
         };
 
