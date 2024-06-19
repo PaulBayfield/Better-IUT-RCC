@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.8.1...v1.8.2) (2024-06-19)
+
+
+### Bug Fixes
+
+* Fix moyennes intranet ([dbafe15](https://github.com/PaulBayfield/Better-IUT-RCC/commit/dbafe15ac1ce5ff68c972c3362337f9e26c351c0))
+
 ## [1.8.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.8.0...v1.8.1) (2024-06-17)
 
 
