@@ -77,6 +77,7 @@ body.rcc.dark-theme {
     }
 
     .card-body, .card-body p, .card-body li {
+        background-color: #292A2E !important;
         color: #EEEEF0;
     }
 
@@ -185,5 +186,8 @@ body.rcc.dark-theme {
         color: white;
     }
 
-    
+    .nav-tabs {
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
 }
