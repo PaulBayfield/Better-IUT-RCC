@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.9.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.8.2...v1.9.0) (2024-06-23)
+
+
+### Features
+
+* ajout d'une barre recherche pour les notes ([f285bf8](https://github.com/PaulBayfield/Better-IUT-RCC/commit/f285bf8224f9f46f0b5f76a9773620225bc074c9))
+* ajout du bouton "dark mode" ([0ae10c9](https://github.com/PaulBayfield/Better-IUT-RCC/commit/0ae10c943fde9e106bc12894ff51e5f16fd80e5e))
+* modification de l'affichage des notes & moyennes ([fe47bb4](https://github.com/PaulBayfield/Better-IUT-RCC/commit/fe47bb4d076e4ad13211d25de738aa1844a25b5e))
+
+
+### Bug Fixes
+
+* correction de l'affichage du tableau avec le mode sombre ([888ac27](https://github.com/PaulBayfield/Better-IUT-RCC/commit/888ac270ace2012d5aa218079f89aeae45d66fb5))
+* correction des onglets du trombinoscope avec le mode clair ([25f6f82](https://github.com/PaulBayfield/Better-IUT-RCC/commit/25f6f826653db8ec8ca35cacfc916879b3fbdf85))
+
 ## [1.8.2](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.8.1...v1.8.2) (2024-06-19)
 
 
