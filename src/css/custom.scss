@@ -19,10 +19,6 @@ tr.moyenne {
     border-radius: 15px !important;
 }
 
-#darkMode {
-    display: none;
-}
-
 body.rcc:not(.dark-theme) {
     .table-striped tbody tr:nth-of-type(odd) td {
         color: #000000 !important;
