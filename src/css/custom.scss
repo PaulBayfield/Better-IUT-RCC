@@ -19,6 +19,11 @@ tr.moyenne {
     border-radius: 15px !important;
 }
 
+.nav-tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
 body.rcc:not(.dark-theme) {
     .table-striped tbody tr:nth-of-type(odd) td {
         color: #000000 !important;
@@ -200,10 +205,5 @@ body.rcc.dark-theme {
     #restaurant {
         background: var(--body);
         color: white;
-    }
-
-    .nav-tabs {
-        overflow-x: auto;
-        overflow-y: hidden;
     }
 }
