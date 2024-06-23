@@ -2,7 +2,7 @@ import 'apexcharts/dist/apexcharts.css';
 import './css/animation.css';
 import './css/custom.scss';
 
-import { addButtons, applyStyle, cleanCards, createBilanCard, generateHtml, getAverage, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSaveButton, addResetButton, applyDarkTheme } from "./functions";
+import { addButtons, applyStyle, cleanCards, createBilanCard, generateHtml, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSearchBar, addSaveButton, addResetButton, applyDarkTheme } from "./functions";
 import { Utils } from './utils.js';
 import { Average } from './average.js';
 import * as browser from 'webextension-polyfill';
@@ -57,6 +57,21 @@ import * as browser from 'webextension-polyfill';
         
                 browser.storage.sync.set({notesAlreadyKnow: ids}).then(() => {
                     location.reload();
+                });
+            });
+
+            addSearchBar().addEventListener('input', (e) => {
+                const search = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll("#mainContent > div:first-child > div:nth-child(4) > div > div > table > tbody > tr");
+                rows.forEach((row) => {
+                    const subjectCode = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
+                    const subject = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
+                    const comment = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
+                    const grade = row.querySelector("td:nth-child(5)").textContent.toLowerCase();
+
+                    const isMatch = subjectCode.includes(search) || subject.includes(search) || comment.includes(search) || grade.includes(search);
+                
+                    row.style.display = isMatch ? "" : "none";
                 });
             });
 

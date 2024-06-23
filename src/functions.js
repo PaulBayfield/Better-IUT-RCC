@@ -635,6 +635,33 @@ function createInfoButton(gradeId) {
 }
 
 /**
+ * Fonction pour ajouter une barre de recherche.
+ * 
+ * @returns {HTMLButtonElement} - Élément de barre de recherche HTML créé.
+ */
+export function addSearchBar() {
+    const label = document.createElement('label');
+    label.for = 'search';
+    label.classList.add('search-label');
+    label.textContent = 'Rechercher une matière...';
+
+    const input = document.createElement('input');
+    input.id = 'search';
+    input.type = 'search';
+    input.placeholder = 'Rechercher une matière...';
+
+    const div = document.createElement('div');
+    div.classList.add('search-bar', 'btn');
+    div.appendChild(label);
+    div.appendChild(input);
+
+    let actions = document.querySelector("#mainContent > div:first-child > div:nth-child(4) > div > header > div")
+    actions.prepend(div)
+
+    return input;
+}
+
+/**
  * Fonction pour ajouter un bouton de sauvegarde.
  * 
  * @returns {HTMLButtonElement} - Élément de bouton HTML créé.

@@ -24,6 +24,36 @@ tr.moyenne {
     overflow-y: hidden;
 }
 
+input[type="search"] {
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    transition: all .3s cubic-bezier(0, 0, 0.45, 1.50);
+    transition-property: width, border-radius;
+    z-index: 1;
+    position: relative;
+}
+
+input:not(:placeholder-shown) {
+    border-radius: .7rem 0 0 .7rem;
+    width: calc(100% - 6rem);
+
+    + button {
+        display: block;
+    }
+}
+
+label.search-label {
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
 body.rcc:not(.dark-theme) {
     .table-striped tbody tr:nth-of-type(odd) td {
         color: #000000 !important;
@@ -205,5 +235,14 @@ body.rcc.dark-theme {
     #restaurant {
         background: var(--body);
         color: white;
+    }
+
+    input[type="search"] {
+        background-color: #292A2E !important;
+        color: #EEEEF0 !important;
+    }
+
+    label.search-label {
+        color: #EEEEF0 !important;
     }
 }
