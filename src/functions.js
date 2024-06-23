@@ -518,9 +518,9 @@ export function recreateTable(average, sortedGrades, knownGrades) {
 
         if (i === sortedGrades.length - 1 || sortedGrades[i + 1].subject !== grade.subject) {
             let trAverage = createRow({
-                subject: grade.subject,
+                subject: `<i class="fa-solid fa-calculator"></i> ${grade.subject}`,
                 subjectDescription: average.subjectDescription,
-                evaluation: 'Moyenne',
+                evaluation: '━ Moyenne ━━━━',
                 grade: average.subjectAverage(grade.subject.trim()),
             }, true);
             tbody.appendChild(trAverage);
@@ -529,7 +529,7 @@ export function recreateTable(average, sortedGrades, knownGrades) {
 
     let trGeneralAverage = createRow({
         subject: '',
-        evaluation: 'Moyenne Générale',
+        evaluation: '━ Moyenne Générale',
         grade: average.overallAverage()
     }, true);
     tbody.appendChild(trGeneralAverage);
@@ -574,7 +574,7 @@ export function createRow(grade, isAverage, isNew = false) {
             td.appendChild(abbr);
         } else
             if (typeof content === 'string' || content instanceof String) {
-                td.textContent = content;
+                td.innerHTML = content;
             } else {
                 td.appendChild(content);
             }
