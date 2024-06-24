@@ -115,7 +115,7 @@ body.rcc.dark-theme {
 
     .card-body, .card-body p {
         background-color: #292A2E !important;
-        color: #EEEEF0;
+        color: #EEEEF0 !important;
     }
 
     .nav-link {
@@ -141,7 +141,7 @@ body.rcc.dark-theme {
         --bs-table-bg-type: unset;
     }
 
-    .table-striped tbody tr:nth-of-type(odd) td {
+    .table-striped tbody tr:nth-of-type(odd):not(.new-note) td {
         background-color: #222325 !important;
     }
 
