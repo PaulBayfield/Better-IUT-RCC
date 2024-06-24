@@ -33,11 +33,18 @@ input[type="search"] {
     transition-property: width, border-radius;
     z-index: 1;
     position: relative;
+    background-color: var(--body) !important;
+    color: #292A2E !important;
+}
+
+.search-bar {
+    background-color: var(--body) !important;
+    color: #292A2E !important;
 }
 
 input:not(:placeholder-shown) {
     border-radius: .7rem 0 0 .7rem;
-    width: calc(100% - 6rem);
+    width: 100%;
 
     + button {
         display: block;
@@ -74,7 +81,7 @@ body.rcc.dark-theme {
     }
 
     .card-header-actions {
-        *:hover {
+        a:hover {
             color: #EEEEF0 !important;
         }
     }
@@ -238,11 +245,16 @@ body.rcc.dark-theme {
     }
 
     input[type="search"] {
-        background-color: #292A2E !important;
-        color: #EEEEF0 !important;
+        background-color: #EEEEF0 !important;
+        color: #292A2E !important;
+    }
+
+    .search-bar {
+        background-color: #EEEEF0 !important;
+        color: #292A2E !important;
     }
 
     label.search-label {
-        color: #EEEEF0 !important;
+        color: #292A2E !important;
     }
 }

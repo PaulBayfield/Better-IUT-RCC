@@ -651,7 +651,7 @@ export function addSearchBar() {
     input.placeholder = 'Rechercher une matière...';
 
     const div = document.createElement('div');
-    div.classList.add('search-bar', 'btn');
+    div.classList.add('search-bar', 'btn', 'btn-sm');
     div.appendChild(label);
     div.appendChild(input);
 
