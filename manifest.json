@@ -1,6 +1,6 @@
 {
   "name": "Better IUT RCC",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "manifest_version": 3,
   "description": "Calculez vos moyennes sur l'intranet de l'IUT RCC.",
   "icons": {
