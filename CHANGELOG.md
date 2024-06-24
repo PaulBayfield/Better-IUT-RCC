@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.9.0...v1.9.1) (2024-06-24)
+
+
+### Bug Fixes
+
+* correction du style avec le dark mode ([5791524](https://github.com/PaulBayfield/Better-IUT-RCC/commit/5791524e94ab0a16c68a20f26ad36086a681ff9a))
+* modification du style de la barre de recherche ([59e7d67](https://github.com/PaulBayfield/Better-IUT-RCC/commit/59e7d67311e910685e423e4b758c9a2cce141693))
+
 ## [1.9.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.8.2...v1.9.0) (2024-06-23)
 
 
