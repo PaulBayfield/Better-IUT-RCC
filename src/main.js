@@ -7,6 +7,12 @@ import { Utils } from './utils.js';
 import { Average } from './average.js';
 import * as browser from 'webextension-polyfill';
 
+
+var manifestData = chrome.runtime.getManifest();
+
+console.info("[Better IUT RCC] Better IUT RCC lancé !");
+console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
+
 (async () => {
     // Gestion du thème sombre
     applyDarkTheme();
@@ -16,6 +22,8 @@ import * as browser from 'webextension-polyfill';
 
     // Vérifie si l'utilisateur est sur la page "tableau de bord"
     if (window.location.pathname === "/fr/tableau-de-bord") {
+        console.info("[Better IUT RCC] Page de tableau de bord détectée !");
+
         const average = new Average();
 
         // Nettoie les cartes et les réorganise
@@ -42,12 +50,16 @@ import * as browser from 'webextension-polyfill';
             tableau.replaceWith(recreateTable(average, notes, result.notesAlreadyKnow || []));
 
             addResetButton().addEventListener('click', async (e) => {
+                console.warn("[Better IUT RCC] Réinitialisation des notes déjà connues !");
+
                 e.preventDefault();
                 await browser.storage.sync.clear();
                 location.reload();
             });
 
             addSaveButton().addEventListener('click', (e) => {
+                console.info("[Better IUT RCC] Sauvegarde des notes déjà connues !");
+
                 e.preventDefault();
         
                 let ids = [];
@@ -62,6 +74,13 @@ import * as browser from 'webextension-polyfill';
 
             addSearchBar().addEventListener('input', (e) => {
                 const search = e.target.value.toLowerCase();
+
+                if (search.length === 0) {
+                    console.info("[Better IUT RCC] Recherche supprimée !");
+                } else  {
+                    console.info(`[Better IUT RCC] Recherche : ${search}`);
+                };
+
                 const rows = document.querySelectorAll("#mainContent > div:first-child > div:nth-child(4) > div > div > table > tbody > tr");
                 rows.forEach((row) => {
                     const subjectCode = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
@@ -82,13 +101,17 @@ import * as browser from 'webextension-polyfill';
     } 
     // Vérifie si l'utilisateur est sur la page "crous"
     else if (window.location.pathname === "/fr/crous") {
+        console.info("[Better IUT RCC] Page du CROUS détectée !");
+
         let theme = '?theme=light';
         if (document.querySelector('body').classList.contains('dark-theme')) {
             theme = '?theme=dark';
         }
 
         // Effectue une requête pour obtenir le menu du CROUS
+        console.info("[Better IUT RCC] Récupération du menu du CROUS...");
         const request = await fetch("https://croustillant.bayfield.dev/api/intranet/menu" + theme);
+        console.info("[Better IUT RCC] Menu du CROUS récupéré ! Traitement en cours...");
         let data = await request.text();
         data = data.trim();
 
