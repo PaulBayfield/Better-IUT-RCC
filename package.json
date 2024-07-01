@@ -34,6 +34,9 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "apexcharts": "^3.49.2"
+    "apexcharts": "^3.49.2",
+    "axios": "^1.7.2",
+    "cheerio": "^1.0.0-rc.12",
+    "cookie": "^0.6.0"
   }
 }

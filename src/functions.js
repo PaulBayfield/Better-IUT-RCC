@@ -4,6 +4,115 @@ import * as browser from 'webextension-polyfill';
 import { Average } from './average';
 
 /**
+ * Fonction pour ajouter une carte pour les nouveautés.
+ * 
+ * @returns {HTMLElement}
+ */
+export function addMessageForNotifications() {
+    console.info("[Better IUT RCC] Ajout d'une carte l'activation des notifications...");
+
+    // HTML generation
+    const content = document.querySelector("#mainContent > div:first-child");
+    const firstElement = document.querySelector("#mainContent > div:first-child > div:first-child");
+
+    const notificationList = document.createElement('ol');
+    notificationList.className = 'timeline timeline-activity timeline-point-sm timeline-content-right text-left w-100';
+    const notificationElement = document.createElement('li');
+    notificationElement.className = 'alert alert-warning';
+    notificationElement.innerHTML = '<strong class="fw-semibold">📬 Les notifications...</strong><br>Une nouvelle fonctionnalité est disponible vous permettant de recevoir des notifications à chaque nouvelle note.<br><br><strong class="fw-bold">⚠️ IMPORTANT !</strong><br>Cette fonctionnalité n\'est pas activée par défaut puisque pour rafraîchir vos notes l\'extension a besoin de votre identifiant de connexion et de de votre mot de passe.<br><strong class="fw-bold">Votre identifiant de connexion et votre mot de passe sont sauvegardés sur votre ordinateur et ne quitteront JAMAIS votre ordinateur !</strong><br><br>Si vous souhaitez activer cette fonctionnalité vous pouvez le faire ci-dessous, sinon vous pouvez supprimer ce message afin de le faire disparaître.<br>Vous pouvez activer ou désactiver cette fonctionnalité à tout moment dans les paramètres de l\'extension.<br><br><i>NOTE : <strong class="fw-semibold">Lors de l\'activation des notifications, l\'extension enregistrera automatiquement vos identifiants de connexion. Lors de la désactivation des notifications votre identifiant de connexion et votre mot de passe seront automatiquement supprimés !</strong></i>';
+    notificationList.append(notificationElement);
+
+    const buttonsListe = document.createElement('div');
+    buttonsListe.classList.add('card-header-actions', 'right-end');
+    buttonsListe.style.display = 'flex';
+
+    const bouttonAccept = createButton("Activer la fonctionnalité", "success", "check");
+    bouttonAccept.addEventListener('click', async () => {
+        console.info("[Better IUT RCC] Activation des notifications pour les notes !");
+
+        await browser.storage.sync.set({hideNotesNotification: true});
+        await browser.storage.sync.set({enableNotifications: true});
+
+        chrome.runtime.sendMessage({enableNotifications: true});
+
+        const notification = document.querySelector('#notifnotes');
+        notification.remove();
+    });
+    buttonsListe.append(bouttonAccept);
+
+    const bouttonReject = createButton("Supprimer ce message", "danger", "trash");
+    bouttonReject.addEventListener('click', async () => {
+        console.info("[Better IUT RCC] Notification cachée !");
+
+        await browser.storage.sync.set({hideNotesNotification: true});
+        await browser.storage.sync.set({enableNotifications: false});
+
+        const notification = document.querySelector('#notifnotes');
+        notification.remove();
+    });
+    buttonsListe.append(bouttonReject);
+    
+    const extensionParametres = createButton("Paramètres", "secondary", "gears");
+    extensionParametres.addEventListener('click', () => {
+        chrome.runtime.sendMessage({openOptions: true});
+    });
+    buttonsListe.append(extensionParametres);
+
+    notificationList.append(buttonsListe);
+
+    const htmlnotification = createCardBody(notificationList, 'Better IUT RCC • Nouvelle fonctionnalité disponible !', 12, 'notifnotes');
+    htmlnotification.style.scrollMarginTop = '90px';
+
+    content.insertBefore(htmlnotification, firstElement);
+
+    return htmlnotification;
+}
+
+/**
+ * Fonction pour ajouter une carte pour les nouveautés.
+ * 
+ * @returns {HTMLElement}
+ */
+export function addAvisNotification() {
+    console.info("[Better IUT RCC] Ajout d'une carte les avis...");
+
+    // HTML generation
+    const content = document.querySelector("#mainContent > div:first-child");
+    const firstElement = document.querySelector("#mainContent > div:first-child > div:first-child");
+
+    const notificationList = document.createElement('ol');
+    notificationList.className = 'timeline timeline-activity timeline-point-sm timeline-content-right text-left w-100';
+    const notificationElement = document.createElement('li');
+    notificationElement.className = 'alert alert-success';
+    notificationElement.innerHTML = '<strong class="fw-semibold">📑 Aidez-nous à améliorer l\'extension...</strong><br>Si vous aimez cette extension, n\'hésitez pas à donner votre avis sur le Chrome Store, disponible ici : <a href="https://chromewebstore.google.com/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj" target="_blank">chromewebstore.google.com/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj</a>.<br><br><strong class="fw-semibold">Merci d\'utiliser Better IUT RCC !</strong>';
+    notificationList.append(notificationElement);
+
+    const buttonsListe = document.createElement('div');
+    buttonsListe.classList.add('card-header-actions', 'right-end');
+    buttonsListe.style.display = 'flex';
+
+    const bouttonReject = createButton("Ne plus voir ce message", "danger", "trash");
+    bouttonReject.addEventListener('click', async () => {
+        console.info("[Better IUT RCC] Notification cachée !");
+
+        await browser.storage.local.set({hideAvisNotification: true});
+
+        const notification = document.querySelector('#notif');
+        notification.remove();
+    });
+    buttonsListe.append(bouttonReject);
+
+    notificationList.append(buttonsListe);
+
+    const htmlnotification = createCardBody(notificationList, 'Better IUT RCC • Votre avis nous intéresse !', 12, 'notif');
+    htmlnotification.style.scrollMarginTop = '90px';
+
+    content.insertBefore(htmlnotification, firstElement);
+
+    return htmlnotification;
+}
+
+/**
  * Fonction pour charger le thème
  * 
  * @returns {void}
@@ -129,6 +238,12 @@ export async function addButtons() {
     });
     cardHeader.append(github);
 
+    const extensionParametres = createButton("Paramètres", "secondary", "gears");
+    extensionParametres.addEventListener('click', () => {
+        chrome.runtime.sendMessage({openOptions: true});
+    });
+    cardHeader.append(extensionParametres);
+
     const cache = await browser.storage.local.get('showMoreDetails');
     const showMore = cache.showMoreDetails?.[userId];
 
@@ -154,29 +269,6 @@ export async function addButtons() {
     credits.append(firstElement);
     credits.append(secondElement);
     firstChild.append(credits);
-}
-
-/**
- * Fonction pour appliquer le style
- * 
- * @returns {void}
- */
-export function applyStyle() {
-    console.info("[Better IUT RCC] Application du style...");
-
-    const addStyles = (elements, styles) => {
-        elements.forEach(el => {
-            Object.assign(el.style, styles);
-        });
-    };
-
-    addStyles(document.querySelectorAll('.card'), {
-        borderRadius: '10px',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-    });
-    addStyles(document.querySelectorAll('.alert'), { borderRadius: '10px' });
-    addStyles(document.querySelectorAll('.btn'), { borderRadius: '10px' });
-    addStyles(document.querySelectorAll('.modal-content'), { borderRadius: '10px' });
 }
 
 /**
@@ -337,7 +429,6 @@ export async function createBilanCard() {
     card.innerHTML = bilanData.trim();
     card.querySelector(".card-header-actions").remove();
     content.insertBefore(card, before);
-    applyStyle();
 }
 
 /**
@@ -429,7 +520,7 @@ export function generateHtml(average) {
     validationList.className = 'timeline timeline-activity timeline-point-sm timeline-content-right text-left w-100';
     const validationElement = document.createElement('li');
     validationElement.className = 'alert alert-' + (average.isValidSemester() ? 'success' : 'danger');
-    validationElement.innerHTML = '<strong class="fw-semibold">Validation: </strong> ' + Utils.boolToString(average.isValidSemester());
+    validationElement.innerHTML = '<strong class="fw-semibold">Validation : </strong> ' + Utils.boolToString(average.isValidSemester());
     validationList.append(validationElement);
     const htmlValidation = createCardBody(validationList, 'Validation du semestre', 12);
 

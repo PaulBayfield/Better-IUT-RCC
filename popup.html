@@ -8,19 +8,24 @@
     <title>Better IUT RCC</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <script src="popup.js"></script>
 
     <style>
-        html
-        {
-            width: 400px;
-            height: 250px;
+        html {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         body {
             font-family: "Inter", sans-serif;
             padding: 10px;
+            width: 450px;
+            height: 430px;
         }
 
         h1 {
@@ -71,29 +76,71 @@
         .margin-bottom {
             margin-bottom: 30px;
         }
+
+        .button-delete {
+            width: 100%;
+            margin-top: 10px;
+            background-color: #f8d7da;
+        }
+
+        .button-delete:hover {
+            background-color: #f5c6cb;
+        }
+
+        .active {
+            width: 100%;
+            margin-top: 10px;
+            background-color: #d4edda;
+        }
+
+        .active:hover {
+            background-color: #c3e6cb;
+        }
+
+        .inactive {
+            width: 100%;
+            margin-top: 10px;
+            background-color: #f8d7da;
+        }
+
+        .inactive:hover {
+            background-color: #f5c6cb;
+        }
+        
+        .fa-solid {
+            margin-right: 10px;
+            margin-top: 1px;
+        }
     </style>
 </head>
 
 <body>
     <button class="button" type="button" id="requestPermissionBtn" style="display: none">Autoriser l'extension à accèder à l'intranet</button>
+    <img src="assets/img/logo_128.png" alt="Logo de l'extension" style="width: 100px; height: 100px; margin: 0 auto;"> 
     <h1>Better IUT RCC</h1>
     <p>Ce projet est une fusion de deux extensions déjà existante : <a class="underline" href="https://chromewebstore.google.com/detail/obsol%C3%A8te-miaounotes/bkkaabfnclmnaahnmjpnofbccifckmhm" target="_blank">Miaou Notes</a> et <a class="underline" href="https://chromewebstore.google.com/detail/calcule-ta-moyenne-iut-re/jfjbpknmfmdkpajggkahlcnlbokfamin" target="_blank">Calcule ta moyenne</a>.</p>
     <p class="no-margin-bottom">Réalisé par :</p>
     <ul class="no-margin-top margin-bottom">
         <li>
-            <a href="https://github.com/paulbayfield" target="_blank">
+            <a class="underline" href="https://github.com/paulbayfield" target="_blank">
                 Paul Bayfield
             </a>
         </li>
         <li>
-            <a href="https://github.com/simon511000" target="_blank">
+            <a class="underline" href="https://github.com/simon511000" target="_blank">
                 Simon Ledoux
             </a>
         </li>
     </ul>
     <a class="button" href="https://iut-rcc-intranet.univ-reims.fr/fr/tableau-de-bord" target="_blank">
-        Ouvrir l'intranet de l'IUT RCC
+        <i class="fa-solid fa-arrow-up-right-from-square"></i>Ouvrir l'intranet de l'IUT RCC
     </a>
+    <button class="button active" type="button" id="toggleNotifications">
+        <i class="fa-solid fa-bell" id="toggleNotificationsIcon"></i>Les notifications sont activées
+    </button>
+    <button class="button button-delete" type="button" id="clearCacheBtn">
+        <i class="fa-solid fa-trash"></i>Supprimer tout le cache
+    </button>
 </body>
 
 </html>

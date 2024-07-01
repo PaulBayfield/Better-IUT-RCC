@@ -11,7 +11,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://iut-rcc-intranet.univ-reims.fr/fr/*"
+        "https://iut-rcc-intranet.univ-reims.fr/fr/*",
+        "https://cas.univ-reims.fr/*"
       ],
       "js": [
         "bundle.js"
@@ -26,9 +27,20 @@
     "default_popup": "popup.html",
     "default_icon": "assets/img/logo.png"
   },
+  "options_page": "popup.html",
+  "options_ui": {
+    "page": "popup.html",
+    "open_in_tab": true
+  },
   "permissions": [
-    "storage"
+    "storage",
+    "notifications",
+    "tabs"
   ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "host_permissions": [
     "https://iut-rcc-intranet.univ-reims.fr/*"
   ],
