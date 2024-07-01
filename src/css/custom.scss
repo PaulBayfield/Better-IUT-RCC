@@ -6,7 +6,7 @@
     background-color: orange !important;
 }
 
-#save-notes-btn{
+#save-notes-btn {
     margin-left: 1rem;
 }
 
@@ -15,13 +15,17 @@ tr.moyenne {
     font-weight: bold;
 }
 
-.card, .media-list, .code-preview {
-    border-radius: 15px !important;
+.alert, .btn, .modal-content {
+    border-radius: 10px !important;
 }
 
 .nav-tabs {
     overflow-x: auto;
     overflow-y: hidden;
+}
+
+.right-end {
+    justify-content: flex-end;
 }
 
 input[type="search"] {
@@ -61,13 +65,36 @@ label.search-label {
     overflow: hidden;
 }
 
+header > div.header-info > div.card-header-actions {
+    display: flex !important;
+    align-items: center !important;
+    align-content: flex-end !important;
+    justify-content: flex-end !important;
+    flex-wrap: wrap !important;
+    max-width: 50% !important;
+}
+
 body.rcc:not(.dark-theme) {
     .table-striped tbody tr:nth-of-type(odd) td {
         color: #000000 !important;
     }
+
+    .card, .media-list, .code-preview {
+        border-radius: 15px !important;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
+    }
 }
 
 body.rcc.dark-theme {
+    .card, .media-list, .code-preview {
+        border-radius: 15px !important;
+        box-shadow: -5px 5px 5px rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .card-body {
+        border-radius: 15px !important;
+    }
+
     .main-container {
         background-color: #19191B !important;
     }
@@ -81,7 +108,7 @@ body.rcc.dark-theme {
     }
 
     .card-header-actions {
-        a:hover {
+        a:not(.btn-secondary):hover {
             color: #EEEEF0 !important;
         }
     }
@@ -89,7 +116,7 @@ body.rcc.dark-theme {
     .breadcrumb > * {
         color: #B2B3BD !important;
     }
-    
+
     .sidebar-header, .sidebar-navigation {
         background-color: #111113 !important;
     }
@@ -110,7 +137,7 @@ body.rcc.dark-theme {
     .div_logo {
         background-color: inherit !important;
     }
-    
+
     .div_logo > img {
         filter: none !important;
     }
@@ -186,6 +213,10 @@ body.rcc.dark-theme {
 
     .bg-pale-success {
         background-color: inherit !important;
+    }
+
+    .btn-secondary {
+        color: #000000 !important;
     }
 
     .alert-success {

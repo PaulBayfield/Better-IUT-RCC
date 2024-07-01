@@ -4,14 +4,125 @@ import * as browser from 'webextension-polyfill';
 import { Average } from './average';
 
 /**
+ * Fonction pour ajouter une carte pour les nouveautés.
+ * 
+ * @returns {HTMLElement}
+ */
+export function addMessageForNotifications() {
+    console.info("[Better IUT RCC] Ajout d'une carte l'activation des notifications...");
+
+    // HTML generation
+    const content = document.querySelector("#mainContent > div:first-child");
+    const firstElement = document.querySelector("#mainContent > div:first-child > div:first-child");
+
+    const notificationList = document.createElement('ol');
+    notificationList.className = 'timeline timeline-activity timeline-point-sm timeline-content-right text-left w-100';
+    const notificationElement = document.createElement('li');
+    notificationElement.className = 'alert alert-warning';
+    notificationElement.innerHTML = '<strong class="fw-semibold">📬 Les notifications...</strong><br>Une nouvelle fonctionnalité est disponible vous permettant de recevoir des notifications à chaque nouvelle note.<br><br><strong class="fw-bold">⚠️ IMPORTANT !</strong><br>Cette fonctionnalité n\'est pas activée par défaut puisque pour rafraîchir vos notes l\'extension a besoin de votre identifiant de connexion et de de votre mot de passe.<br><strong class="fw-bold">Votre identifiant de connexion et votre mot de passe sont sauvegardés sur votre ordinateur et ne quitteront JAMAIS votre ordinateur !</strong><br><br>Si vous souhaitez activer cette fonctionnalité vous pouvez le faire ci-dessous, sinon vous pouvez supprimer ce message afin de le faire disparaître.<br>Vous pouvez activer ou désactiver cette fonctionnalité à tout moment dans les paramètres de l\'extension.<br><br><i>NOTE : <strong class="fw-semibold">Lors de l\'activation des notifications, l\'extension enregistrera automatiquement vos identifiants de connexion. Lors de la désactivation des notifications votre identifiant de connexion et votre mot de passe seront automatiquement supprimés !</strong></i>';
+    notificationList.append(notificationElement);
+
+    const buttonsListe = document.createElement('div');
+    buttonsListe.classList.add('card-header-actions', 'right-end');
+    buttonsListe.style.display = 'flex';
+
+    const bouttonAccept = createButton("Activer la fonctionnalité", "success", "check");
+    bouttonAccept.addEventListener('click', async () => {
+        console.info("[Better IUT RCC] Activation des notifications pour les notes !");
+
+        await browser.storage.sync.set({hideNotesNotification: true});
+        await browser.storage.sync.set({enableNotifications: true});
+
+        chrome.runtime.sendMessage({enableNotifications: true});
+
+        const notification = document.querySelector('#notifnotes');
+        notification.remove();
+    });
+    buttonsListe.append(bouttonAccept);
+
+    const bouttonReject = createButton("Supprimer ce message", "danger", "trash");
+    bouttonReject.addEventListener('click', async () => {
+        console.info("[Better IUT RCC] Notification cachée !");
+
+        await browser.storage.sync.set({hideNotesNotification: true});
+        await browser.storage.sync.set({enableNotifications: false});
+
+        const notification = document.querySelector('#notifnotes');
+        notification.remove();
+    });
+    buttonsListe.append(bouttonReject);
+    
+    const extensionParametres = createButton("Paramètres", "secondary", "gears");
+    extensionParametres.addEventListener('click', () => {
+        chrome.runtime.sendMessage({openOptions: true});
+    });
+    buttonsListe.append(extensionParametres);
+
+    notificationList.append(buttonsListe);
+
+    const htmlnotification = createCardBody(notificationList, 'Better IUT RCC • Nouvelle fonctionnalité disponible !', 12, 'notifnotes');
+    htmlnotification.style.scrollMarginTop = '90px';
+
+    content.insertBefore(htmlnotification, firstElement);
+
+    return htmlnotification;
+}
+
+/**
+ * Fonction pour ajouter une carte pour les nouveautés.
+ * 
+ * @returns {HTMLElement}
+ */
+export function addAvisNotification() {
+    console.info("[Better IUT RCC] Ajout d'une carte les avis...");
+
+    // HTML generation
+    const content = document.querySelector("#mainContent > div:first-child");
+    const firstElement = document.querySelector("#mainContent > div:first-child > div:first-child");
+
+    const notificationList = document.createElement('ol');
+    notificationList.className = 'timeline timeline-activity timeline-point-sm timeline-content-right text-left w-100';
+    const notificationElement = document.createElement('li');
+    notificationElement.className = 'alert alert-success';
+    notificationElement.innerHTML = '<strong class="fw-semibold">📑 Aidez-nous à améliorer l\'extension...</strong><br>Si vous aimez cette extension, n\'hésitez pas à donner votre avis sur le Chrome Store, disponible ici : <a href="https://chromewebstore.google.com/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj" target="_blank">chromewebstore.google.com/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj</a>.<br><br><strong class="fw-semibold">Merci d\'utiliser Better IUT RCC !</strong>';
+    notificationList.append(notificationElement);
+
+    const buttonsListe = document.createElement('div');
+    buttonsListe.classList.add('card-header-actions', 'right-end');
+    buttonsListe.style.display = 'flex';
+
+    const bouttonReject = createButton("Ne plus voir ce message", "danger", "trash");
+    bouttonReject.addEventListener('click', async () => {
+        console.info("[Better IUT RCC] Notification cachée !");
+
+        await browser.storage.local.set({hideAvisNotification: true});
+
+        const notification = document.querySelector('#notif');
+        notification.remove();
+    });
+    buttonsListe.append(bouttonReject);
+
+    notificationList.append(buttonsListe);
+
+    const htmlnotification = createCardBody(notificationList, 'Better IUT RCC • Votre avis nous intéresse !', 12, 'notif');
+    htmlnotification.style.scrollMarginTop = '90px';
+
+    content.insertBefore(htmlnotification, firstElement);
+
+    return htmlnotification;
+}
+
+/**
  * Fonction pour charger le thème
  * 
  * @returns {void}
  */
 export function applyDarkTheme() {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        console.info("[Better IUT RCC] Application du thème sombre...");
         document.querySelector('body').classList.add('dark-theme');
     } else {
+        console.info("[Better IUT RCC] Application du thème clair...");
         document.querySelector('body').classList.remove('dark-theme');
     }
 }
@@ -22,6 +133,8 @@ export function applyDarkTheme() {
  * @returns {void}
  */
 export function updateMenu() {
+    console.info("[Better IUT RCC] Mise à jour du menu...");
+
     const menu = document.querySelector("nav.sidebar-navigation > ul");
     if (!menu) return;
 
@@ -67,6 +180,8 @@ function createButton(text, color, icon) {
  * @returns {Promise<void>}
  */
 export async function addButtons() {
+    console.info("[Better IUT RCC] Ajout des boutons...");
+
     const userAvatar = document.querySelector('.topbar-right .topbar-btn-avatar img');
     const userId = /.*\/(\d*)\.jpg/g.exec(userAvatar.src)[1];
 
@@ -123,6 +238,20 @@ export async function addButtons() {
     });
     cardHeader.append(github);
 
+    const extensionParametres = createButton("Paramètres", "secondary", "gears");
+    extensionParametres.addEventListener('click', () => {
+        chrome.runtime.sendMessage({openOptions: true});
+    });
+    cardHeader.append(extensionParametres);
+
+    var manifestData = chrome.runtime.getManifest();
+
+    const version = createButton(`v${manifestData.version}`, "brown", "");
+    version.addEventListener('click', () => {
+        window.open("https://github.com/PaulBayfield/Better-IUT-RCC/releases", "_blank");
+    });
+    cardHeader.append(version);
+
     const cache = await browser.storage.local.get('showMoreDetails');
     const showMore = cache.showMoreDetails?.[userId];
 
@@ -151,32 +280,13 @@ export async function addButtons() {
 }
 
 /**
- * Fonction pour appliquer le style
- * 
- * @returns {void}
- */
-export function applyStyle() {
-    const addStyles = (elements, styles) => {
-        elements.forEach(el => {
-            Object.assign(el.style, styles);
-        });
-    };
-
-    addStyles(document.querySelectorAll('.card'), {
-        borderRadius: '10px',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-    });
-    addStyles(document.querySelectorAll('.alert'), { borderRadius: '10px' });
-    addStyles(document.querySelectorAll('.btn'), { borderRadius: '10px' });
-    addStyles(document.querySelectorAll('.modal-content'), { borderRadius: '10px' });
-}
-
-/**
  * Fonction pour nettoyer les cartes
  * 
  * @returns {void}
  */
 export function cleanCards() {
+    console.info("[Better IUT RCC] Nettoyage des cartes...");
+
     const content = document.querySelector("#mainContent");
     const row = document.querySelector("#mainContent > div:first-child");
     const contentRow = document.querySelector("#mainContent > div:nth-child(2)");
@@ -200,6 +310,8 @@ export function cleanCards() {
  * @returns {HTMLElement}
  */
 function createCardBody(content, title, colLength = 6, id = "") {
+    console.info("[Better IUT RCC] Création d'une carte : " + title);
+
     const col = document.createElement('div');
     col.classList.add('col-sm-12', `col-md-${colLength}`, 'fade-in');
     col.style.margin = "0 auto";
@@ -241,6 +353,8 @@ function createCardBody(content, title, colLength = 6, id = "") {
  * @returns {Promise<void>}
  */
 function createChart(data, type, xaxiscategories, id, height = 245, horizontal = false) {
+    console.info("[Better IUT RCC] Création d'un graphique : " + id);
+
     data = data.map(value => value < 0 ? 0 : value);
 
     const options = {
@@ -281,16 +395,21 @@ function createChart(data, type, xaxiscategories, id, height = 245, horizontal =
  * @returns {Promise<void>}
  */
 export async function createBilanCard() {
+    console.info("[Better IUT RCC] Création de la carte de bilan...");
+
     const userAvatar = document.querySelector('.topbar-right .topbar-btn-avatar img');
     const userId = /.*\/(\d*)\.jpg/g.exec(userAvatar.src)[1];
-    
     const cache = await browser.storage.local.get('userBilanCache');
     let user = null;
 
     if(cache.userBilanCache !== undefined && cache.userBilanCache[userId] !== undefined) {
+        console.info("[Better IUT RCC] Récupération de l'utilisateur en cache...");
         user = cache.userBilanCache[userId];
+        console.info("[Better IUT RCC] > " + user);
     } else {
+        console.info("[Better IUT RCC] Récupération de l'utilisateur depuis l'intranet...");
         const profileRequest = await fetch("https://iut-rcc-intranet.univ-reims.fr/fr/utilisateur/mon-profil");
+        console.info("[Better IUT RCC] > " + profileRequest.status);
         const data = await profileRequest.text();
         const page = document.createElement('div');
         page.innerHTML = data.trim();
@@ -307,7 +426,9 @@ export async function createBilanCard() {
 
     if (!user) return;
 
+    console.info("[Better IUT RCC] Récupération du bilan de l'utilisateur...");
     const bilanRequest = await fetch('https://iut-rcc-intranet.univ-reims.fr/fr/etudiant/profil/' + user + '/apc_notes');
+    console.info("[Better IUT RCC] > " + bilanRequest.status);
     const bilanData = await bilanRequest.text();
     const content = document.querySelector("#mainContent > div:first-child");
     const before = document.querySelector("#mainContent > div:first-child > div:nth-child(5)");
@@ -316,7 +437,6 @@ export async function createBilanCard() {
     card.innerHTML = bilanData.trim();
     card.querySelector(".card-header-actions").remove();
     content.insertBefore(card, before);
-    applyStyle();
 }
 
 /**
@@ -326,6 +446,8 @@ export async function createBilanCard() {
  * @returns {Array} - Tableau trié d'objets de note.
  */
 export function fetchAllSortedGrades(htmlTable) {
+    console.info("[Better IUT RCC] Récupération et tri des notes...");
+
     const tbody = htmlTable.querySelector("tbody");
     let grades = [];
 
@@ -368,6 +490,8 @@ export function fetchAllSortedGrades(htmlTable) {
  * @returns {void}
  */
 export function generateHtml(average) {
+    console.info("[Better IUT RCC] Génération de l'HTML pour les moyennes...");
+
     // HTML generation
     const content = document.querySelector("#mainContent > div:first-child");
     const firstElement = document.querySelector("#mainContent > div:first-child > div:first-child");
@@ -404,7 +528,7 @@ export function generateHtml(average) {
     validationList.className = 'timeline timeline-activity timeline-point-sm timeline-content-right text-left w-100';
     const validationElement = document.createElement('li');
     validationElement.className = 'alert alert-' + (average.isValidSemester() ? 'success' : 'danger');
-    validationElement.innerHTML = '<strong class="fw-semibold">Validation: </strong> ' + Utils.boolToString(average.isValidSemester());
+    validationElement.innerHTML = '<strong class="fw-semibold">Validation : </strong> ' + Utils.boolToString(average.isValidSemester());
     validationList.append(validationElement);
     const htmlValidation = createCardBody(validationList, 'Validation du semestre', 12);
 
@@ -453,6 +577,8 @@ export function generateHtml(average) {
  * @returns {void}
  */
 export function orderCards() {
+    console.info("[Better IUT RCC] Tri des cartes...");
+
     // Sélection des éléments HTML à réorganiser
     const content = document.querySelector("#mainContent > div:first-child");
     const absences = document.querySelector("#mainContent > div:first-child > div:nth-child(1)");
@@ -492,6 +618,8 @@ export function orderCards() {
  * @returns {HTMLTableElement} - Élément de tableau HTML recréé.
  */
 export function recreateTable(average, sortedGrades, knownGrades) {
+    console.info("[Better IUT RCC] Recréation du tableau...");
+
     let table = document.createElement('table');
     table.classList.add('table', 'table-border', 'table-striped');
 
@@ -546,6 +674,8 @@ export function recreateTable(average, sortedGrades, knownGrades) {
  * @returns {HTMLTableRowElement} - Élément de ligne de tableau HTML créé.
  */
 export function createRow(grade, isAverage, isNew = false) {
+    console.info("[Better IUT RCC] - Création d'une ligne de tableau : " + grade.evaluation);
+
     let tr = document.createElement('tr');
     if (isAverage) tr.classList.add('moyenne');
     if (isNew) tr.classList.add('new-note');
@@ -591,6 +721,8 @@ export function createRow(grade, isAverage, isNew = false) {
  * @returns {HTMLElement} - Élément span HTML avec le badge de note.
  */
 function formatGrade(grade) {
+    console.info("[Better IUT RCC]   - Formatage de la note : " + grade);
+
     let span = document.createElement('span');
 
     if (grade >= 10) {
