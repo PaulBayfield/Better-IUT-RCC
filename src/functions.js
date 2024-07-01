@@ -244,6 +244,14 @@ export async function addButtons() {
     });
     cardHeader.append(extensionParametres);
 
+    var manifestData = chrome.runtime.getManifest();
+
+    const version = createButton(`v${manifestData.version}`, "brown", "");
+    version.addEventListener('click', () => {
+        window.open("https://github.com/PaulBayfield/Better-IUT-RCC/releases", "_blank");
+    });
+    cardHeader.append(version);
+
     const cache = await browser.storage.local.get('showMoreDetails');
     const showMore = cache.showMoreDetails?.[userId];
 

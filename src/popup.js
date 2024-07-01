@@ -16,6 +16,8 @@ window.addEventListener('load', async () => {
         });
     }
 
+    const version = document.querySelector('#version');
+    version.textContent = manifest.version;
 });
 
 document.addEventListener('DOMContentLoaded', function () {
