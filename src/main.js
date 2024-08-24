@@ -1,21 +1,29 @@
+
 import 'apexcharts/dist/apexcharts.css';
 import './css/animation.css';
 import './css/custom.scss';
 
-import { addButtons, applyStyle, cleanCards, createBilanCard, generateHtml, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSearchBar, addSaveButton, addResetButton, applyDarkTheme } from "./functions";
+import { addButtons, cleanCards, createBilanCard, generateHtml, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSearchBar, addSaveButton, addResetButton, applyDarkTheme, addAvisNotification } from "./functions";
 import { Utils } from './utils.js';
 import { Average } from './average.js';
 import * as browser from 'webextension-polyfill';
+
+var manifestData = browser.runtime.getManifest();
+
+console.info("[Better IUT RCC] Better IUT RCC lancé !");
+console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
 
 (async () => {
     // Gestion du thème sombre
     applyDarkTheme();
 
     // Mise à jour de la sidebar dès le chargement de la page pour s'assurer qu'il soit toujours à jour
-    await updateMenu();
+    updateMenu();
 
     // Vérifie si l'utilisateur est sur la page "tableau de bord"
     if (window.location.pathname === "/fr/tableau-de-bord") {
+        console.info("[Better IUT RCC] Page de tableau de bord détectée !");
+
         const average = new Average();
 
         // Nettoie les cartes et les réorganise
@@ -42,27 +50,38 @@ import * as browser from 'webextension-polyfill';
             tableau.replaceWith(recreateTable(average, notes, result.notesAlreadyKnow || []));
 
             addResetButton().addEventListener('click', async (e) => {
+                console.warn("[Better IUT RCC] Réinitialisation des notes déjà connues !");
+
                 e.preventDefault();
-                await browser.storage.sync.clear();
+                await browser.storage.sync.remove('notesAlreadyKnow');
                 location.reload();
             });
 
             addSaveButton().addEventListener('click', (e) => {
+                console.info("[Better IUT RCC] Sauvegarde des notes déjà connues !");
+
                 e.preventDefault();
-        
+
                 let ids = [];
                 notes.forEach((note) => {
                     ids.push(note.id);
                 });
-        
+
                 browser.storage.sync.set({notesAlreadyKnow: ids}).then(() => {
                     location.reload();
                 });
             });
 
+            const rows = document.querySelectorAll("#mainContent > div:first-child > div:nth-child(4) > div > div > table > tbody > tr");
             addSearchBar().addEventListener('input', (e) => {
                 const search = e.target.value.toLowerCase();
-                const rows = document.querySelectorAll("#mainContent > div:first-child > div:nth-child(4) > div > div > table > tbody > tr");
+
+                if (search.length === 0) {
+                    console.info("[Better IUT RCC] Recherche supprimée !");
+                } else  {
+                    console.info(`[Better IUT RCC] Recherche : ${search}`);
+                };
+
                 rows.forEach((row) => {
                     const subjectCode = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
                     const subject = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
@@ -75,20 +94,34 @@ import * as browser from 'webextension-polyfill';
                 });
             });
 
-            applyStyle();
+            console.info("[Better IUT RCC] Vérification des paramètres de notification...");
+            browser.storage.local.get('hideAvisNotification').then((result) => {
+                console.info(`[Better IUT RCC] Paramètre de notification : ${result.hideAvisNotification}`);
+                if (result.hideAvisNotification === undefined || result.hideAvisNotification === false) {
+                    addAvisNotification().scrollIntoView({ behavior: "smooth" });
+                }
+            });
         });
-
-        applyStyle();
     } 
     // Vérifie si l'utilisateur est sur la page "crous"
     else if (window.location.pathname === "/fr/crous") {
+        console.info("[Better IUT RCC] Page du CROUS détectée !");
+
+        // Gestion du thème sombre
+        applyDarkTheme();
+
+        // Mise à jour de la sidebar dès le chargement de la page pour s'assurer qu'il soit toujours à jour
+        updateMenu();
+
         let theme = '?theme=light';
         if (document.querySelector('body').classList.contains('dark-theme')) {
             theme = '?theme=dark';
         }
 
         // Effectue une requête pour obtenir le menu du CROUS
+        console.info("[Better IUT RCC] Récupération du menu du CROUS...");
         const request = await fetch("https://croustillant.bayfield.dev/api/intranet/menu" + theme);
+        console.info("[Better IUT RCC] Menu du CROUS récupéré ! Traitement en cours...");
         let data = await request.text();
         data = data.trim();
 
