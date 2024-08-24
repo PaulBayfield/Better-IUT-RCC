@@ -10,6 +10,7 @@ module.exports = {
   entry: {
     bundle: path.join(srcDir, 'main.js'),
     popup: path.join(srcDir, 'popup.js'),
+    background: path.join(srcDir, 'background.js')
   },
   resolve: {
     extensions: ['.js'],

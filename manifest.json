@@ -26,9 +26,20 @@
     "default_popup": "popup.html",
     "default_icon": "assets/img/logo.png"
   },
+  "options_page": "popup.html",
+  "options_ui": {
+    "page": "popup.html",
+    "open_in_tab": true
+  },
   "permissions": [
-    "storage"
+    "storage",
+    "tabs"
   ],
+  "background": {
+    "scripts": ["background.js"],
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "host_permissions": [
     "https://iut-rcc-intranet.univ-reims.fr/*"
   ],
