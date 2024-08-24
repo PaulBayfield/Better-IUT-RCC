@@ -37,7 +37,18 @@ Better IUT RCC est une extension navigateurs qui améliore l'interface de l'intr
 ![crous](./assets/preview/crous.png)
 ![darkmode](./assets/preview/darkmode.png)
 
-## Installation
+
+## Ajouter l'extension
+
+- [Chrome Web Store](https://chrome.google.com/webstore/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj)
+- Firefox Add-ons • Installation manuelle requise, vous devez télécharger la dernière version, fichier .xpi [disponible ici]([https://github.com/PaulBayfield/Better-IUT-RCC/releases/latest])
+- [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/leknkclokgeajllkbhnldadkapjmlhhf)
+
+## Développement
+
+Si vous souhaitez contribuer au développement de l'extension, voici comment procéder.
+
+### Installation
 
 Vous devez disposer des dernières versions LTS de node/npm (node v20, npm v10)
 
@@ -45,7 +56,7 @@ Vous devez disposer des dernières versions LTS de node/npm (node v20, npm v10)
 npm install
 ```
 
-## Compilation
+### Compilation
 
 Pour compiler le projet en mode développement.
 
