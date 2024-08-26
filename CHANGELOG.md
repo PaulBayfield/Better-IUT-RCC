@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.20.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.9.1...v1.20.0) (2024-08-26)
+
+
+### Features
+
+* Ajout d'un système de logs pour avoir des informations sur l'extension ([aef9122](https://github.com/PaulBayfield/Better-IUT-RCC/commit/aef912286d6ae20261431cbd1af3c825153e66cd))
+* Ajout d'une notification pour demander un avis sur le chrome store ([feeef04](https://github.com/PaulBayfield/Better-IUT-RCC/commit/feeef040fdb4a55b7aeedbcf65a8a75c7669270c))
+* Modification du thème sombre et clair ([3c3d70d](https://github.com/PaulBayfield/Better-IUT-RCC/commit/3c3d70d4e87a567b10e93ecbaf5c1c3b22b76499))
+* Possibilité de supprimer toutes les données de l'extension ([7da4238](https://github.com/PaulBayfield/Better-IUT-RCC/commit/7da42384291199490dc6391ee10e76d8c2a81cc2))
+* Redesign de la popup ([108c40b](https://github.com/PaulBayfield/Better-IUT-RCC/commit/108c40b2768d22fc230ed5f0a224a8cfec69cb81))
+
+
+### Bug Fixes
+
+* Bug concernant le reload des pages après la suppression des données de l'extension sur Firefox ([7fd874e](https://github.com/PaulBayfield/Better-IUT-RCC/commit/7fd874eb35d6e011c8de346621470a73956547f9))
+* Correction d'un lien dans le README ([7f8dce5](https://github.com/PaulBayfield/Better-IUT-RCC/commit/7f8dce55c708fd56116dacf46ff465712a02b792))
+
+
+### Miscellaneous Chores
+
+* release 1.20.0 ([700bdc6](https://github.com/PaulBayfield/Better-IUT-RCC/commit/700bdc6d5af81fe510da41b7c9eee99c4504336d))
+
 ## [1.9.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.9.0...v1.9.1) (2024-06-24)
 
 
