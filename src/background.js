@@ -17,7 +17,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 chrome.browserAction.openPopup(); // Google Chrome 126-
             }
         } else {
-            browser.tabs.create({ url: url });
+            alert("L'ouverture de la page des paramètres n'est pas supportée sur Firefox pour le moment. Veuillez ouvrir la page des paramètres manuellement.");
         }
     }
 })
