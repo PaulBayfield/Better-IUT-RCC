@@ -35,18 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.info("[Better IUT RCC] LOCAL Cache nettoyé !");
         });
 
-        const url = browser.runtime.getURL("popup.html");
-        if (url.includes("chrome-extension://")) {
-            browser.tabs.query({}).then(function(tabs) {
-                tabs.forEach(function(tab) {
-                    if (tab.url && tab.url.includes('iut-rcc-intranet.univ-reims.fr')) {
-                        browser.tabs.reload(tab.id);
-                    }
-                });
-            });
-        } else {
-            alert("Les données de l'extension ont été réinitialisées avec succès !\n\n⚠️ Veuillez recharger toutes les pages de l'intranet pour appliquer les modifications.");
-        }
+        alert("Les données de l'extension ont été réinitialisées avec succès !\n\n⚠️ Veuillez recharger toutes les pages de l'intranet pour appliquer les modifications.");
 
         window.close();
     });

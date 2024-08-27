@@ -32,8 +32,7 @@
     "open_in_tab": true
   },
   "permissions": [
-    "storage",
-    "tabs"
+    "storage"
   ],
   "background": {
     "scripts": [
