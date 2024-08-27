@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.20.0...v1.20.1) (2024-08-27)
+
+
+### Bug Fixes
+
+* Suppression de la pop up chrome qui demande l'historique de navigation ([f4d1013](https://github.com/PaulBayfield/Better-IUT-RCC/commit/f4d1013978518743b324db714994d95b18757014))
+
 ## [1.20.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.9.1...v1.20.0) (2024-08-26)
 
 
