@@ -227,17 +227,10 @@ export async function addButtons() {
 export function cleanCards() {
     console.info("[Better IUT RCC] Nettoyage des cartes...");
 
-    const content = document.querySelector("#mainContent");
-    const row = document.querySelector("#mainContent > div:first-child");
-    const contentRow = document.querySelector("#mainContent > div:nth-child(2)");
-    const firstChild = document.querySelector("#mainContent > div:nth-child(2) > div:first-child");
-    const secondChild = document.querySelector("#mainContent > div:nth-child(2) > div:nth-child(2)");
-    const thirdChild = document.querySelector("#mainContent > div:nth-child(2) > div:nth-child(3)");
+    const contentRow = document.querySelector("#mainContent > div:first-child");
+    const firstChild = document.querySelector("#mainContent > div:first-child > div:first-child");
 
-    content.removeChild(row);
     contentRow.removeChild(firstChild);
-    contentRow.removeChild(secondChild);
-    contentRow.removeChild(thirdChild);
 }
 
 /**

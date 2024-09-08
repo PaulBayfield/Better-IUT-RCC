@@ -21,8 +21,8 @@ class Average {
      * 
      */
     loadGrades() {
-        const subjects = document.querySelectorAll("#mainContent > div.row > div:nth-child(6) > div > div > table > tbody tr");
-        const grades = document.querySelectorAll("#mainContent > div.row > div:nth-child(5) > div > div > table > tbody tr");
+        const subjects = document.querySelectorAll("#mainContent > div.row > div:nth-child(4) > div > div > table > tbody tr");
+        const grades = document.querySelectorAll("#mainContent > div.row > div:nth-child(3) > div > div > table > tbody tr");
 
         // Récupérer les matières et les coefficients
         for (const subject of subjects) {
