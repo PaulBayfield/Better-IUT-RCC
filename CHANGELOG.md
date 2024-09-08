@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.2](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.20.1...v1.20.2) (2024-09-08)
+
+
+### Bug Fixes
+
+* Correction de l'affiche (MaJ de l'intranet) ([8941d52](https://github.com/PaulBayfield/Better-IUT-RCC/commit/8941d52b5feac2229171fd8d5923a735d15b3a28))
+
 ## [1.20.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.20.0...v1.20.1) (2024-08-27)
 
 
