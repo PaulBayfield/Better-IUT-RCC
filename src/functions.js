@@ -52,8 +52,20 @@ export function addAvisNotification() {
  * 
  * @returns {void}
  */
-export function applyDarkTheme() {
+export async function applyTheme() {
+    let t = "light";
+
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        t = "dark";
+    }
+
+    const cache = await browser.storage.local.get('darkTheme');
+
+    if (cache.darkTheme !== undefined) {
+        t = cache.darkTheme ? "dark" : "light";
+    }
+
+    if (t === "dark") {
         console.info("[Better IUT RCC] Application du thème sombre...");
         document.querySelector('body').classList.add('dark-theme');
     } else {

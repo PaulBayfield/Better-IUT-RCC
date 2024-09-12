@@ -3,7 +3,7 @@ import 'apexcharts/dist/apexcharts.css';
 import './css/animation.css';
 import './css/custom.scss';
 
-import { addButtons, cleanCards, createBilanCard, generateHtml, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSearchBar, addSaveButton, addResetButton, applyDarkTheme, addAvisNotification } from "./functions";
+import { addButtons, cleanCards, createBilanCard, generateHtml, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSearchBar, addSaveButton, addResetButton, applyTheme, addAvisNotification } from "./functions";
 import { Utils } from './utils.js';
 import { Average } from './average.js';
 import * as browser from 'webextension-polyfill';
@@ -15,10 +15,43 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
 
 (async () => {
     // Gestion du thème sombre
-    applyDarkTheme();
+    applyTheme();
 
     // Mise à jour de la sidebar dès le chargement de la page pour s'assurer qu'il soit toujours à jour
     updateMenu();
+
+    const darkModeButton = document.getElementById("darkMode");
+    if (darkModeButton) {
+        darkModeButton.addEventListener("click", function () {
+            console.info("[Better IUT RCC] Changement de thème en cours...");
+
+            browser.storage.local.set({ darkTheme: document.querySelector('body').classList.contains('dark-theme') });
+
+            console.info("[Better IUT RCC] Thème actuel : " + (document.querySelector('body').classList.contains('dark-theme') ? "clair" : "sombre"));
+            console.info("[Better IUT RCC] Changement de thème terminé !");
+        });
+    }
+
+    // Listen for class changes on the body element
+    const observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            if (mutation.attributeName === "class") {
+                if (document.querySelector('body').classList.contains('dark-theme')) {
+                    console.info("[Better IUT RCC] Thème sombre détecté !");
+
+                    browser.storage.local.set({ darkTheme: true });
+                } else {
+                    console.info("[Better IUT RCC] Thème clair détecté !");
+
+                    browser.storage.local.set({ darkTheme: false });
+                }
+            }
+        });
+    });
+
+    observer.observe(document.querySelector('body'), {
+        attributes: true
+    });
 
     // Vérifie si l'utilisateur est sur la page "tableau de bord"
     if (window.location.pathname === "/fr/tableau-de-bord") {
@@ -108,13 +141,14 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
         console.info("[Better IUT RCC] Page du CROUS détectée !");
 
         // Gestion du thème sombre
-        applyDarkTheme();
+        applyTheme();
 
         // Mise à jour de la sidebar dès le chargement de la page pour s'assurer qu'il soit toujours à jour
         updateMenu();
 
         let theme = '?theme=light';
-        if (document.querySelector('body').classList.contains('dark-theme')) {
+        const t = await browser.storage.local.get('darkTheme');
+        if (t !== undefined && t.darkTheme) {
             theme = '?theme=dark';
         }
 
@@ -134,15 +168,16 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
         document.documentElement.innerHTML = html.innerHTML;
 
         // Gestion du thème sombre
-        applyDarkTheme();
+        applyTheme();
 
         // Ajoute un écouteur d'événement pour changer l'image du menu en fonction du restaurant sélectionné
-        document.getElementById("restaurant").addEventListener("change", function () {
+        document.getElementById("restaurant").addEventListener("change", async function () {
             var restaurant = this.value;
             var img = document.getElementById("image-menu");
 
             let theme = '&theme=light';
-            if (document.querySelector('body').classList.contains('dark-theme')) {
+            const t = await browser.storage.local.get('darkTheme');
+            if (t !== undefined && t.darkTheme) {
                 theme = '&theme=dark';
             }
 
