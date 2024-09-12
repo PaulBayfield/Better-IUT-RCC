@@ -83,6 +83,27 @@ body.rcc:not(.dark-theme) {
         border-radius: 15px !important;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
     }
+
+    .topbar {
+        background-color: #F8F9FA !important;
+    }
+
+    .header {
+        background-color: #F8F9FA !important;
+    }
+
+    .sidebar-header, .sidebar-navigation {
+        background-color: #F8F9FA !important;
+    }
+
+    .sidebar-navigation > .menu > .active > .menu-link {
+        background-color: #3ebff0 !important;
+        color: #4d5259 !important;
+    }
+
+    .menu-link {
+        color: #4d5259 !important;
+    }
 }
 
 body.rcc.dark-theme {
@@ -115,6 +136,14 @@ body.rcc.dark-theme {
 
     .breadcrumb > * {
         color: #B2B3BD !important;
+    }
+
+    .bg-white, .media-new {
+        background-color: inherit !important;
+        
+        * {
+            color: #EEEEF0;
+        }
     }
 
     .sidebar-header, .sidebar-navigation {
@@ -154,14 +183,6 @@ body.rcc.dark-theme {
 
     .nav-link {
         color: #EEEEF0 !important;
-    }
-
-    .bg-white, .media-new {
-        background-color: inherit !important;
-        
-        * {
-            color: #EEEEF0;
-        }
     }
 
     table {
@@ -312,5 +333,25 @@ body.rcc.dark-theme {
 
     label.search-label {
         color: #292A2E !important;
+    }
+
+    .lookup-fullscreen {
+        background-color: #292A2E !important;
+        color: #EEEEF0 !important;
+
+        input {
+            color: #EEEEF0 !important;
+        }
+    }
+
+    .form-control {
+        background-color: #292A2E !important;
+        color: #EEEEF0 !important;
+        border-radius: 10px !important;
+    }
+
+    .lookup-results {
+        background-color: #292A2E !important;
+        color: #EEEEF0 !important;
     }
 }
