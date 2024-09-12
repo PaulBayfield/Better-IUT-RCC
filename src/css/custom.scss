@@ -74,6 +74,10 @@ header > div.header-info > div.card-header-actions {
     max-width: 50% !important;
 }
 
+.card-body {
+    border-radius: 15px !important;
+}
+
 body.rcc:not(.dark-theme) {
     .table-striped tbody tr:nth-of-type(odd) td {
         color: #000000 !important;
@@ -110,10 +114,6 @@ body.rcc.dark-theme {
     .card, .media-list, .code-preview {
         border-radius: 15px !important;
         box-shadow: -5px 5px 5px rgba(255, 255, 255, 0.1) !important;
-    }
-
-    .card-body {
-        border-radius: 15px !important;
     }
 
     .main-container {
@@ -353,5 +353,12 @@ body.rcc.dark-theme {
     .lookup-results {
         background-color: #292A2E !important;
         color: #EEEEF0 !important;
+    }
+
+    .tab-pane {
+        .card-body {
+            background-color: #111113 !important;
+            color: #EEEEF0 !important;
+        }
     }
 }
