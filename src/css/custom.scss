@@ -222,26 +222,51 @@ body.rcc.dark-theme {
     .alert-success {
         background-color: var(--colorSuccess) !important;
         color: white !important;
+
+        p {
+            background-color: var(--colorSuccess) !important;
+            color: white !important;
+        }
     }
 
     .alert-secondary {
         background-color: var(--colorSecondary) !important;
         color: #e8e6e3 !important;
+
+        p {
+            background-color: var(--colorSecondary) !important;
+            color: #e8e6e3 !important;
+        }
     }
 
     .alert-danger {
         background-color: var(--colorDanger) !important;
         color: #e8e6e3 !important;
+
+        p {
+            background-color: var(--colorDanger) !important;
+            color: #e8e6e3 !important;
+        }
     }
 
     .alert-warning {
         background-color: var(--colorWarning) !important;
         color: #e8e6e3 !important;
+
+        p {
+            background-color: var(--colorWarning) !important;
+            color: #e8e6e3 !important;
+        }
     }
 
     .alert-info {
         background-color: var(--colorInfo) !important;
         color: #e8e6e3 !important;
+
+        p {
+            background-color: var(--colorInfo) !important;
+            color: #e8e6e3 !important;
+        }
     }
 
     svg text {
