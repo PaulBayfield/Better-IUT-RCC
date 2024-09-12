@@ -56,6 +56,11 @@ class Average {
 
         // Récupérer les notes et les coefficients
         for (const grade of grades) {
+            if (grade.children.length === 1) {
+                console.warn("[Better IUT RCC] Aucune note n'a été saisie");
+                continue;
+            }
+
             let subject = grade.children[0].textContent.trim();
             let gradeValue = Number.parseFloat(grade.children[4].children[0].textContent.replace(',', '.'));
             let coefficient = Number.parseFloat(grade.children[5].textContent.replace(',', '.'));
