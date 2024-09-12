@@ -386,29 +386,33 @@ export function fetchAllSortedGrades(htmlTable) {
 
     const rows = tbody.querySelectorAll('tr');
     rows.forEach(row => {
-        let buttonUrl = row.querySelector('td:nth-child(7) > button').getAttribute('data-modal-modal-url-value').split('/');
-        let gradeId = parseInt(buttonUrl[buttonUrl.length - 1]);
-        let gradeSubject = row.querySelector("td:nth-child(1)").textContent;
-        let gradeSubjectDescription = row.querySelector("td:nth-child(1)").querySelector('abbr')?.getAttribute('title');
-        let gradeEvaluation = row.querySelector("td:nth-child(2)").textContent;
-        let gradeDate = row.querySelector("td:nth-child(3)").textContent;
-        let gradeComment = row.querySelector("td:nth-child(4)").textContent;
-        let gradeValue = Number(row.querySelector('td:nth-child(5) .badge').textContent.replace(',', '.'));
-        gradeValue = isNaN(gradeValue) ? -1 : gradeValue;
-        let gradeCoefficient = Number(row.querySelector('td:nth-child(6)').textContent);
+        if  (row.querySelector('td:nth-child(7) > button')) {
+            let buttonUrl = row.querySelector('td:nth-child(7) > button').getAttribute('data-modal-modal-url-value').split('/');
+            let gradeId = parseInt(buttonUrl[buttonUrl.length - 1]);
+            let gradeSubject = row.querySelector("td:nth-child(1)").textContent;
+            let gradeSubjectDescription = row.querySelector("td:nth-child(1)").querySelector('abbr')?.getAttribute('title');
+            let gradeEvaluation = row.querySelector("td:nth-child(2)").textContent;
+            let gradeDate = row.querySelector("td:nth-child(3)").textContent;
+            let gradeComment = row.querySelector("td:nth-child(4)").textContent;
+            let gradeValue = Number(row.querySelector('td:nth-child(5) .badge').textContent.replace(',', '.'));
+            gradeValue = isNaN(gradeValue) ? -1 : gradeValue;
+            let gradeCoefficient = Number(row.querySelector('td:nth-child(6)').textContent);
 
-        let grade = {
-            id: gradeId,
-            subject: gradeSubject,
-            subjectDescription: gradeSubjectDescription,
-            evaluation: gradeEvaluation,
-            date: gradeDate,
-            comment: gradeComment,
-            grade: gradeValue,
-            coefficient: gradeCoefficient
-        };
+            let grade = {
+                id: gradeId,
+                subject: gradeSubject,
+                subjectDescription: gradeSubjectDescription,
+                evaluation: gradeEvaluation,
+                date: gradeDate,
+                comment: gradeComment,
+                grade: gradeValue,
+                coefficient: gradeCoefficient
+            };
 
-        grades.push(grade);
+            grades.push(grade);
+        } else {
+            console.warn("[Better IUT RCC] Aucune note n'a été saisie");
+        }
     });
 
     grades.sort((a, b) => a.subject.localeCompare(b.subject));
