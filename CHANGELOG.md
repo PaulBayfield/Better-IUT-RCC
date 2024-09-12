@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.20.4](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.20.3...v1.20.4) (2024-09-12)
+
+
+### Bug Fixes
+
+* Bug d'affichage des cartes des étudiants ([7f2c8b4](https://github.com/PaulBayfield/Better-IUT-RCC/commit/7f2c8b46ad2554a5b12dcf157c38f495b7e02c20))
+* Correction des thèmes sur l'onglet "recherche" ([5950dcb](https://github.com/PaulBayfield/Better-IUT-RCC/commit/5950dcb3bf43f10e47ca40cd2208aacad2939e83))
+* Correction du thème sombre sur la page des repas ([b891eb9](https://github.com/PaulBayfield/Better-IUT-RCC/commit/b891eb9b4ef649016c13485f905a8c25ec4ab5e0))
+
 ## [1.20.3](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.20.2...v1.20.3) (2024-09-12)
 
 
