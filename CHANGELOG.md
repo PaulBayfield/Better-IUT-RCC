@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.20.3](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.20.2...v1.20.3) (2024-09-12)
+
+
+### Bug Fixes
+
+* Fix CSS avec la MaJ récente de l'intranet ([539b432](https://github.com/PaulBayfield/Better-IUT-RCC/commit/539b432c986799cd07500f19082f9b7cb15b24e7))
+* Fix les graphs quand pas de notes disponibles ([727f60c](https://github.com/PaulBayfield/Better-IUT-RCC/commit/727f60c285e11a3de14caacbf5644401999a6b70))
+
 ## [1.20.2](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.20.1...v1.20.2) (2024-09-08)
 
 
