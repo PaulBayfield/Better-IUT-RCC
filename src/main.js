@@ -167,6 +167,34 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
         // Remplace le contenu de la page actuelle par le contenu HTML reçu
         document.documentElement.innerHTML = html.innerHTML;
 
+        const darkModeButton = document.getElementById("darkMode");
+        if (darkModeButton) {
+            darkModeButton.addEventListener("click", async function () {
+                console.info("[Better IUT RCC] Changement de thème en cours...");
+
+                let theme = '&theme=light';
+                if (document.querySelector('body').classList.contains('dark-theme')) {
+                    document.querySelector('body').classList.remove('dark-theme');
+                    darkModeButton.innerHTML = '<i class="fas fa-adjust"></i> Dark Mode Off';
+                    let theme = '&theme=light';
+                } else {
+                    document.querySelector('body').classList.add('dark-theme');
+                    darkModeButton.innerHTML = '<i class="fas fa-adjust"></i> Dark Mode On';
+                    theme = '&theme=dark';
+                }
+
+                var restaurant = document.getElementById("restaurant").value;
+                var img = document.getElementById("image-menu");
+
+                img.src = "https://croustillant.bayfield.dev/api/intranet?restaurant=" + restaurant + theme;
+
+                browser.storage.local.set({ darkTheme: document.querySelector('body').classList.contains('dark-theme') });
+
+                console.info("[Better IUT RCC] Thème actuel : " + (document.querySelector('body').classList.contains('dark-theme') ? "clair" : "sombre"));
+                console.info("[Better IUT RCC] Changement de thème terminé !");
+            });
+        }
+
         // Gestion du thème sombre
         applyTheme();
 
