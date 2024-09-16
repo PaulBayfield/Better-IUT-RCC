@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.20.4...v1.21.0) (2024-09-16)
+
+
+### Features
+
+* Possibilité de changer le dark mode depuis la page des menus ([4ab7a04](https://github.com/PaulBayfield/Better-IUT-RCC/commit/4ab7a04e21939ee33c26dd53207bc8b9b7ff501a))
+
 ## [1.20.4](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.20.3...v1.20.4) (2024-09-12)
 
 
