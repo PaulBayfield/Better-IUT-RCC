@@ -58,7 +58,7 @@ jobs:
 
       - name: Sign Firefox Addon
         id: web-ext-sign
-        uses: kewisch/action-web-ext@v1.2
+        uses: kewisch/action-web-ext@v1.3
         with:
           cmd: sign
           source: 'Better-IUT-RCC.xpi'
