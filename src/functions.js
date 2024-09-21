@@ -433,6 +433,26 @@ export function fetchAllSortedGrades(htmlTable) {
 }
 
 /**
+ * Fonction pour mettre à jour la barre de navigation
+ * 
+ * @returns {void}
+ */
+export function updateTopBar() {
+    console.info("[Better IUT RCC] Mise à jour de la barre de navigation...");
+
+    const searchButton = document.querySelector('div[data-controller="lookup-search"]');
+    if (!searchButton) return;
+    const searchLink = searchButton.querySelector('a');
+    if (!searchLink) return;
+    searchLink.setAttribute('data-bs-original-title', 'Rechercher dans l\'intranet');
+    const spawTwo = searchButton.querySelector('span:nth-child(3)');
+    if (!spawTwo) return;
+    spawTwo.innerHTML = 'Rechercher <kbd>CTRL</kbd>+<kbd>K</kbd>';
+
+    console.info("[Better IUT RCC] Mise à jour de la barre de navigation terminée !");
+}
+
+/**
  * Function to generate the HTML code for averages.
  * 
  * @param {Average} average The averages per UE.
@@ -743,16 +763,22 @@ export function addSearchBar() {
 }
 
 /**
- * Fonction pour ajouter un bouton de sauvegarde.
+ * Fonction pour créer l'entête du tableau.
  * 
- * @returns {HTMLButtonElement} - Élément de bouton HTML créé.
+ * @returns {HTMLDivElement} - Élément de div HTML créé.
  */
-export function addSaveButton() {
-    let button = createButton('Sauvegarder les notes connues', 'pink', 'save')
-    let actions = document.querySelector("#mainContent > div:first-child > div:nth-child(4) > div > header > div")
-    actions.prepend(button)
+export function createCardHead() {
+    console.info("[Better IUT RCC] Création de l'entête du tableau...");
 
-    return button;
+    const head = document.createElement('div');
+    head.classList.add('card-header');
+    head.style.display = 'flex';
+    head.style.justifyContent = 'space-between';
+
+    const card = document.querySelector("#mainContent > div:first-child > div:nth-child(4) > div > header");
+    card.append(head);
+
+    return head;
 }
 
 /**
@@ -760,10 +786,21 @@ export function addSaveButton() {
  * 
  * @returns {HTMLButtonElement} - Élément de bouton HTML créé.
  */
-export function addResetButton() {
+export function addResetButton(head) {
     let button = createButton("Réinitialiser les notes connues", "danger", "trash-can")
-    let actions = document.querySelector("#mainContent > div:first-child > div:nth-child(4) > div > header > div")
-    actions.prepend(button)
+    head.prepend(button)
+
+    return button;
+}
+
+/**
+ * Fonction pour ajouter un bouton de sauvegarde.
+ * 
+ * @returns {HTMLButtonElement} - Élément de bouton HTML créé.
+ */
+export function addSaveButton(head) {
+    let button = createButton('Sauvegarder les notes connues', 'pink', 'save')
+    head.prepend(button)
 
     return button;
 }

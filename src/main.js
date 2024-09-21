@@ -3,7 +3,7 @@ import 'apexcharts/dist/apexcharts.css';
 import './css/animation.css';
 import './css/custom.scss';
 
-import { addButtons, cleanCards, createBilanCard, generateHtml, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSearchBar, addSaveButton, addResetButton, applyTheme, addAvisNotification } from "./functions";
+import { addButtons, cleanCards, createBilanCard, generateHtml, updateTopBar, createCardHead, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSearchBar, addSaveButton, addResetButton, applyTheme, addAvisNotification } from "./functions";
 import { Utils } from './utils.js';
 import { Average } from './average.js';
 import * as browser from 'webextension-polyfill';
@@ -19,6 +19,7 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
 
     // Mise à jour de la sidebar dès le chargement de la page pour s'assurer qu'il soit toujours à jour
     updateMenu();
+    updateTopBar();
 
     const darkModeButton = document.getElementById("darkMode");
     if (darkModeButton) {
@@ -82,7 +83,9 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
             const notes = fetchAllSortedGrades(tableau);
             tableau.replaceWith(recreateTable(average, notes, result.notesAlreadyKnow || []));
 
-            addResetButton().addEventListener('click', async (e) => {
+            const tableHead = createCardHead();
+
+            addResetButton(tableHead).addEventListener('click', async (e) => {
                 console.warn("[Better IUT RCC] Réinitialisation des notes déjà connues !");
 
                 e.preventDefault();
@@ -90,7 +93,7 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
                 location.reload();
             });
 
-            addSaveButton().addEventListener('click', (e) => {
+            addSaveButton(tableHead).addEventListener('click', (e) => {
                 console.info("[Better IUT RCC] Sauvegarde des notes déjà connues !");
 
                 e.preventDefault();
