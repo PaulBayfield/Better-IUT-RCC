@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.21.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.21.0...v1.21.1) (2024-09-21)
+
+
+### Bug Fixes
+
+* Correction des menus cachés ([40e8188](https://github.com/PaulBayfield/Better-IUT-RCC/commit/40e8188351dbb18b1261292e2479a6ef538a5e93))
+* Correction topbar + boutons pour sauvegarder les notes ([4cd41d4](https://github.com/PaulBayfield/Better-IUT-RCC/commit/4cd41d403c64b0b6dc85af8517f46b8ee0a563bb))
+
 ## [1.21.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.20.4...v1.21.0) (2024-09-16)
 
 
