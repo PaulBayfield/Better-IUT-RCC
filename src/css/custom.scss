@@ -19,11 +19,6 @@ tr.moyenne {
     border-radius: 10px !important;
 }
 
-.nav-tabs {
-    overflow-x: auto;
-    overflow-y: hidden;
-}
-
 .right-end {
     justify-content: flex-end;
 }
@@ -76,6 +71,10 @@ header > div.header-info > div.card-header-actions {
 
 .card-body {
     border-radius: 15px !important;
+}
+
+.topbar-btn {
+    border-radius: 0 !important;
 }
 
 body.rcc:not(.dark-theme) {
