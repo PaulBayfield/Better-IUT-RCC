@@ -99,9 +99,20 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
                 e.preventDefault();
 
                 let ids = [];
-                notes.forEach((note) => {
-                    ids.push(note.id);
+                const checkboxes = document.querySelectorAll("tr.new-note input[type='checkbox']:checked");
+                checkboxes.forEach((checkbox) => {
+                    console.info(`[Better IUT RCC] Ajout de la note ${checkbox.value} !`);
+                    ids.push(parseInt(checkbox.value));
                 });
+
+                if (ids.length === 0) {
+                    console.warn("[Better IUT RCC] Aucune note sélectionnée ! Sauvegarde de toutes les notes...");
+
+                    notes.forEach((note) => {
+                        console.info(`[Better IUT RCC] Ajout de la note ${note.id} !`);
+                        ids.push(note.id);
+                    });
+                }
 
                 browser.storage.sync.set({notesAlreadyKnow: ids}).then(() => {
                     location.reload();
