@@ -598,7 +598,7 @@ export function recreateTable(average, sortedGrades, knownGrades) {
     let trHead = document.createElement('tr');
     thead.appendChild(trHead);
 
-    const headers = ['Matière', 'Évaluation', 'Date', 'Commentaire de l\'évaluation', 'Note', 'Coefficient', 'Informations'];
+    const headers = ['', 'Matière', 'Évaluation', 'Date', 'Commentaire de l\'évaluation', 'Note', 'Coefficient', 'Informations'];
     headers.forEach(header => {
         let th = document.createElement('th');
         th.textContent = header;
@@ -655,6 +655,7 @@ export function createRow(grade, isAverage, isNew = false) {
     };
 
     const columns = [
+        null,
         subject,
         grade.evaluation, 
         isAverage ? '' : grade.date, 
@@ -665,6 +666,23 @@ export function createRow(grade, isAverage, isNew = false) {
     ];
 
     columns.forEach(content => {
+        if (content === null) {
+            if (isNew) {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = 'note-' + grade.id;
+                checkbox.value = grade.id;
+                let td = document.createElement('td');
+                td.appendChild(checkbox);
+                tr.appendChild(td);
+                return;
+            } else {
+                let td = document.createElement('td');
+                tr.appendChild(td);
+                return;
+            }
+        }
+
         let td = document.createElement('td');
         if (Array.isArray(content)) {
             let abbr = document.createElement('abbr');
