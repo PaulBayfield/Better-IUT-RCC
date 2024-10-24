@@ -11,8 +11,8 @@
 }
 
 tr.moyenne {
-    border-bottom: solid black 3px;
-    font-weight: bold;
+    border-bottom: solid black 3px !important;
+    font-weight: bold !important;
 }
 
 .alert, .btn, .modal-content {
@@ -20,18 +20,18 @@ tr.moyenne {
 }
 
 .right-end {
-    justify-content: flex-end;
+    justify-content: flex-end !important;
 }
 
 input[type="search"] {
-    height: 100%;
-    width: 100%;
-    border: none;
-    outline: none;
-    transition: all .3s cubic-bezier(0, 0, 0.45, 1.50);
-    transition-property: width, border-radius;
-    z-index: 1;
-    position: relative;
+    height: 100% !important;
+    width: 100% !important;
+    border: none !important;
+    outline: none !important;
+    transition: all .3s cubic-bezier(0, 0, 0.45, 1.50) !important;
+    transition-property: width, border-radius !important;
+    z-index: 1 !important;
+    position: relative !important;
     background-color: var(--body) !important;
     color: #292A2E !important;
 }
@@ -42,22 +42,22 @@ input[type="search"] {
 }
 
 input:not(:placeholder-shown) {
-    border-radius: .7rem 0 0 .7rem;
-    width: 100%;
+    border-radius: .7rem 0 0 .7rem !important;
+    width: 100% !important;
 
     + button {
-        display: block;
+        display: block !important;
     }
 }
 
 label.search-label {
-    position: absolute;
-    clip: rect(1px, 1px, 1px, 1px);
-    padding: 0;
-    border: 0;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
+    position: absolute !important;
+    clip: rect(1px, 1px, 1px, 1px) !important;
+    padding: 0 !important;
+    border: 0 !important;
+    height: 1px !important;
+    width: 1px !important;
+    overflow: hidden !important;
 }
 
 header > div.header-info > div.card-header-actions {
@@ -200,7 +200,7 @@ body.rcc.dark-theme {
     }
 
     .table > :not(caption) > * > * {
-        color: #EEEEF0;
+        color: #EEEEF0 !important;
     }
 
     thead {
@@ -316,8 +316,8 @@ body.rcc.dark-theme {
     }
 
     #restaurant {
-        background: var(--body);
-        color: white;
+        background: var(--body) !important;
+        color: white !important;
     }
 
     input[type="search"] {
