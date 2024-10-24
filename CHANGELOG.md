@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.22.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.21.1...v1.22.0) (2024-10-24)
+
+
+### Features
+
+* Ajout de la possibilité de choisir les notes à sauvegarder ([2683dff](https://github.com/PaulBayfield/Better-IUT-RCC/commit/2683dffc2bb57799acb72941aa06cb9113391e64))
+
+
+### Bug Fixes
+
+* Correction du CSS ([5a1bccb](https://github.com/PaulBayfield/Better-IUT-RCC/commit/5a1bccbda69807a9c26859c6f7110f1813585bad))
+
 ## [1.21.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.21.0...v1.21.1) (2024-09-21)
 
 
