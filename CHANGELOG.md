@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.22.0...v1.22.1) (2024-10-26)
+
+
+### Bug Fixes
+
+* Typo ([cd2a6be](https://github.com/PaulBayfield/Better-IUT-RCC/commit/cd2a6bed80581136731da38a5950ffadccfd660c))
+
 ## [1.22.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.21.1...v1.22.0) (2024-10-24)
 
 
