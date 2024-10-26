@@ -217,7 +217,7 @@ export async function addButtons() {
     const credits = document.createElement('div');
 
     const firstElement = document.createElement('span');
-    firstElement.innerHTML = "✨ Proposé par deux étudiant de l'IUT de Reims, Better IUT RCC est l'extension 100% gratuite qui ne vous réclame pas des dons !<br>"
+    firstElement.innerHTML = "✨ Proposé par deux étudiants de l'IUT de Reims, Better IUT RCC est l'extension 100% gratuite qui ne vous réclame pas des dons !<br>"
    
     const secondElement = document.createElement('span');
     const email = document.createElement('a');
