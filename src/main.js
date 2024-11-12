@@ -112,6 +112,16 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
                         console.info(`[Better IUT RCC] Ajout de la note ${note.id} !`);
                         ids.push(note.id);
                     });
+                } else {
+                    console.info("[Better IUT RCC] Ajout des notes déjà sauvegardées...");
+
+                    const oldNotes = result.notesAlreadyKnow || [];
+                    oldNotes.forEach((note) => {
+                        if (!ids.includes(note)) {
+                            console.info(`[Better IUT RCC] Ajout de la note ${note} !`);
+                            ids.push(note);
+                        }
+                    });
                 }
 
                 browser.storage.sync.set({notesAlreadyKnow: ids}).then(() => {
