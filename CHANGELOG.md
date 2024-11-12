@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.2](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.22.1...v1.22.2) (2024-11-12)
+
+
+### Bug Fixes
+
+* Correction de l'ouverture de la page des paramètres ([fe68c7c](https://github.com/PaulBayfield/Better-IUT-RCC/commit/fe68c7cd6fa1357efdd6b1ea95281d963bef58b6))
+
 ## [1.22.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.22.0...v1.22.1) (2024-10-26)
 
 
