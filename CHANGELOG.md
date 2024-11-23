@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.3](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.22.2...v1.22.3) (2024-11-23)
+
+
+### Bug Fixes
+
+* Mise à jour de l'intégration de CROUStillant ([a0d786d](https://github.com/PaulBayfield/Better-IUT-RCC/commit/a0d786d8b0e5c6620b88c97f93f1fb4bfde85767))
+
 ## [1.22.2](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.22.1...v1.22.2) (2024-11-12)
 
 
