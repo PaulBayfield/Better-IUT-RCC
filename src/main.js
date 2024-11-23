@@ -178,7 +178,7 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
 
         // Effectue une requête pour obtenir le menu du CROUS
         console.info("[Better IUT RCC] Récupération du menu du CROUS...");
-        const request = await fetch("https://croustillant.bayfield.dev/api/intranet/menu" + theme);
+        const request = await fetch("https://api-croustillant.bayfield.dev/v1/betteriutrcc/menu" + theme);
         console.info("[Better IUT RCC] Menu du CROUS récupéré ! Traitement en cours...");
         let data = await request.text();
         data = data.trim();
@@ -196,21 +196,26 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
             darkModeButton.addEventListener("click", async function () {
                 console.info("[Better IUT RCC] Changement de thème en cours...");
 
-                let theme = '&theme=light';
+                let theme = '?theme=light';
                 if (document.querySelector('body').classList.contains('dark-theme')) {
                     document.querySelector('body').classList.remove('dark-theme');
                     darkModeButton.innerHTML = '<i class="fas fa-adjust"></i> Dark Mode Off';
-                    let theme = '&theme=light';
                 } else {
                     document.querySelector('body').classList.add('dark-theme');
                     darkModeButton.innerHTML = '<i class="fas fa-adjust"></i> Dark Mode On';
-                    theme = '&theme=dark';
+                    theme = '?theme=dark';
                 }
+
+                const date = new Date().toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                }).split('/').join('-');
 
                 var restaurant = document.getElementById("restaurant").value;
                 var img = document.getElementById("image-menu");
 
-                img.src = "https://croustillant.bayfield.dev/api/intranet?restaurant=" + restaurant + theme;
+                img.src = "https://api-croustillant.bayfield.dev/v1/restaurants/" + restaurant + "/menu/" + date + "/image" + theme;
 
                 browser.storage.local.set({ darkTheme: document.querySelector('body').classList.contains('dark-theme') });
 
@@ -227,13 +232,19 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
             var restaurant = this.value;
             var img = document.getElementById("image-menu");
 
-            let theme = '&theme=light';
+            let theme = '?theme=light';
             const t = await browser.storage.local.get('darkTheme');
             if (t !== undefined && t.darkTheme) {
-                theme = '&theme=dark';
+                theme = '?theme=dark';
             }
 
-            img.src = "https://croustillant.bayfield.dev/api/intranet?restaurant=" + restaurant + theme;
+            const date = new Date().toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            }).split('/').join('-');
+
+            img.src = "https://api-croustillant.bayfield.dev/v1/restaurants/" + restaurant + "/menu/" + date + "/image" + theme;
         });
     }
 })();
