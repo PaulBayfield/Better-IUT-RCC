@@ -1,9 +1,9 @@
 
 import 'apexcharts/dist/apexcharts.css';
-import './css/animation.css';
-import './css/custom.scss';
+import './css/fix.css'
 
-import { addButtons, cleanCards, createBilanCard, generateHtml, updateTopBar, createCardHead, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSearchBar, addSaveButton, addResetButton, applyTheme, addAvisNotification } from "./functions";
+import { addButtons, cleanCards, createBilanCard, generateHtml, updateTopBar, createCardHead, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSearchBar, addSaveButton, addResetButton, addAvisNotification, addUpdateNotification } from "./functions";
+import { applyTheme } from './theme.js';
 import { Utils } from './utils.js';
 import { Average } from './average.js';
 import * as browser from 'webextension-polyfill';
@@ -12,6 +12,16 @@ var manifestData = browser.runtime.getManifest();
 
 console.info("[Better IUT RCC] Better IUT RCC lancé !");
 console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
+
+const themeResult = await browser.storage.sync.get('theme');
+console.info("[Better IUT RCC] Récupération du thème actif...");
+let activeTheme = themeResult.theme;
+if (!activeTheme) {
+    console.warn("[Better IUT RCC] Aucun thème actif trouvé, utilisation du thème par défaut");
+    await browser.storage.sync.set({ theme: "default" });
+    activeTheme = "default";
+}
+console.info(`[Better IUT RCC] Thème actif : ${activeTheme}`);
 
 (async () => {
     // Gestion du thème sombre
@@ -158,6 +168,13 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
                     addAvisNotification().scrollIntoView({ behavior: "smooth" });
                 }
             });
+
+            browser.storage.sync.get('hideUpdateNotification23').then((result) => {
+                console.info(`[Better IUT RCC] Paramètre de notification : ${result.hideUpdateNotification23}`);
+                if (result.hideUpdateNotification23 === undefined || result.hideUpdateNotification23 === false) {
+                    addUpdateNotification().scrollIntoView({ behavior: "smooth" });
+                }
+            });
         });
     } 
     // Vérifie si l'utilisateur est sur la page "crous"
@@ -178,7 +195,7 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
 
         // Effectue une requête pour obtenir le menu du CROUS
         console.info("[Better IUT RCC] Récupération du menu du CROUS...");
-        const request = await fetch("https://api-croustillant.bayfield.dev/v1/betteriutrcc/menu" + theme);
+        const request = await fetch("https://betteriutrcc.bayfield.dev/v1/menu" + theme);
         console.info("[Better IUT RCC] Menu du CROUS récupéré ! Traitement en cours...");
         let data = await request.text();
         data = data.trim();
@@ -227,10 +244,60 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
         // Gestion du thème sombre
         applyTheme();
 
+        const themeButton = document.getElementById("menu-themes");
+        if (themeButton) {
+            themeButton.addEventListener('click', async () => {
+                browser.runtime.sendMessage({openOptions: true});
+            });
+        };
+
+        const shareButton = document.getElementById("btn-share");
+        if (shareButton) {
+            shareButton.addEventListener('click', async () => {
+                const link = document.getElementById("image-menu");
+
+                if (navigator.share) {
+                    navigator.share({
+                        title: "Menu du CROUS",
+                        text: "Voici le menu du CROUS de l'IUT de Roanne",
+                        url: link.src
+                    }).then(() => {
+                        console.info("[Better IUT RCC] Partage du menu du CROUS effectué !");
+                    }).catch((error) => {
+                        console.error("[Better IUT RCC] Erreur lors du partage du menu du CROUS :", error);
+                    });
+                } else {
+                    console.warn("[Better IUT RCC] Partage non supporté !");
+                }
+            });
+        };
+
+        const refreshButton = document.getElementById("btn-refresh");
+        if (refreshButton) {
+            refreshButton.addEventListener('click', async () => {
+                const date = new Date().toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                }).split('/').join('-');
+
+                var restaurant = document.getElementById("restaurant").value;
+                var img = document.getElementById("image-menu");
+
+                img.src = "https://api-croustillant.bayfield.dev/v1/restaurants/" + restaurant + "/menu/" + date + "/image" + theme;
+
+                console.info("[Better IUT RCC] Menu du CROUS actualisé !");
+
+                alert("Le menu du CROUS a été actualisé avec succès !");
+            });
+        };
+
         // Ajoute un écouteur d'événement pour changer l'image du menu en fonction du restaurant sélectionné
         document.getElementById("restaurant").addEventListener("change", async function () {
             var restaurant = this.value;
             var img = document.getElementById("image-menu");
+
+            browser.storage.local.set({ restaurant: restaurant });
 
             let theme = '?theme=light';
             const t = await browser.storage.local.get('darkTheme');
@@ -246,5 +313,28 @@ console.info(`[Better IUT RCC] Version : ${manifestData.version}`);
 
             img.src = "https://api-croustillant.bayfield.dev/v1/restaurants/" + restaurant + "/menu/" + date + "/image" + theme;
         });
+
+        const restaurant = await browser.storage.local.get('restaurant');
+        if (restaurant.restaurant && restaurant.restaurant !== document.getElementById("restaurant").value) {
+            document.getElementById("restaurant").value = restaurant.restaurant;
+
+            let theme = '?theme=light';
+            const t = await browser.storage.local.get('darkTheme');
+
+            if (t !== undefined && t.darkTheme) {
+                theme = '?theme=dark';
+            }
+
+            const date = new Date().toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            }).split('/').join('-');
+
+            var img = document.getElementById("image-menu");
+            img.src = "https://api-croustillant.bayfield.dev/v1/restaurants/" + restaurant.restaurant + "/menu/" + date + "/image" + theme;
+
+            console.info("[Better IUT RCC] Menu du CROUS restauré !");
+        }
     }
 })();
