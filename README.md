@@ -8,7 +8,7 @@ Better IUT RCC est une extension navigateurs qui améliore l'interface de l'intr
 
 # L'extension 100% gratuite qui ne vous réclame pas des dons !
 
-<a href="https://chromewebstore.google.com/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj" target="_blank"><img src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/UV4C4ybeBTsZt43U4xis.png" alt="Available in the Chrome Web Store"></a>
+<a href="https://chromewebstore.google.com/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj" target="_blank"><img src="https://developer.chrome.com/static/docs/webstore/branding/image/206x58-chrome-web-bcb82d15b2486.png" alt="Available in the Chrome Web Store"></a>
 <a href="https://github.com/PaulBayfield/Better-IUT-RCC/releases/latest" target="_blank"><img src="https://blog.mozilla.org/addons/files/2015/11/get-the-addon.png" alt="Available in the Firefox Web Store"></a>
 <a href="https://microsoftedge.microsoft.com/addons/detail/leknkclokgeajllkbhnldadkapjmlhhf" target="_blank"><img src="https://user-images.githubusercontent.com/78568641/212470539-dd4d22a0-3af8-4fa7-9671-6df5b2e26a70.png" alt="Available in the Edge Web Store"></a>
 
@@ -28,6 +28,7 @@ Better IUT RCC est une extension navigateurs qui améliore l'interface de l'intr
 - **Menus** : Affiches les menus des restaurants universitaires à proximité des IUT.
 - **Graphiques** : Affiche des graphiques pour les moyennes.
 - **Dark mode** : Permet de passer 100% de l'intranet en mode sombre (en fonction des paramètres de la machine).
+- **Thèmes** : Permet de personnaliser l'interface de l'intranet avec des thèmes prédéfinis.
 
 
 ## Prévisualisation
