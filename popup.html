@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
 
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,6 +48,21 @@
 
         .underline {
             text-decoration: underline;
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .row {
+            flex-direction: row;
+        }
+
+        .row > * {
+            padding: 0;
+            margin: 0;
         }
 
         .button {
@@ -111,14 +126,29 @@
     <p class="no-margin-bottom">Réalisé par :</p>
     <ul class="no-margin-top margin-bottom">
         <li>
-            <a class="underline" href="https://github.com/paulbayfield" target="_blank">
-                Paul Bayfield
-            </a>
+            <div class="flex row">
+                <p>Paul Bayfield</p>
+                <a href="https://github.com/paulbayfield" target="_blank">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+                <a href="https://linkedin.com/in/PaulBayfield" target="_blank">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+                <a href="https://bayfield.dev" target="_blank">
+                    <i class="fa-solid fa-globe"></i>
+                </a>
+            </div>
         </li>
         <li>
-            <a class="underline" href="https://github.com/simon511000" target="_blank">
-                Simon Ledoux
-            </a>
+            <div class="flex row">
+                <p>Simon Ledoux</p>
+                <a href="https://github.com/simon511000" target="_blank">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+                <a href="https://linkedin.com/in/simon-ledoux-9b654824b/" target="_blank">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+            </div>
         </li>
     </ul>
     <a class="button" href="https://iut-rcc-intranet.univ-reims.fr/fr/tableau-de-bord" target="_blank">

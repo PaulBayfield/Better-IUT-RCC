@@ -4,7 +4,7 @@ import * as browser from 'webextension-polyfill';
 import { Average } from './average';
 
 /**
- * Fonction pour ajouter une carte pour les nouveautés.
+ * Fonction pour ajouter une carte pour les avis.
  * 
  * @returns {HTMLElement}
  */
@@ -19,7 +19,7 @@ export function addAvisNotification() {
     notificationList.className = 'timeline timeline-activity timeline-point-sm timeline-content-right text-left w-100';
     const notificationElement = document.createElement('li');
     notificationElement.className = 'alert alert-success';
-    notificationElement.innerHTML = '<strong class="fw-semibold">📑 Aidez-nous à améliorer l\'extension...</strong><br>Si vous aimez cette extension, n\'hésitez pas à donner votre avis sur le Chrome Store, disponible ici : <a href="https://chromewebstore.google.com/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj" target="_blank">chromewebstore.google.com/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj</a>.<br><br><strong class="fw-semibold">Merci d\'utiliser Better IUT RCC !</strong>';
+    notificationElement.innerHTML = '<strong class="fw-semibold">📑 Aidez-nous à améliorer l\'extension...</strong><br>Si vous aimez cette extension, n\'hésitez pas à donner votre avis sur le Chrome Store, disponible ici : <a href="https://chromewebstore.google.com/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj" target="_blank" class="link">chromewebstore.google.com/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj</a>.<br><br><strong class="fw-semibold">Merci d\'utiliser Better IUT RCC !</strong>';
     notificationList.append(notificationElement);
 
     const buttonsListe = document.createElement('div');
@@ -47,32 +47,56 @@ export function addAvisNotification() {
     return htmlnotification;
 }
 
+
 /**
- * Fonction pour charger le thème
+ * Fonction pour ajouter une carte concernant les nouveautés.
  * 
- * @returns {void}
+ * @returns {HTMLElement}
  */
-export async function applyTheme() {
-    let t = "light";
+export function addUpdateNotification() {
+    console.info("[Better IUT RCC] Ajout d'une carte pour les nouveautés...");
 
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        t = "dark";
-    }
+    // HTML generation
+    const content = document.querySelector("#mainContent > div:first-child");
+    const firstElement = document.querySelector("#mainContent > div:first-child > div:first-child");
 
-    const cache = await browser.storage.local.get('darkTheme');
+    const notificationList = document.createElement('ol');
+    notificationList.className = 'timeline timeline-activity timeline-point-sm timeline-content-right text-left w-100';
+    const notificationElement = document.createElement('li');
+    notificationElement.className = 'alert alert-warning';
+    notificationElement.innerHTML = "<strong class='fw-bold'>📑 Nouveautés de la dernière mise à jour...</strong><br><br>🎨 Les thèmes sont désormais disponibles ! Changez le thème de l'intranet dès maintenant dans la nouvel onglet \"Thèmes\"<br>🔧 Diverses améliorations et corrections de bugs ont été apportées.<br><br><i>📦 Pour plus d'informations, consultez la page des <a href='https://github.com/PaulBayfield/Better-IUT-RCC/releases/latest' target='_blank'>dernières mises à jour</a>.</i><br><br><strong class='fw-bold'>Merci d'utiliser Better IUT RCC !</strong>";
+    notificationList.append(notificationElement);
 
-    if (cache.darkTheme !== undefined) {
-        t = cache.darkTheme ? "dark" : "light";
-    }
+    const buttonsListe = document.createElement('div');
+    buttonsListe.classList.add('card-header-actions', 'right-end');
+    buttonsListe.style.display = 'flex';
 
-    if (t === "dark") {
-        console.info("[Better IUT RCC] Application du thème sombre...");
-        document.querySelector('body').classList.add('dark-theme');
-    } else {
-        console.info("[Better IUT RCC] Application du thème clair...");
-        document.querySelector('body').classList.remove('dark-theme');
-    }
+    const bouttonReject = createButton("Voir les thèmes et faire disparaître ce message", "light", "trash");
+    bouttonReject.addEventListener('click', async () => {
+        console.info("[Better IUT RCC] Notification cachée !");
+
+        await browser.storage.sync.set({hideUpdateNotification23: true});
+
+        // Ouvre les paramètres
+        browser.runtime.sendMessage({openOptions: true});
+
+        const notification = document.querySelector('#updateNotif');
+        notification.remove();
+    });
+    buttonsListe.append(bouttonReject);
+
+    notificationList.append(buttonsListe);
+
+    const manifest = browser.runtime.getManifest();
+
+    const htmlnotification = createCardBody(notificationList, `Better IUT RCC • v${manifest.version}`, 12, 'updateNotif');
+    htmlnotification.style.scrollMarginTop = '90px';
+
+    content.insertBefore(htmlnotification, firstElement);
+
+    return htmlnotification;
 }
+
 
 /**
  * Fonction pour mettre à jour le menu
@@ -85,6 +109,7 @@ export function updateMenu() {
     const menu = document.querySelector("nav.sidebar-navigation > ul");
     if (!menu) return;
 
+    // Création du bouton "Restaurants"
     const li = document.createElement('li');
     li.classList.add('menu-item');
     li.id = 'menu-crous';
@@ -102,8 +127,31 @@ export function updateMenu() {
 
     a.append(i, span);
     li.append(a);
-
     menu.insertBefore(li, menu.childNodes[2]);
+
+
+    // Création du bouton "Themes"
+    const li2 = document.createElement('li');
+    li2.classList.add('menu-item');
+    li2.id = 'menu-theme';
+
+    const a2 = document.createElement('a');
+    a2.classList.add('menu-link');
+    a2.href = '#';
+    a2.addEventListener('click', async () => {
+        browser.runtime.sendMessage({openOptions: true});
+    });
+
+    const i2 = document.createElement('i');
+    i2.classList.add('fas', 'fa-palette', 'fa-2x');
+
+    const span2 = document.createElement('span');
+    span2.classList.add('title');
+    span2.textContent = 'Thèmes';
+
+    a2.append(i2, span2);
+    li2.append(a2);
+    menu.append(li2);
 }
 
 /**
@@ -220,11 +268,20 @@ export async function addButtons() {
     firstElement.innerHTML = "✨ Proposé par deux étudiants de l'IUT de Reims, Better IUT RCC est l'extension 100% gratuite qui ne vous réclame pas des dons !<br>"
    
     const secondElement = document.createElement('span');
+    secondElement.innerHTML = "💡 Une suggestion, un problème ? Contactez nous par mail : ";
     const email = document.createElement('a');
     email.href = "mailto:betteriutrrc@bayfield.dev";
+    email.target = "_blank";
     email.textContent = "betteriutrrc@bayfield.dev";
-    secondElement.innerHTML = "💡 Une suggestion, un problème ? Contactez nous par mail : ";
     secondElement.append(email);
+    const subSecondElement = document.createElement('span');
+    subSecondElement.innerHTML = " ou sur LinkedIn : ";
+    const linkedin = document.createElement('a');
+    linkedin.href = "https://www.linkedin.com/in/PaulBayfield/";
+    linkedin.target = "_blank";
+    linkedin.textContent = "@PaulBayfield";
+    subSecondElement.append(linkedin);
+    secondElement.append(subSecondElement);
 
     credits.append(firstElement);
     credits.append(secondElement);
@@ -258,7 +315,7 @@ function createCardBody(content, title, colLength = 6, id = "") {
     console.info("[Better IUT RCC] Création d'une carte : " + title);
 
     const col = document.createElement('div');
-    col.classList.add('col-sm-12', `col-md-${colLength}`, 'fade-in');
+    col.classList.add('col-sm-12', `col-md-${colLength}`);
     col.style.margin = "0 auto";
 
     const card = document.createElement('div');
@@ -502,7 +559,7 @@ export function generateHtml(average) {
     const htmlValidation = createCardBody(validationList, 'Validation du semestre', 12);
 
     const leftColumn = document.createElement('div');
-    leftColumn.classList.add('col-sm-12', 'col-md-6', 'fade-in');
+    leftColumn.classList.add('col-sm-12', 'col-md-6');
     leftColumn.append(htmlAveragesTable, htmlValidation);
     content.insertBefore(leftColumn, firstElement);
 

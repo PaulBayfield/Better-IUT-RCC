@@ -10,6 +10,7 @@ module.exports = {
   entry: {
     bundle: path.join(srcDir, 'main.js'),
     popup: path.join(srcDir, 'popup.js'),
+    settings: path.join(srcDir, 'settings.js'),
     background: path.join(srcDir, 'background.js')
   },
   resolve: {
@@ -35,10 +36,12 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from:  path.join(rootDir, 'popup.html') },
+        { from:  path.join(rootDir, 'settings.html') },
         { from: assetsDir, to: 'assets' },
         { from:  path.join(rootDir, 'manifest.json') },
         { from:  path.join(rootDir, 'LICENSE') },
         { from:  path.join(rootDir, 'README.md') },
+        { from:  path.join(rootDir, 'src/css/style.css') },
       ]
     })
   ]

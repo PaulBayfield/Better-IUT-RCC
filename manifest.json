@@ -26,9 +26,9 @@
     "default_popup": "popup.html",
     "default_icon": "assets/img/logo.png"
   },
-  "options_page": "popup.html",
+  "options_page": "settings.html",
   "options_ui": {
-    "page": "popup.html",
+    "page": "settings.html",
     "open_in_tab": true
   },
   "permissions": [
@@ -53,5 +53,11 @@
     "gecko_android": {
       "strict_min_version": "120.0"
     }
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["style.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }

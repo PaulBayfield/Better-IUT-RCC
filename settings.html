@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Better IUT RCC</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="settings.js"></script>
+    <style>
+        :root {
+            color-scheme: light;
+            --primary: #ffffff;
+            --secondary: #ffffff40;
+            --text: #111827;
+            --gradient-1: #F3F3F3;
+            --gradient-2: #4B5563;
+            --background-1: #0000001a;
+            --background-2: #F3F4F6;
+            --background-3: #F9FAFB;
+            --extra-1: #BEBEBE;
+            --extra-2: #EBEAF0;
+            --extra-3: #00000042;
+            --border: #DDDDDD;
+            --brightness: 90%;
+            --hover-1: #f9f9f9;
+        }
+
+        [data-theme="dark"] {
+            color-scheme: dark;
+            --primary: #23272a;
+            --secondary: #211e1e40;
+            --text: #ffffff;
+            --gradient-1: #2c2f33;
+            --gradient-2: #d6d6d6;
+            --background-1: #ffffff1a;
+            --background-2: #434546;
+            --background-3: #1f2124;
+            --extra-1: #3f3f3f;
+            --extra-2: #626262;
+            --extra-3: #ffffff42;
+            --border: #000000;
+            --brightness: 10%;
+        }
+
+        :root::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        :root::-webkit-scrollbar-thumb {
+            background-color: var(--extra-1);
+        }
+
+        :root::-webkit-scrollbar-track {
+            background-color: var(--extra-2);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            border: 0 solid;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            transition: all 0.3s ease-in-out;
+            font-family: "Inter";
+            font-size: 16px;
+        }
+
+        body.noscroll {
+            overflow-y: hidden;
+        }
+
+        header {
+            display: flex;
+            width: 100%;
+            height: 100px;
+            padding: 16px 10px;
+            align-items: center;
+            z-index: 100;
+            position: fixed;
+            top: 0;
+            border-bottom: 1px solid var(--border);
+            background: var(--secondary);
+            backdrop-filter: blur(10px);
+        }
+
+        header.active {
+            backdrop-filter: unset;
+        }
+
+        header>nav {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        header>nav>.logo {
+            z-index: 3;
+        }
+
+        header>nav>.logo>img {
+            width: 60px;
+            height: 60px;
+        }
+
+        header>nav>.links {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: all 0.25s;
+            position: fixed;
+            visibility: hidden;
+            width: 100%;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            z-index: 1;
+            transition: none;
+        }
+
+        header>nav>.links>* {
+            z-index: 2;
+        }
+
+        header>nav>.links>*:not(:last-child) {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        header.active>nav>.links {
+            visibility: visible;
+            backdrop-filter: blur(20px) brightness(var(--brightness));
+            opacity: 1;
+        }
+
+        header>nav>.links>.row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 5px;
+        }
+
+        header.active>nav>.links>.row {
+            display: flex;
+            flex-direction: column;
+        }
+
+        header>nav>.links>.row>a {
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        header>nav>.links>.small-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+        }
+
+        header>nav>.links>.small-row>.divider {
+            width: 2px;
+            height: 24px;
+            background: var(--extra-3);
+        }
+
+        header>nav>.hamburger {
+            display: block;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        header>nav>.hamburger>* {
+            display: block;
+            width: 48px;
+            height: 3px;
+            margin: 7.5px auto;
+            transition: all 0.3s ease-in-out;
+            background-color: var(--text);
+        }
+
+        header.active>nav>.hamburger .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        header.active>nav>.hamburger .bar:nth-child(1) {
+            transform: translateY(10.5px) rotate(45deg);
+        }
+
+        header.active>nav>.hamburger .bar:nth-child(3) {
+            transform: translateY(-10.5px) rotate(-45deg);
+        }
+
+        header .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 10px;
+            border-radius: 5px;
+            transition-property: all;
+            transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+            transition-duration: .15s;
+            cursor: pointer;
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            background-color: transparent;
+            background-image: none;
+            text-transform: none;
+            text-decoration: none;
+        }
+
+        header .button.log {
+            gap: 5px;
+        }
+
+        header .button.log>span {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        header .button.log>img {
+            transition: all 0.3s ease-in-out;
+        }
+
+        header .button.log:hover>img {
+            transform: translateX(2px);
+        }
+
+        header #log-out>img {
+            rotate: 180deg;
+        }
+
+        header .button:hover {
+            background-color: var(--gradient-1);
+        }
+
+        header .button:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+
+        section {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: min-content;
+            max-height: min-content;
+            padding: 100px 30px;
+            scroll-margin-top: 100px;
+        }
+
+        .link {
+            text-decoration: underline;
+            color: var(--text);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .link:hover {
+            color: var(--gradient-2);
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .links>a {
+            display: flex;
+            padding: 10px 16px;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            border-radius: 10px;
+            background: var(--text);
+            text-decoration: none;
+            color: var(--primary);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .links>a>svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary);
+        }
+
+        .links>a:hover {
+            background: var(--gradient-2);
+        }
+
+        .links>.secondary {
+            color: var(--text);
+            background: unset;
+            border: 1px solid var(--text);
+        }
+
+        .links>.secondary:hover {
+            background: var(--text);
+            color: var(--primary);
+        }
+
+        h1 {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+        }
+
+        p {
+            overflow: hidden;
+            display: inline-block;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        a.disabled {
+            pointer-events: none;
+            cursor: not-allowed;
+            background-color: var(--background-2);
+        }
+
+        a.disabled>* {
+            color: var(--background-1);
+        }
+
+        .text {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .between {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .between>* {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .negative {
+            color: #b43c48;
+        }
+
+        .positive {
+            color: #3c763d;
+        }
+
+        .bold {
+            font-weight: 600;
+        }
+
+        footer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%;
+            padding: 100px 30px;
+            gap: 60px;
+        }
+
+        footer>.credits {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        footer>.credits>.logo {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        footer>.credits>.logo>img {
+            width: 90px;
+            height: 90px;
+        }
+
+        footer>.credits>.logo>p>a {
+            color: var(--text);
+            text-decoration: underline #000000;
+        }
+
+        footer>.credits>.logo>p>a:hover {
+            color: var(--gradient-2);
+        }
+
+        @media (min-width: 500px) {
+            header>nav {
+                padding-left: 50px;
+                padding-right: 50px;
+            }
+        }
+
+        @media (min-width: 1000px) {
+            header>nav {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            header>nav>.links {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 40px;
+                visibility: visible;
+                position: unset;
+                text-align: unset;
+                width: 100%;
+                height: 100%;
+                margin-left: unset;
+                opacity: 100%;
+            }
+
+            header>nav>.hamburger {
+                display: none;
+            }
+
+            header {
+                padding: 16px 50px;
+            }
+
+            section,
+            footer {
+                padding: 100px 50px;
+            }
+
+            section {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 1100px) {
+            header {
+                padding: 16px 100px;
+            }
+
+            section,
+            footer {
+                padding: 100px 100px;
+            }
+        }
+
+        @media (min-width: 1300px) {
+            header {
+                padding: 16px 200px;
+            }
+
+            section,
+            footer {
+                padding: 100px 200px;
+            }
+        }
+
+        @media (min-width: 1600px) {
+            header {
+                padding: 16px 250px;
+            }
+
+            section,
+            footer {
+                padding: 100px 250px;
+            }
+        }
+
+        @media (min-width: 1920px) {
+            header {
+                padding: 16px 300px;
+            }
+
+            section,
+            footer {
+                padding: 100px 300px;
+            }
+        }
+
+
+        @media (min-width: 2000px) {
+            header {
+                padding: 16px 20%;
+            }
+
+            section,
+            footer {
+                padding: 100px 20%;
+            }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 50px;
+        }
+
+        .container>.column {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .container>.row {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .box {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            color: var(--text);
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .box>.title {
+            padding-top: 10px;
+            padding-left: 10px;
+        }
+
+        .box>.description {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            padding: 10px;
+        }
+
+        .box>.description>* {
+            text-wrap: wrap;
+        }
+
+        .box.big {
+            min-width: 50%;
+        }
+
+        .box>.content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+        .box>.content.column {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .box>.content>img {
+            border-radius: 10px;
+        }
+
+        .box.small {
+            max-width: 100%;
+        }
+
+        @media (min-width: 1000px) {
+            .container>.column {
+                flex-wrap: nowrap;
+            }
+
+            .box.small {
+                max-width: 40%;
+            }
+        }
+    </style>
+    <style>
+        .themes-list {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            color: var(--text);
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            background-color: var(--hover-1);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .card > .title > span {
+            font-size: 14px;
+            margin-left: 10px;
+            padding: 5px 10px 5px 10px;
+            background-color: var(--extra-2);
+            border-radius: 50px;
+        }
+
+        .card > .content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card > .content > i {
+            font-size: 24px;
+        }
+        
+        .card > .preview {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .card > .preview > img {
+            width: 49%;
+            height: auto;
+            border-radius: 10px;
+            transition: all 0.3s ease-in-out;
+            border: 1px solid #ccc;
+        }
+
+        .card > .preview > img:active {
+            transform: scale(2);
+        }
+
+        .card > .button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: var(--gradient-1);
+            border: 1px solid var(--extra-1);
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card > .button:disabled {
+            background-color: #d4edda;
+        }
+
+        .card > .button:disabled:hover {
+            background-color: #c3e6cb;
+        }
+
+        .card > .button:hover {
+            background-color: var(--background-3)
+        }
+
+        .theme {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .theme > span {
+            font-weight: 600;
+        }
+    </style>
+    <style>
+        a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        .underline {
+            text-decoration: underline;
+        }
+
+        .button {
+            display: flex;
+            justify-content: center;
+            padding: 10px 20px;
+            background-color: #cce5ff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .button:hover {
+            background-color: #b8daff;
+        }
+
+        .button-delete {
+            width: 100%;
+            background-color: #f8d7da;
+        }
+
+        .button-delete:hover {
+            background-color: #f5c6cb;
+        }
+
+        .fa-solid {
+            margin-right: 10px;
+            margin-top: 1px;
+        }
+
+        .avis {
+            background-color: #d4edda;
+        }
+
+        .avis:hover {
+            background-color: #c3e6cb;
+        }
+
+        .author {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <nav>
+            <a href="#" class="logo">
+                <img src="/assets/img/logo.png">
+            </a>
+            <div class="links">
+                <div class="row">
+                    <h1 class="title">Better IUT RCC • v<span id="version"></span></h1>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <section class="container" id="albums">
+        <div class="column">
+            <div class="column">
+                <div class="box">
+                    <div class="title">
+                        <h1>Informations</h1>
+                    </div>
+                    <div class="description">
+                        <p>Ce projet est une fusion de deux extensions déjà existante : <a class="underline" href="https://chromewebstore.google.com/detail/obsol%C3%A8te-miaounotes/bkkaabfnclmnaahnmjpnofbccifckmhm" target="_blank">Miaou Notes</a> et <a class="underline" href="https://chromewebstore.google.com/detail/calcule-ta-moyenne-iut-re/jfjbpknmfmdkpajggkahlcnlbokfamin" target="_blank">Calcule ta moyenne</a>.</p>
+                        <p>Réalisé par :</p>
+                        <ul>
+                            <li>
+                                <div class="author">
+                                    <p>Paul Bayfield</p>
+                                    <a href="https://github.com/paulbayfield" target="_blank">
+                                        <i class="fa-brands fa-github"></i>
+                                    </a>
+                                    <a href="https://linkedin.com/in/PaulBayfield" target="_blank">
+                                        <i class="fa-brands fa-linkedin"></i>
+                                    </a>
+                                    <a href="https://bayfield.dev" target="_blank">
+                                        <i class="fa-solid fa-globe"></i>
+                                    </a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="author">
+                                    <p>Simon Ledoux</p>
+                                    <a href="https://github.com/simon511000" target="_blank">
+                                        <i class="fa-brands fa-github"></i>
+                                    </a>
+                                    <a href="https://linkedin.com/in/simon-ledoux-9b654824b/" target="_blank">
+                                        <i class="fa-brands fa-linkedin"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="title">
+                        <h1>Important</h1>
+                    </div>
+                    <div class="description">
+                        <p>⚠️ Une fois que vous changez de thème, vous devez rafraîchir la page pour que les changements soient pris en compte.</p>
+                        <p style="font-style: italic;">Dû à des limitations techniques, l'extension ne peut pas rafraîchir automatiquement la/les page(s) ouverte(s) de l'intranet.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="box small">
+                <div class="title">
+                    <h1>Paramètres</h1>
+                </div>
+                <div class="description">
+                    <a class="button" href="https://iut-rcc-intranet.univ-reims.fr/fr/tableau-de-bord" target="_blank">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        Ouvrir l'intranet de l'IUT RCC
+                    </a>
+                    <button class="button button-delete" type="button" id="clearCacheBtn">
+                        <i class="fa-solid fa-trash"></i>
+                        Supprimer tout le cache
+                    </button>
+                    <a class="button avis" href="https://chromewebstore.google.com/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj" target="_blank">
+                        <i class="fa-solid fa-star"></i>
+                        Donner votre avis !
+                    </a>
+                    <div class="theme">
+                        Thème actuel : <span id="current-theme"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="box">
+                <div class="title">
+                    <h1>Thèmes</h1>
+                </div>
+                <div class="description">
+                    <p style="font-style: italic;">🤖 Note du développeur : Cette fonctionnalité a pris beaucoup trop de temps. J'espère que vous apprécierez le résultat !</p>
+                </div>
+                <div class="themes-list" id="themes-list">
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="credits">
+            <div class="logo">
+                <img src="/assets/img/logo.png">
+                <p>Code source disponible sur <a href="https://github.com/PaulBayfield/Better-IUT-RCC" target="_blank">GitHub</a>.</p>
+            </div>
+            <p>© <span id="annee">2024</span> Paul Bayfield & Simon Ledoux, tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
