@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.23.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.22.3...v1.23.0) (2024-12-15)
+
+
+### Features
+
+* Ajout de la possibilité de d'utiliser des thèmes ([eb3ba22](https://github.com/PaulBayfield/Better-IUT-RCC/commit/eb3ba228f10249a0d4c61e2e966ecc69d9f13b5a))
+* Sauvegarde des choix des RUs ([ba580ae](https://github.com/PaulBayfield/Better-IUT-RCC/commit/ba580ae786fe3d13b0994af5a61c03094175d1f0))
+
+
+### Bug Fixes
+
+* Correction du cache des thèmes ([d4b07d8](https://github.com/PaulBayfield/Better-IUT-RCC/commit/d4b07d86b09575b8f8629651478edd7c9eb0d4d0))
+
 ## [1.22.3](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.22.2...v1.22.3) (2024-11-23)
 
 
