@@ -59,8 +59,8 @@ async function getCustomTheme() {
         const lastFetchTimestamp = await browser.storage.local.get(lastFetchTimestampKey);
 
         // Récupère le thème personnalisé toutes les heures
-        // if (!lastFetchTimestamp[lastFetchTimestampKey] || currentTimestamp - lastFetchTimestamp[lastFetchTimestampKey] > 3600000) {
-        if (1 === 1) {
+        if (!lastFetchTimestamp[lastFetchTimestampKey] || currentTimestamp - lastFetchTimestamp[lastFetchTimestampKey] > 3600000) {
+        // if (1 === 1) {
             console.info("[Better IUT RCC] 📑 Récupération du thème personnalisé...");
             const metadataResponse = await fetch(`https://betteriutrcc.bayfield.dev/v1/themes/${themeName}`);
 
@@ -76,8 +76,8 @@ async function getCustomTheme() {
 
             const cache = await browser.storage.local.get(storageKey);
 
-            // if (cache[storageKey]) {
-            if (1 !== 1) {
+            if (cache[storageKey]) {
+            // if (1 !== 1) {
                 console.info(`[Better IUT RCC] Thème trouvé en cache (${storageKey})`);
                 injectCSS(cache[storageKey]);
             } else {
