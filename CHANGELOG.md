@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.23.0...v1.23.1) (2024-12-20)
+
+
+### Bug Fixes
+
+* :bug: Correction de la mise en cache du profil de l'utilisateur ([2b71c26](https://github.com/PaulBayfield/Better-IUT-RCC/commit/2b71c26c1da1ca462ba81874990658fe84d51f11))
+
 ## [1.23.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.22.3...v1.23.0) (2024-12-15)
 
 
