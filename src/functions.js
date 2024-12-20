@@ -178,7 +178,7 @@ export async function addButtons() {
     console.info("[Better IUT RCC] Ajout des boutons...");
 
     const userAvatar = document.querySelector('.topbar-right .topbar-btn-avatar img');
-    const userId = /.*\/(\d*)\.jpg/g.exec(userAvatar.src)[1];
+    const photoName = userAvatar.src.split('/').pop();
 
     const headerInfo = document.querySelector('.header-info');
     const firstChild = headerInfo.querySelector('.left');
@@ -223,7 +223,7 @@ export async function addButtons() {
             ? '<i class="fa-solid fa-window-minimize"></i> Minimal' 
             : '<i class="fa-solid fa-window-restore"></i> Maximal';
         if (!showMore) document.getElementById("details").open = false;
-        await browser.storage.local.set({ showMoreDetails: { [userId]: showMore } });
+        await browser.storage.local.set({ showMoreDetails: { [photoName]: showMore } });
     });
     cardHeader.append(toggleMoreDetails);
 
@@ -248,11 +248,11 @@ export async function addButtons() {
     cardHeader.append(version);
 
     const cache = await browser.storage.local.get('showMoreDetails');
-    var showMore = cache.showMoreDetails?.[userId];
+    var showMore = cache.showMoreDetails?.[photoName];
 
     if (showMore === undefined) {
         showMore = true;
-        await browser.storage.local.set({ showMoreDetails: { [userId]: showMore } });
+        await browser.storage.local.set({ showMoreDetails: { [photoName]: showMore } });
     }
 
     col1.style.display = col2.style.display = col3.style.display = showMore ? 'block' : 'none';
@@ -400,13 +400,13 @@ export async function createBilanCard() {
     console.info("[Better IUT RCC] Création de la carte de bilan...");
 
     const userAvatar = document.querySelector('.topbar-right .topbar-btn-avatar img');
-    const userId = /.*\/(\d*)\.jpg/g.exec(userAvatar.src)[1];
+    const photoName = userAvatar.src.split('/').pop();
     const cache = await browser.storage.local.get('userBilanCache');
     let user = null;
 
-    if(cache.userBilanCache !== undefined && cache.userBilanCache[userId] !== undefined) {
+    if(cache.userBilanCache !== undefined && cache.userBilanCache[photoName] !== undefined) {
         console.info("[Better IUT RCC] Récupération de l'utilisateur en cache...");
-        user = cache.userBilanCache[userId];
+        user = cache.userBilanCache[photoName];
         console.info("[Better IUT RCC] > " + user);
     } else {
         console.info("[Better IUT RCC] Récupération de l'utilisateur depuis l'intranet...");
@@ -421,7 +421,7 @@ export async function createBilanCard() {
 
         await browser.storage.local.set({
             userBilanCache: {
-                [userId]: user,
+                [photoName]: user,
             }
         })
     }
