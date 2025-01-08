@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.2](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.23.1...v1.23.2) (2025-01-08)
+
+
+### Bug Fixes
+
+* the edge publish pipeline ([abe74f7](https://github.com/PaulBayfield/Better-IUT-RCC/commit/abe74f7f11de9d20b7bdaec5c6bfad2d047361e3))
+
 ## [1.23.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.23.0...v1.23.1) (2024-12-20)
 
 
