@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.2](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.23.2...v1.23.2) (2025-01-08)
+
+
+### Miscellaneous Chores
+
+* release 1.23.2 ([08d07a6](https://github.com/PaulBayfield/Better-IUT-RCC/commit/08d07a69cb4c41c0de185cdb2a915dd6e9c803d0))
+
 ## [1.23.2](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.23.1...v1.23.2) (2025-01-08)
 
 
