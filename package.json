@@ -1,6 +1,6 @@
 {
   "name": "better-iut-rcc",
-  "version": "1.23.3",
+  "version": "1.24.0",
   "description": "Calculez vos moyennes sur l'intranet de l'IUT RCC.",
   "main": "src/main.js",
   "scripts": {
