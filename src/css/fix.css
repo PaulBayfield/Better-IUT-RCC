@@ -74,3 +74,15 @@ header > div.header-info > div.card-header-actions {
 .topbar-btn {
     border-radius: 0 !important;
 }
+
+.new-note-checkbox {
+    margin-right: 1rem !important;
+    width: 1.3rem !important;
+    height: 1.3rem !important;
+}
+
+a.disabled {
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+    opacity: 0.4 !important;
+}

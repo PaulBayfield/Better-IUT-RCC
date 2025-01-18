@@ -1,8 +1,7 @@
-
 import 'apexcharts/dist/apexcharts.css';
 import './css/fix.css'
 
-import { addButtons, cleanCards, createBilanCard, generateHtml, updateTopBar, createCardHead, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSearchBar, addSaveButton, addResetButton, addAvisNotification, addUpdateNotification } from "./functions";
+import { addButtons, cleanCards, createBilanCard, generateHtml, updateTopBar, createCardHead, orderCards, fetchAllSortedGrades, recreateTable, updateMenu, addSearchBar, addSaveButton, addResetButton, addAvisNotification, addUpdateNotification, addInformationButton } from "./functions";
 import { applyTheme } from './theme.js';
 import { Utils } from './utils.js';
 import { Average } from './average.js';
@@ -95,6 +94,8 @@ console.info(`[Better IUT RCC] Thème actif : ${activeTheme}`);
 
             const tableHead = createCardHead();
 
+            const checkboxes = document.querySelectorAll("tr.new-note input[type='checkbox']");
+
             addResetButton(tableHead).addEventListener('click', async (e) => {
                 console.warn("[Better IUT RCC] Réinitialisation des notes déjà connues !");
 
@@ -103,7 +104,7 @@ console.info(`[Better IUT RCC] Thème actif : ${activeTheme}`);
                 location.reload();
             });
 
-            addSaveButton(tableHead).addEventListener('click', (e) => {
+            addSaveButton(tableHead, checkboxes).addEventListener('click', (e) => {
                 console.info("[Better IUT RCC] Sauvegarde des notes déjà connues !");
 
                 e.preventDefault();
@@ -160,6 +161,16 @@ console.info(`[Better IUT RCC] Thème actif : ${activeTheme}`);
                     row.style.display = isMatch ? "" : "none";
                 });
             });
+
+            if (checkboxes.length > 0) {
+                addInformationButton(tableHead).addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    alert("Certaines notes sont actuellement en surbrillance. Cela signifie que vous disposez de nouvelles notes que vous n'avez pas encore sauvegardées. Pour les sauvegarder, cochez les cases correspondantes et cliquez sur le bouton \"Sauvegarder\".\n\nSi vous ne cochez aucune case, toutes les notes seront sauvegardées.");
+
+                    console.info("[Better IUT RCC] Informations concernant la surbrillance affichées !");
+                });
+            }
 
             console.info("[Better IUT RCC] Vérification des paramètres de notification...");
             browser.storage.local.get('hideAvisNotification').then((result) => {

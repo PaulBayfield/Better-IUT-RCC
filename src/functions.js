@@ -726,6 +726,7 @@ export function createRow(grade, isAverage, isNew = false) {
         if (content === null) {
             if (isNew) {
                 const checkbox = document.createElement('input');
+                checkbox.classList.add('new-note-checkbox');
                 checkbox.type = 'checkbox';
                 checkbox.id = 'note-' + grade.id;
                 checkbox.value = grade.id;
@@ -846,9 +847,10 @@ export function createCardHead() {
     console.info("[Better IUT RCC] Création de l'entête du tableau...");
 
     const head = document.createElement('div');
-    head.classList.add('card-header');
     head.style.display = 'flex';
     head.style.justifyContent = 'space-between';
+    head.style.alignItems = 'center';
+    head.style.gap = '10px';
 
     const card = document.querySelector("#mainContent > div:first-child > div:nth-child(4) > div > header");
     card.append(head);
@@ -859,6 +861,7 @@ export function createCardHead() {
 /**
  * Fonction pour ajouter un bouton de réinitialisation.
  * 
+ * @param {HTMLDivElement} head - Entête du tableau.
  * @returns {HTMLButtonElement} - Élément de bouton HTML créé.
  */
 export function addResetButton(head) {
@@ -871,10 +874,29 @@ export function addResetButton(head) {
 /**
  * Fonction pour ajouter un bouton de sauvegarde.
  * 
+ * @param {Array} checkboxes - Tableau d'éléments de case à cocher.
+ * @param {HTMLDivElement} head - Entête du tableau.
  * @returns {HTMLButtonElement} - Élément de bouton HTML créé.
  */
-export function addSaveButton(head) {
-    let button = createButton('Sauvegarder les notes connues', 'pink', 'save')
+export function addSaveButton(head, checkboxes) {
+    let button = createButton("Sauvegarder les notes connues", "pink", "save")
+    if (checkboxes.length === 0) {
+        button = createButton("Sauvegarder les notes connues", "gray", "save")
+        button.classList.add('disabled');
+    }
+
+    head.prepend(button)
+    return button;
+}
+
+/**
+ * Fonction pour ajouter un bouton d'information.
+ * 
+ * @param {HTMLDivElement} head - Entête du tableau.
+ * @returns {HTMLButtonElement} - Élément de bouton HTML créé.
+ */
+export function addInformationButton(head) {
+    let button = createButton('Notes en surbrillance', 'info', 'square-check')
     head.prepend(button)
 
     return button;
