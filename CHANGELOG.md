@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.23.3...v1.24.0) (2025-01-18)
+
+
+### Features
+
+* Mise à jour de l'utilisation des notes en surbrillance ([7e6ce2a](https://github.com/PaulBayfield/Better-IUT-RCC/commit/7e6ce2a1eafd8af4452467f8079e8f49fb72649a))
+
 ## [1.23.3](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.23.2...v1.23.3) (2025-01-08)
 
 
