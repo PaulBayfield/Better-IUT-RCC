@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.25.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.24.0...v1.25.0) (2025-02-08)
+
+
+### Features
+
+* Ajout de la "moyenne des compétences" ([cedceba](https://github.com/PaulBayfield/Better-IUT-RCC/commit/cedceba5587ac4f8c3ea1fed11d3d0c9b5ab093f))
+
+
+### Bug Fixes
+
+* Suppression des matières n'ayant pas de coefficients ([e72079d](https://github.com/PaulBayfield/Better-IUT-RCC/commit/e72079d0296faa605f7decad4219235c2e2a3bb4))
+
 ## [1.24.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.23.3...v1.24.0) (2025-01-18)
 
 
