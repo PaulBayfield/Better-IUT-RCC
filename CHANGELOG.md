@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.25.0...v1.26.0) (2025-02-08)
+
+
+### Features
+
+* README update ([66ca969](https://github.com/PaulBayfield/Better-IUT-RCC/commit/66ca9699871649b580f5c035f16a4863a0d6805e))
+
 ## [1.25.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.24.0...v1.25.0) (2025-02-08)
 
 
