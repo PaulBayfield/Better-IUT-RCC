@@ -12,6 +12,8 @@ Better IUT RCC est une extension navigateurs qui améliore l'interface de l'intr
 <a href="https://github.com/PaulBayfield/Better-IUT-RCC/releases/latest" target="_blank"><img src="https://blog.mozilla.org/addons/files/2015/11/get-the-addon.png" alt="Available in the Firefox Web Store"></a>
 <a href="https://microsoftedge.microsoft.com/addons/detail/leknkclokgeajllkbhnldadkapjmlhhf" target="_blank"><img src="https://user-images.githubusercontent.com/78568641/212470539-dd4d22a0-3af8-4fa7-9671-6df5b2e26a70.png" alt="Available in the Edge Web Store"></a>
 
+*Informations disponibles sur le site officiel de Better IUT RCC :<br>[https://betteriutrcc.bayfield.dev/](https://betteriutrcc.bayfield.dev/)*
+
 </div>
 
 
