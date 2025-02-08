@@ -586,11 +586,20 @@ export function generateHtml(average) {
     chartDiv2.id = "chart2";
     content.insertBefore(createCardBody(chartDiv2, 'Moyennes par Matières', 12, 'graph2'), firstElement);
 
+    // Remove subjects without coefficients
+    let averageGradeData = average.averageGradeData
+    for (const [key, value] of Object.entries(averageGradeData)) {
+        let subject = average.subjectData[key];
+        if (subject.coefficients.length === 0) {
+            delete averageGradeData[key];
+        }
+    }
+
     // Render second chart
     createChart(
-        Object.values(average.averageGradeData), 
+        Object.values(averageGradeData), 
         'bar', 
-        Object.keys(average.averageGradeData).map(key => average.subjectName(key)),
+        Object.keys(averageGradeData).map(key => average.subjectName(key)),
         "chart2",
         500,
         true
@@ -687,6 +696,13 @@ export function recreateTable(average, sortedGrades, knownGrades) {
         grade: average.overallAverage()
     }, true);
     tbody.appendChild(trGeneralAverage);
+
+    let trSubjectsAverage = createRow({
+        subject: '',
+        evaluation: '━ Moyenne des Compétences',
+        grade: average.overallSubjectsAverage()
+    }, true);
+    tbody.appendChild(trSubjectsAverage);
 
     return table;
 }
