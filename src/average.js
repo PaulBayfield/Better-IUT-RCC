@@ -114,7 +114,7 @@ class Average {
             for (const grade in this.gradesData) {
                 for (const g of this.gradesData[grade]) {
                     for (const proficiencyData of this.subjectData[grade].coefficients) {
-                        if (proficiencyData.name === proficiency) {
+                        if (proficiencyData.name === proficiency && g.grade >= 0) {
                             proficiencyGrades.push(g.grade);
                             proficiencyCoefficients.push(proficiencyData.coefficient);
                         };
@@ -203,6 +203,19 @@ class Average {
      */
     overallAverage() {
         return this.calculateAverage(Object.values(this.averageGradeData), Object.values(this.averageGradeData).map(() => 1));
+    }
+
+
+    /**
+     * Fonction pour calculer la moyenne d'une compétence.
+     * 
+     * @returns {number} - La moyenne calculée.
+     * 
+     * @example
+     * proficiencyAverage('Compétence 1'); // Résultat : 12.4
+     */
+    overallSubjectsAverage() {
+        return this.calculateAverage(Object.values(this.averageSubjectData), Object.values(this.averageSubjectData).map(() => 1));
     }
 
 
