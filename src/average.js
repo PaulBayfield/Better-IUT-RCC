@@ -26,6 +26,11 @@ class Average {
 
         // Récupérer les matières et les coefficients
         for (const subject of subjects) {
+            if (subject.children[0].textContent.split('|').length === 1) {
+                console.warn("[Better IUT RCC] Aucune matière n'a été saisie");
+                continue;
+            }
+
             let subjectCode = subject.children[0].textContent.split('|')[0].trim();
             let subjectName = subject.children[0].textContent.split('|')[1].trim();
 
