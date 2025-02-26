@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.26.0...v1.26.1) (2025-02-26)
+
+
+### Bug Fixes
+
+* Correction d'un bug quand aucune n'est disponible ([d04403b](https://github.com/PaulBayfield/Better-IUT-RCC/commit/d04403bd1086ecbf93e069ac4169b0edc620defe))
+
 ## [1.26.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.25.0...v1.26.0) (2025-02-08)
 
 

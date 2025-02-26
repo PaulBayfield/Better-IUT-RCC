@@ -1,6 +1,6 @@
 {
   "name": "better-iut-rcc",
-  "version": "1.26.0",
+  "version": "1.26.1",
   "description": "Calculez vos moyennes sur l'intranet de l'IUT RCC.",
   "main": "src/main.js",
   "scripts": {
@@ -34,6 +34,6 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "apexcharts": "^4.5.0"
+    "apexcharts": "^4.4.0"
   }
 }
