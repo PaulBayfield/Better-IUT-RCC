@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.27.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.26.1...v1.27.0) (2025-04-27)
+
+
+### Features
+
+* Nouveau domaine pour CROUStillant ([9b8c09b](https://github.com/PaulBayfield/Better-IUT-RCC/commit/9b8c09b2f8f5c92602b98b265e2bb08eda8ae8ed))
+
 ## [1.26.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.26.0...v1.26.1) (2025-02-26)
 
 
