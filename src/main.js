@@ -243,7 +243,7 @@ console.info(`[Better IUT RCC] Thème actif : ${activeTheme}`);
                 var restaurant = document.getElementById("restaurant").value;
                 var img = document.getElementById("image-menu");
 
-                img.src = "https://api-croustillant.bayfield.dev/v1/restaurants/" + restaurant + "/menu/" + date + "/image" + theme;
+                img.src = "https://api.croustillant.menu/v1/restaurants/" + restaurant + "/menu/" + date + "/image" + theme;
 
                 browser.storage.local.set({ darkTheme: document.querySelector('body').classList.contains('dark-theme') });
 
@@ -295,7 +295,7 @@ console.info(`[Better IUT RCC] Thème actif : ${activeTheme}`);
                 var restaurant = document.getElementById("restaurant").value;
                 var img = document.getElementById("image-menu");
 
-                img.src = "https://api-croustillant.bayfield.dev/v1/restaurants/" + restaurant + "/menu/" + date + "/image" + theme;
+                img.src = "https://api.croustillant.menu/v1/restaurants/" + restaurant + "/menu/" + date + "/image" + theme;
 
                 console.info("[Better IUT RCC] Menu du CROUS actualisé !");
 
@@ -322,7 +322,7 @@ console.info(`[Better IUT RCC] Thème actif : ${activeTheme}`);
                 year: 'numeric'
             }).split('/').join('-');
 
-            img.src = "https://api-croustillant.bayfield.dev/v1/restaurants/" + restaurant + "/menu/" + date + "/image" + theme;
+            img.src = "https://api.croustillant.menu/v1/restaurants/" + restaurant + "/menu/" + date + "/image" + theme;
         });
 
         const restaurant = await browser.storage.local.get('restaurant');
@@ -343,7 +343,7 @@ console.info(`[Better IUT RCC] Thème actif : ${activeTheme}`);
             }).split('/').join('-');
 
             var img = document.getElementById("image-menu");
-            img.src = "https://api-croustillant.bayfield.dev/v1/restaurants/" + restaurant.restaurant + "/menu/" + date + "/image" + theme;
+            img.src = "https://api.croustillant.menu/v1/restaurants/" + restaurant.restaurant + "/menu/" + date + "/image" + theme;
 
             console.info("[Better IUT RCC] Menu du CROUS restauré !");
         }
