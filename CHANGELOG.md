@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.27.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.27.0...v1.27.1) (2025-05-13)
+
+
+### Bug Fixes
+
+* Nouveau formatage des notes sur l'intranet ([1fe8874](https://github.com/PaulBayfield/Better-IUT-RCC/commit/1fe8874cadfb915b65e5deb1bf3aa34c4084cceb))
+
 ## [1.27.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.26.1...v1.27.0) (2025-04-27)
 
 
