@@ -459,7 +459,6 @@ export function fetchAllSortedGrades(htmlTable) {
             let buttonUrl = row.querySelector('td:nth-child(7) > button').getAttribute('data-modal-modal-url-value').split('/');
             let gradeId = parseInt(buttonUrl[buttonUrl.length - 1]);
             let gradeSubject = row.querySelector("td:nth-child(1)").textContent;
-            let gradeSubjectDescription = row.querySelector("td:nth-child(1)").querySelector('abbr')?.getAttribute('title');
             let gradeEvaluation = row.querySelector("td:nth-child(2)").textContent;
             let gradeDate = row.querySelector("td:nth-child(3)").textContent;
             let gradeComment = row.querySelector("td:nth-child(4)").textContent;
@@ -467,10 +466,17 @@ export function fetchAllSortedGrades(htmlTable) {
             gradeValue = isNaN(gradeValue) ? -1 : gradeValue;
             let gradeCoefficient = Number(row.querySelector('td:nth-child(6)').textContent);
 
+            let subject = gradeSubject;
+            if (gradeSubject.includes('|')) {
+                subject = gradeSubject.split('|')[0].trim();
+            } else if (gradeSubject.includes('-')) {
+                subject = gradeSubject.split('-')[0].trim();
+            };
+
             let grade = {
                 id: gradeId,
-                subject: gradeSubject,
-                subjectDescription: gradeSubjectDescription,
+                subject: subject,
+                subjectDescription: gradeSubject,
                 evaluation: gradeEvaluation,
                 date: gradeDate,
                 comment: gradeComment,
@@ -682,7 +688,7 @@ export function recreateTable(average, sortedGrades, knownGrades) {
         if (i === sortedGrades.length - 1 || sortedGrades[i + 1].subject !== grade.subject) {
             let trAverage = createRow({
                 subject: `<i class="fa-solid fa-calculator"></i> ${grade.subject}`,
-                subjectDescription: average.subjectDescription,
+                subjectDescription: null,
                 evaluation: '━ Moyenne ━━━━',
                 grade: average.subjectAverage(grade.subject.trim()),
             }, true);
@@ -724,7 +730,7 @@ export function createRow(grade, isAverage, isNew = false) {
 
     let subject = grade.subject;
     if (grade.subjectDescription) {
-        subject = [grade.subject, grade.subjectDescription]
+        subject = grade.subjectDescription
     };
 
     const columns = [
@@ -758,18 +764,12 @@ export function createRow(grade, isAverage, isNew = false) {
         }
 
         let td = document.createElement('td');
-        if (Array.isArray(content)) {
-            let abbr = document.createElement('abbr');
-            abbr.textContent = content[0];
-            abbr.title = content[1];
-            td.appendChild(abbr);
-        } else
-            if (typeof content === 'string' || content instanceof String) {
-                td.innerHTML = content;
-            } else {
-                td.appendChild(content);
-            }
-            tr.appendChild(td);
+        if (typeof content === 'string' || content instanceof String) {
+            td.innerHTML = content;
+        } else {
+            td.appendChild(content);
+        }
+        tr.appendChild(td);
     });
 
     return tr;

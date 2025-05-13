@@ -24,15 +24,27 @@ class Average {
         const subjects = document.querySelectorAll("#mainContent > div.row > div:nth-child(4) > div > div > table > tbody tr");
         const grades = document.querySelectorAll("#mainContent > div.row > div:nth-child(3) > div > div > table > tbody tr");
 
-        // Récupérer les matières et les coefficients
         for (const subject of subjects) {
-            if (subject.children[0].textContent.split('|').length === 1) {
-                console.warn("[Better IUT RCC] Aucune matière n'a été saisie");
-                continue;
-            }
+            let subjectCode = '';
+            let subjectName = '';
 
-            let subjectCode = subject.children[0].textContent.split('|')[0].trim();
-            let subjectName = subject.children[0].textContent.split('|')[1].trim();
+            if (subject.children[0].textContent.includes('|')) {
+                if (subject.children[0].textContent.split('|').length === 1) {
+                    console.warn("[Better IUT RCC] Aucune matière n'a été saisie");
+                    continue;
+                }
+
+                subjectCode = subject.children[0].textContent.split('|')[0].trim();
+                subjectName = subject.children[0].textContent.split('|')[1].trim();
+            } else {
+                if (subject.children[0].textContent.split('-').length === 1) {
+                    console.warn("[Better IUT RCC] Aucune matière n'a été saisie");
+                    continue;
+                }
+
+                subjectCode = subject.children[0].textContent.split('-')[0].trim();
+                subjectName = subject.children[0].textContent.split('-')[1].trim();
+            };
 
             let subjectFull = subjectCode + ' • ' + subjectName;
 
@@ -58,6 +70,8 @@ class Average {
                 coefficients: subjectCoefficients
             };
         };
+    
+        console.warn(this.subjectData);
 
         // Récupérer les notes et les coefficients
         for (const grade of grades) {
@@ -69,6 +83,12 @@ class Average {
             let subject = grade.children[0].textContent.trim();
             let gradeValue = Number.parseFloat(grade.children[4].children[0].textContent.replace(',', '.'));
             let coefficient = Number.parseFloat(grade.children[5].textContent.replace(',', '.'));
+
+            if (subject.includes('|')) {
+                subject = subject.split('|')[0].trim();
+            } else if (subject.includes('-')) {
+                subject = subject.split('-')[0].trim();
+            };
 
             if (!this.gradesData.hasOwnProperty(subject)) {
                 this.gradesData[subject] = []
@@ -100,6 +120,12 @@ class Average {
         for (const subject in this.subjectData) {
             let subjectGrades = [];
             let subjectCoefficients = [];
+
+            if (subject.includes('|')) {
+                subject = subject.split('|')[0].trim();
+            } else if (subject.includes('-')) {
+                subject = subject.split('-')[0].trim();
+            };
 
             if (this.gradesData.hasOwnProperty(subject)) {
                 for (const gradeData of this.gradesData[subject]) {
@@ -136,6 +162,12 @@ class Average {
         this.averageGradeData = Object.fromEntries(Object.entries(this.averageGradeData).sort());
         this.averageSubjectData = Object.fromEntries(Object.entries(this.averageSubjectData).sort());
         this.proficiencies = this.proficiencies.sort();
+
+        console.warn(this.gradesData);
+        console.warn(this.subjectData);
+        console.warn(this.averageGradeData);
+        console.warn(this.averageSubjectData);
+        console.warn(this.proficiencies);
     }
 
 
