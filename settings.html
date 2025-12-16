@@ -71,7 +71,6 @@
         html {
             scroll-behavior: smooth;
         }
-
         body {
             width: 100%;
             height: 100%;
@@ -710,6 +709,148 @@
         }
     </style>
     <style>
+        /* Boite de dépots d'image (Après le dépôts de l'image) */
+        .button-delete {
+            width: auto;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .preview {
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .image-personnelle {
+            display: block;
+            width: 100%;
+            height: 260px;
+            max-height: 40vh;
+            object-fit: contain;
+            border-radius: 10px;
+            background-color: var(--background-3);
+            border: 1px solid #ccc;
+        }
+        /* Boite de dépots d'image (Avant le dépôts de l'image) */
+        .bg-upload-container {
+            height: 300px;
+            width: 400px;
+            max-width: 100%;
+            margin: 35px auto;
+            border-radius: 10px;
+            box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            gap: 5px;
+            background: linear-gradient(135deg, rgba(0, 110, 255, 0.08), rgba(0, 110, 255, 0.04));
+            border: 1px solid rgba(0, 110, 255, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bg-upload-container:hover {
+            background: linear-gradient(135deg, rgba(0, 110, 255, 0.12), rgba(0, 110, 255, 0.08));
+            border-color: rgba(0, 110, 255, 0.25);
+            box-shadow: 4px 4px 30px rgba(0, 110, 255, 0.15);
+        }
+
+        .bg-upload-container.drag-over {
+            background: linear-gradient(135deg, rgba(0, 110, 255, 0.2), rgba(0, 110, 255, 0.12));
+            border-color: royalblue;
+            box-shadow: 0 0 20px rgba(65, 105, 225, 0.3);
+        }
+
+        .bg-upload-header {
+            flex: 1;
+            width: 100%;
+            border: 2px dashed royalblue;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 8px;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .bg-upload-container.drag-over .bg-upload-header {
+            border-color: #4169e1;
+            color: #4169e1;
+        }
+
+        .bg-upload-header svg {
+            width: 40px;
+            height: 40px;
+            color: royalblue;
+        }
+
+        .bg-upload-container.drag-over .bg-upload-header svg {
+            color: #4169e1;
+        }
+
+        .bg-upload-header p {
+            margin: 0;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .bg-upload-footer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background-color: var(--background-2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .bg-upload-footer:hover {
+            background-color: var(--hover-1);
+            border-color: royalblue;
+        }
+
+        .bg-upload-footer svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text);
+        }
+
+        .bg-upload-footer p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        #bgFileInput {
+            display: none !important;
+        }
+
+        #bgPreviewContainer {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
         a {
             color: #000000;
             text-decoration: none;
@@ -819,6 +960,17 @@
                                     </a>
                                 </div>
                             </li>
+                            <li>
+                                <div class="author">
+                                    <p>Jacques Lucas</p>
+                                    <a href="https://github.com/JacquesLucas07" target="_blank">
+                                        <i class="fa-brands fa-github"></i>
+                                    </a>
+                                    <a href="https://linkedin.com/in/lucas-jacques-94b37739a" target="_blank">
+                                        <i class="fa-brands fa-linkedin"></i>
+                                    </a>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -849,9 +1001,6 @@
                         <i class="fa-solid fa-star"></i>
                         Donner votre avis !
                     </a>
-                    <div class="theme">
-                        Thème actuel : <span id="current-theme"></span>
-                    </div>
                 </div>
             </div>
         </div>
@@ -860,6 +1009,46 @@
                 <div class="title">
                     <h1>Thèmes</h1>
                 </div>
+                <div class="card">
+                    <h3 class="title">Image de fond personnalisé</h3>
+
+                    <div class="content">
+                        <p class="text">Importer une image personnelle qui sera affichée en arrière-plan de l'intranet. Taille recommandée : large (1920×1080) et < 4MB.</p>
+                    </div>
+
+                                        <div class="preview" style="margin-top:12px;">
+                        <div class="bg-upload-container">
+                            <div class="bg-upload-header">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+                                <p>Browse File to upload!</p>
+                            </div>
+                            <label for="bgFileInput" class="bg-upload-footer">
+                                <svg fill="currentColor" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M15.331 6H8.5v20h15V14.154h-8.169z"></path><path d="M18.153 6h-.009v5.342H23.5v-.002z"></path></g></svg>
+                                <p id="bgFileName">Not selected file</p>
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M5.16565 10.1534C5.07629 8.99181 5.99473 8 7.15975 8H16.8402C18.0053 8 18.9237 8.9918 18.8344 10.1534L18.142 19.1534C18.0619 20.1954 17.193 21 16.1479 21H7.85206C6.80699 21 5.93811 20.1954 5.85795 19.1534L5.16565 10.1534Z" stroke="currentColor" stroke-width="2"></path><path d="M19.5 5H4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><path d="M10 3C10 2.44772 10.4477 2 11 2H13C13.5523 2 14 2.44772 14 3V5H10V3Z" stroke="currentColor" stroke-width="2"></path></g></svg>
+                            </label>
+                            <input id="bgFileInput" type="file" accept="image/*">
+                        </div>
+                    </div>
+
+                    <div id="bgPreviewContainer" style="margin-top:12px; display:none;">
+                        <img id="bgPreview" src="" class="image-personnelle" alt="Image Personnelle" />
+                        <div style="display:flex; gap:8px; align-items:center; margin-top:12px;">
+                            <button class="button" id="changeBgBtn" type="button" style="flex:1;">
+                                <i class="fa-solid fa-edit"></i>
+                                Changer l'image
+                            </button>
+                            <button class="button button-delete" id="removeBgBtn" type="button" title="Supprimer l'image de fond" style="background-color:#f8d7da; color:#721c24;">
+                                <i class="fa-solid fa-trash"></i>
+                                <span style="margin-left:6px;">Supprimer</span>
+                            </button>
+                        </div>
+                    </div>
+                        <div style="margin-left:auto; font-size:12px; color:var(--extra-1);">
+                            <strong>Thème actif :</strong> <span id="current-theme"></span>
+                        </div>
+                    </div>
+
                 <div class="description">
                     <p style="font-style: italic;">🤖 Note du développeur : Cette fonctionnalité a pris beaucoup trop de temps. J'espère que vous apprécierez le résultat !</p>
                 </div>
