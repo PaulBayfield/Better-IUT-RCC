@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.28.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.27.1...v1.28.0) (2025-12-21)
+
+
+### Features
+
+* Ajout d'un aria label ([a61e071](https://github.com/PaulBayfield/Better-IUT-RCC/commit/a61e071abbd008d8a3678c1c4491e0df9bc2e683))
+* Ajout d'un thème custom ([ebd3625](https://github.com/PaulBayfield/Better-IUT-RCC/commit/ebd3625d1295f470c1c8776810808b701903463c))
+* Améliorations de la page des paramètres ([8cac7e2](https://github.com/PaulBayfield/Better-IUT-RCC/commit/8cac7e2e41c783046883f3063594f6b3d6846a96))
+* Harmonisation des credits ([a7fd242](https://github.com/PaulBayfield/Better-IUT-RCC/commit/a7fd24222ae591fe29e5131dd124c56daa81ef1c))
+* Mise à jour des paramètres ([9413b4b](https://github.com/PaulBayfield/Better-IUT-RCC/commit/9413b4b97a0ef9d43c889e1cadfb7c686d6ef281))
+* Mise à jour du drag & drop ([ada9977](https://github.com/PaulBayfield/Better-IUT-RCC/commit/ada9977a465832ef64fa068f00762f52a82d84d9))
+* Modification de l'alerte ([3dfa19b](https://github.com/PaulBayfield/Better-IUT-RCC/commit/3dfa19bc5228358857702b2f90d48d4442a63ce8))
+* Modification de l'alt pour la preview ([8540c81](https://github.com/PaulBayfield/Better-IUT-RCC/commit/8540c8194d305e57c8fe9c6a4711465ec0679ae3))
+* Modification de la note de mise à jour ([1ba0b71](https://github.com/PaulBayfield/Better-IUT-RCC/commit/1ba0b7153d352bd7a75bfb9a79849bb8f3d34e0a))
+* Renommage d'une variable ([c2b9484](https://github.com/PaulBayfield/Better-IUT-RCC/commit/c2b9484455b1b98a63d5f50f629f404d4210baab))
+
+
+### Bug Fixes
+
+* Affichage des erreurs dans la console ([90f11cf](https://github.com/PaulBayfield/Better-IUT-RCC/commit/90f11cf9a5b6086ba579f7d974fd3d3da80e2615))
+* traduction des textes, correction du code mort ([4d2111b](https://github.com/PaulBayfield/Better-IUT-RCC/commit/4d2111b589182af4bc3eef279e19cc3332c21261))
+* Utilisation du style.css lors d'un problème API ([ecfb557](https://github.com/PaulBayfield/Better-IUT-RCC/commit/ecfb557d1e9937f1efbd9a3592290ccdab2d4474))
+
 ## [1.27.1](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.27.0...v1.27.1) (2025-05-13)
 
 
