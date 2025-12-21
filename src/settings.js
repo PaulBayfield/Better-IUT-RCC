@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const existingBg = await browser.storage.local.get('customBackground');
         if (existingBg && existingBg.customBackground) {
             bgPreview.src = existingBg.customBackground;
-            bgPreviewContainer.style.display = 'block';
+            bgPreviewContainer.style.display = 'flex';
             bgUploadContainer.parentElement.style.display = 'none';
 
             // If theme is custom, ensure UI reflects that
@@ -257,12 +257,12 @@ document.addEventListener('DOMContentLoaded', async function () {
                     bgPreview.src = dataUrl;
                     bgFileName.textContent = file.name;
                     bgUploadContainer.parentElement.style.display = 'none';
-                    bgPreviewContainer.style.display = 'block';
+                    bgPreviewContainer.style.display = 'flex';
 
                     // Update UI to reflect custom theme is active
                     refreshButtonsForCustomActive();
 
-                    alert("Image de fond enregistrée. Rechargez les pages de l'intranet pour appliquer l'image.");
+                    alert("🔄️ Veuillez recharger toutes les pages de l'intranet pour appliquer les modifications.\n\n📝 Dû à des limitations techniques, l'extension ne peut pas rafraîchir automatiquement la/les page(s) ouverte(s) de l'intranet.");
                 } catch (error) {
                     console.error("[Better IUT RCC] Erreur lors de la sauvegarde de l'image:", error);
                     
@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             bgPreview.src = '';
             bgFileName.textContent = 'Aucun fichier sélectionné';
             bgPreviewContainer.style.display = 'none';
-            bgUploadContainer.parentElement.style.display = 'block';
+            bgUploadContainer.parentElement.style.display = 'flex';
             bgFileInput.value = '';
             alert("Image de fond supprimée. Le thème par défaut a été réactivé. Rechargez les pages de l'intranet pour appliquer le changement.");
             
