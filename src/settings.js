@@ -69,8 +69,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             button.addEventListener('click', async () => {
                 console.info(`[Better IUT RCC] Activation du thème : ${themeObj.id} (${themeObj.version})`);
 
-                alert("🔄️ Veuillez recharger toutes les pages de l'intranet pour appliquer les modifications.\n\n📝 Dû à des limitations techniques, l'extension ne peut pas rafraîchir automatiquement la/les page(s) ouverte(s) de l'intranet.");
-
                 // Supprimer le fond personnalisé quand on change de thème
                 await browser.storage.local.remove('customBackground');
 
@@ -163,7 +161,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         themesContainer.appendChild(card);
     });
 
-    // ===== GESTION DU BACKGROUND PERSONNALISÉ =====
+    alert("🔄️ Veuillez recharger toutes les pages de l'intranet pour appliquer les modifications.\n\n📝 Dû à des limitations techniques, l'extension ne peut pas rafraîchir automatiquement la/les page(s) ouverte(s) de l'intranet.");
+
+    // Gestion de l'image de fond personnalisée
     try {
         const bgFileInput = document.getElementById('bgFileInput');
         const bgPreview = document.getElementById('bgPreview');
@@ -247,20 +247,39 @@ document.addEventListener('DOMContentLoaded', async function () {
             reader.onload = async (e) => {
                 const dataUrl = e.target.result;
 
-                // Désactiver les autres thèmes en le remplaçant par 'custom'
-                await browser.storage.sync.set({ theme: 'custom' });
+                try {
+                    // Désactiver les autres thèmes en le remplaçant par 'custom'
+                    await browser.storage.sync.set({ theme: 'custom' });
 
-                // Enregistrer l'image
-                await browser.storage.local.set({ customBackground: dataUrl });
-                bgPreview.src = dataUrl;
-                bgFileName.textContent = file.name;
-                bgUploadContainer.parentElement.style.display = 'none';
-                bgPreviewContainer.style.display = 'block';
+                    // Enregistrer l'image
+                    await browser.storage.local.set({ customBackground: dataUrl });
+                    
+                    bgPreview.src = dataUrl;
+                    bgFileName.textContent = file.name;
+                    bgUploadContainer.parentElement.style.display = 'none';
+                    bgPreviewContainer.style.display = 'block';
 
-                // Update UI to reflect custom theme is active
-                refreshButtonsForCustomActive();
+                    // Update UI to reflect custom theme is active
+                    refreshButtonsForCustomActive();
 
-                alert("Image de fond enregistrée. Rechargez les pages de l'intranet pour appliquer l'image.");
+                    alert("Image de fond enregistrée. Rechargez les pages de l'intranet pour appliquer l'image.");
+                } catch (error) {
+                    console.error("[Better IUT RCC] Erreur lors de la sauvegarde de l'image:", error);
+                    
+                    // Réinitialiser le thème si la sauvegarde échoue
+                    const themeSync = await browser.storage.sync.get('theme');
+                    if (themeSync && themeSync.theme === 'custom') {
+                        await browser.storage.sync.set({ theme: 'default' });
+                    }
+                    
+                    bgFileInput.value = '';
+                    
+                    if (error.message && error.message.includes('quota')) {
+                        alert("❌ Erreur : Le fichier est trop volumineux et dépasse la limite de stockage de l'extension. Veuillez choisir une image plus petite ou de qualité inférieure.");
+                    } else {
+                        alert("❌ Erreur lors de l'enregistrement de l'image. Veuillez réessayer avec un fichier différent.");
+                    }
+                }
             };
             reader.readAsDataURL(file);
         }
@@ -282,7 +301,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             await browser.storage.sync.set({ theme: 'default' });
             
             bgPreview.src = '';
-            bgFileName.textContent = 'Not selected file';
+            bgFileName.textContent = 'Aucun fichier sélectionné';
             bgPreviewContainer.style.display = 'none';
             bgUploadContainer.parentElement.style.display = 'block';
             bgFileInput.value = '';
@@ -295,67 +314,3 @@ document.addEventListener('DOMContentLoaded', async function () {
         console.error("[Better IUT RCC] Erreur UI image de fond :", err);
     }
 });
-// Gestion de l'upload et de la sauvegarde de l'image de fond personnalisée
-(function () {
-    const fileInput = document.getElementById('bgFileInput');
-    const previewImg = document.getElementById('bgPreview');
-    const removeBtn = document.getElementById('removeBgBtn');
-    const STORAGE_KEY = 'better_iut_bg_image';
-
-    // Charger l'image depuis localStorage au chargement
-    function loadSavedBackground() {
-        try {
-            const dataUrl = localStorage.getItem(STORAGE_KEY);
-            if (dataUrl) {
-                previewImg.src = dataUrl;
-            } else {
-                previewImg.src = ''; // ou une image par défaut
-            }
-        } catch (e) {
-            console.warn('Impossible de charger l\'image sauvegardée.', e);
-        }
-    }
-
-    // Sauvegarder DataURL dans localStorage
-    function saveBackground(dataUrl) {
-        try {
-            localStorage.setItem(STORAGE_KEY, dataUrl);
-        } catch (e) {
-            console.warn('Erreur en sauvegardant l\'image (taille possible trop grande).', e);
-        }
-    }
-
-    // Supprimer l'image sauvegardée
-    function removeBackground() {
-        localStorage.removeItem(STORAGE_KEY);
-        previewImg.src = '';
-    }
-
-    // Lorsqu'un fichier est choisi
-    fileInput.addEventListener('change', (ev) => {
-        const file = ev.target.files && ev.target.files[0];
-        if (!file) return;
-
-        // utilisation de FileReader
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const dataUrl = e.target.result;
-            previewImg.src = dataUrl;
-            saveBackground(dataUrl);
-        };
-        reader.readAsDataURL(file);
-    });
-
-    // Bouton supprimer
-    removeBtn.addEventListener('click', () => {
-        removeBackground();
-        // vider input pour permettre re-upload du même fichier si nécessaire
-        fileInput.value = '';
-    });
-
-    // Initialisation
-    document.addEventListener('DOMContentLoaded', loadSavedBackground);
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        loadSavedBackground();
-    }
-})();

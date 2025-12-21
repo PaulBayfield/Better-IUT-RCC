@@ -223,9 +223,9 @@ async function applyCustomBackground() {
             }
         });
 
-        observer.observe(document.documentElement, {
+        observer.observe(document.body, {
             childList: true,
-            subtree: false,
+            subtree: true,
         });
 
         window.__BETTER_IUT_RCC_BG_OBSERVER = observer;
@@ -350,7 +350,7 @@ function filterBackgroundImageRules(cssContent) {
 }
 
 /**
- * Injecte un CSS minimal de secours en cas d'innaccessibilité de l'API de Paul
+ * Injecte un CSS minimal de secours en cas d'inaccessibilité de l'API de Paul
  *
  * @returns {string}
  */
