@@ -180,9 +180,9 @@ console.info(`[Better IUT RCC] Thème actif : ${activeTheme}`);
                 }
             });
 
-            browser.storage.sync.get('hideUpdateNotification23').then((result) => {
-                console.info(`[Better IUT RCC] Paramètre de notification : ${result.hideUpdateNotification23}`);
-                if (result.hideUpdateNotification23 === undefined || result.hideUpdateNotification23 === false) {
+            browser.storage.sync.get('hideUpdateNotification24').then((result) => {
+                console.info(`[Better IUT RCC] Paramètre de notification : ${result.hideUpdateNotification24}`);
+                if (result.hideUpdateNotification24 === undefined || result.hideUpdateNotification24 === false) {
                     addUpdateNotification().scrollIntoView({ behavior: "smooth" });
                 }
             });

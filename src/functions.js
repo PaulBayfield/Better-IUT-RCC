@@ -64,7 +64,7 @@ export function addUpdateNotification() {
     notificationList.className = 'timeline timeline-activity timeline-point-sm timeline-content-right text-left w-100';
     const notificationElement = document.createElement('li');
     notificationElement.className = 'alert alert-warning';
-    notificationElement.innerHTML = "<strong class='fw-bold'>📑 Nouveautés de la dernière mise à jour...</strong><br><br>🎨 Les thèmes sont désormais disponibles ! Changez le thème de l'intranet dès maintenant dans la nouvel onglet \"Thèmes\"<br>🔧 Diverses améliorations et corrections de bugs ont été apportées.<br><br><i>📦 Pour plus d'informations, consultez la page des <a href='https://github.com/PaulBayfield/Better-IUT-RCC/releases/latest' target='_blank'>dernières mises à jour</a>.</i><br><br><strong class='fw-bold'>Merci d'utiliser Better IUT RCC !</strong>";
+    notificationElement.innerHTML = "<strong class='fw-bold'>📑 Nouveautés de la dernière mise à jour...</strong><br><br>🎨 Vous pouvez désormais choisir une image de fond personnalisée directement depuis l'onglet \"Thèmes\".<br>🔧 Diverses améliorations et corrections de bugs ont été apportées.<br><br><i>📦 Pour plus d'informations, consultez la page des <a href='https://github.com/PaulBayfield/Better-IUT-RCC/releases/latest' target='_blank'>dernières mises à jour</a>.</i><br><br><strong class='fw-bold'>❤️ Merci d'être plus de 1 000 utilisateurs sur Better IUT RCC !</strong>";
     notificationList.append(notificationElement);
 
     const buttonsListe = document.createElement('div');
@@ -75,7 +75,7 @@ export function addUpdateNotification() {
     bouttonReject.addEventListener('click', async () => {
         console.info("[Better IUT RCC] Notification cachée !");
 
-        await browser.storage.sync.set({hideUpdateNotification23: true});
+        await browser.storage.sync.set({hideUpdateNotification24: true});
 
         // Ouvre les paramètres
         browser.runtime.sendMessage({openOptions: true});
