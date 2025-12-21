@@ -69,6 +69,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             button.addEventListener('click', async () => {
                 console.info(`[Better IUT RCC] Activation du thème : ${themeObj.id} (${themeObj.version})`);
 
+                alert("🔄️ Veuillez recharger toutes les pages de l'intranet pour appliquer les modifications.\n\n📝 Dû à des limitations techniques, l'extension ne peut pas rafraîchir automatiquement la/les page(s) ouverte(s) de l'intranet.");
+
                 // Supprimer le fond personnalisé quand on change de thème
                 await browser.storage.local.remove('customBackground');
 
@@ -160,8 +162,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         themesContainer.appendChild(card);
     });
-
-    alert("🔄️ Veuillez recharger toutes les pages de l'intranet pour appliquer les modifications.\n\n📝 Dû à des limitations techniques, l'extension ne peut pas rafraîchir automatiquement la/les page(s) ouverte(s) de l'intranet.");
 
     // Gestion de l'image de fond personnalisée
     try {
