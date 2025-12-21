@@ -200,7 +200,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         bgFileInput.addEventListener('change', (event) => {
             const file = event.target.files && event.target.files[0];
             if (!file) return;
-            handleFileUpload(file);
+            if (file.type && file.type.startsWith('image/')) {
+                handleFileUpload(file);
+            } else {
+                alert('Veuillez sélectionner une image valide.');
+            }
         });
 
         // Gestion du drag and drop
