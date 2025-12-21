@@ -170,7 +170,11 @@ async function applyCustomBackground() {
 
         // retire l'observer précédent si existant (sécurité)
         if (window.__BETTER_IUT_RCC_BG_OBSERVER) {
-            try { window.__BETTER_IUT_RCC_BG_OBSERVER.disconnect(); } catch (e) {}
+            try {
+                window.__BETTER_IUT_RCC_BG_OBSERVER.disconnect();
+            } catch (e) {
+                console.warn("[Better IUT RCC] Erreur lors de la déconnexion de l'observateur de fond :", e);
+            }
             window.__BETTER_IUT_RCC_BG_OBSERVER = null;
         }
 
