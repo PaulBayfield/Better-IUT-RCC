@@ -309,8 +309,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // Bouton "Supprimer"
         removeBgBtn.addEventListener('click', async () => {
-            const r = confirm("Supprimer l'image de fond personnalisée ?");
-            if (!r) return;
+            const confirmed = confirm("Supprimer l'image de fond personnalisée ?");
+            if (!confirmed) return;
 
             // Supprimer l'image de fond
             await browser.storage.local.remove('customBackground');
