@@ -254,11 +254,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         async function handleFileUpload(file) {
             const MAX_BYTES = 4 * 1024 * 1024; // 4MB
             if (file.size > MAX_BYTES) {
-                const ok = confirm("Le fichier sélectionné est assez volumineux et pourrait dépasser la limite de stockage de l'extension. Continuer ?");
-                if (!ok) {
-                    bgFileInput.value = '';
-                    return;
-                }
+                alert("Le fichier sélectionné est trop volumineux pour être utilisé comme image de fond.\n\nTaille maximale recommandée : 4 Mo.");
+                bgFileInput.value = '';
+                return;
             }
 
             const reader = new FileReader();
