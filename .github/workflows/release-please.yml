@@ -42,38 +42,51 @@ jobs:
           zip_file: 'Better-IUT-RCC.zip'
         if: ${{ steps.release.outputs.release_created }}
 
-      - name: Publish to Edge Addons Store
-        uses: wdzeng/edge-addon@v2
-        continue-on-error: true
-        with:
-          product-id: ${{ secrets.EDGE_EXTENSION_ID }}
-          zip-path: 'Better-IUT-RCC.zip'
-          client-id: ${{ secrets.EDGE_CLIENT_ID }}
-          api-key: ${{ secrets.EDGE_API_KEY }}
-        if: ${{ steps.release.outputs.release_created }}
+      # Disabled Edge Addons Store publishing for now
+      # - name: Publish to Edge Addons Store
+      #   uses: wdzeng/edge-addon@v2
+      #   continue-on-error: true
+      #   with:
+      #     product-id: ${{ secrets.EDGE_EXTENSION_ID }}
+      #     zip-path: 'Better-IUT-RCC.zip'
+      #     client-id: ${{ secrets.EDGE_CLIENT_ID }}
+      #     api-key: ${{ secrets.EDGE_API_KEY }}
+      #   if: ${{ steps.release.outputs.release_created }}
       
       - name: Create web-ext-artifacts folder
         run: mkdir web-ext-artifacts
 
-      - name: Sign Firefox Addon
-        id: web-ext-sign
-        uses: kewisch/action-web-ext@v1.3
-        with:
-          cmd: sign
-          source: 'Better-IUT-RCC.xpi'
-          channel: unlisted
-          apiKey: ${{ secrets.FF_JWT_ISSUER }}
-          apiSecret: ${{ secrets.FF_JWT_SECRET }}
-          timeout: 900000
-        if: ${{ steps.release.outputs.release_created }}
+      # Disabled Firefox Addon signing for now
+      # - name: Sign Firefox Addon
+      #   id: web-ext-sign
+      #   uses: kewisch/action-web-ext@v1.3
+      #   with:
+      #     cmd: sign
+      #     source: 'Better-IUT-RCC.xpi'
+      #     channel: unlisted
+      #     apiKey: ${{ secrets.FF_JWT_ISSUER }}
+      #     apiSecret: ${{ secrets.FF_JWT_SECRET }}
+      #     timeout: 900000
+      #   if: ${{ steps.release.outputs.release_created }}
 
-      - name: Upload the signed xpi
+      # - name: Upload the signed xpi
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.release.outputs.upload_url }}
+      #     asset_path: ${{ steps.web-ext-sign.outputs.target }}
+      #     asset_name: Better-IUT-RCC-${{ steps.release.outputs.tag_name }}.xpi
+      #     asset_content_type: application/zip
+      #   if: ${{ steps.release.outputs.release_created }}
+
+      - name: Upload the xpi file
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ${{ steps.web-ext-sign.outputs.target }}
+          asset_path: Better-IUT-RCC.xpi
           asset_name: Better-IUT-RCC-${{ steps.release.outputs.tag_name }}.xpi
           asset_content_type: application/zip
         if: ${{ steps.release.outputs.release_created }}
