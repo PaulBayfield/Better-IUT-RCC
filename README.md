@@ -84,6 +84,7 @@ npm run zip
 Réalisé par :
 - [Paul Bayfield](https://github.com/PaulBayfield)
 - [Simon Ledoux](https://github.com/simon511000)
+- [Lucas Jacques](https://github.com/JacquesLucas07)
 
 Ce projet est une fusion de deux extensions déjà existante : 
 - [Miaou Notes](https://github.com/simon511000/MiaouNotes), réalisé par [Simon Ledoux](https://github.com/simon511000)

@@ -633,7 +633,7 @@
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         }
 
-        .card > .title > span {
+        .card>.title>span {
             font-size: 14px;
             margin-left: 10px;
             padding: 5px 10px 5px 10px;
@@ -641,18 +641,18 @@
             border-radius: 50px;
         }
 
-        .card > .content {
+        .card>.content {
             display: flex;
             flex-direction: row;
             align-items: center;
             gap: 10px;
         }
 
-        .card > .content > i {
+        .card>.content>i {
             font-size: 24px;
         }
-        
-        .card > .preview {
+
+        .card>.preview {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -660,7 +660,7 @@
             width: 100%;
         }
 
-        .card > .preview > img {
+        .card>.preview>img {
             width: 49%;
             height: auto;
             border-radius: 10px;
@@ -668,11 +668,11 @@
             border: 1px solid #ccc;
         }
 
-        .card > .preview > img:active {
+        .card>.preview>img:active {
             transform: scale(2);
         }
 
-        .card > .button {
+        .card>.button {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -685,15 +685,15 @@
             transition: all 0.3s ease-in-out;
         }
 
-        .card > .button:disabled {
+        .card>.button:disabled {
             background-color: #d4edda;
         }
 
-        .card > .button:disabled:hover {
+        .card>.button:disabled:hover {
             background-color: #c3e6cb;
         }
 
-        .card > .button:hover {
+        .card>.button:hover {
             background-color: var(--background-3)
         }
 
@@ -705,11 +705,157 @@
             margin-top: 20px;
         }
 
-        .theme > span {
+        .theme>span {
             font-weight: 600;
         }
     </style>
     <style>
+        /* Boite de dépots d'image (Après le dépôts de l'image) */
+        .button-delete {
+            width: auto;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .preview {
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-personnalisee {
+            display: block;
+            width: auto;
+            height: 260px;
+            max-height: 40vh;
+            object-fit: contain;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+
+        /* Boite de dépots d'image (Avant le dépôts de l'image) */
+        .bg-upload-container {
+            height: 300px;
+            width: 400px;
+            max-width: 100%;
+            margin: 35px auto;
+            border-radius: 10px;
+            box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            gap: 5px;
+            background: linear-gradient(135deg, rgba(0, 110, 255, 0.08), rgba(0, 110, 255, 0.04));
+            border: 1px solid rgba(0, 110, 255, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bg-upload-container:hover {
+            background: linear-gradient(135deg, rgba(0, 110, 255, 0.12), rgba(0, 110, 255, 0.08));
+            border-color: rgba(0, 110, 255, 0.25);
+            box-shadow: 4px 4px 30px rgba(0, 110, 255, 0.15);
+        }
+
+        .bg-upload-container.drag-over {
+            background: linear-gradient(135deg, rgba(0, 110, 255, 0.2), rgba(0, 110, 255, 0.12));
+            border-color: royalblue;
+            box-shadow: 0 0 20px rgba(65, 105, 225, 0.3);
+        }
+
+        .bg-upload-header {
+            flex: 1;
+            width: 100%;
+            border: 2px dashed royalblue;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 8px;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .bg-upload-container.drag-over .bg-upload-header {
+            border-color: #4169e1;
+            color: #4169e1;
+        }
+
+        .bg-upload-header svg {
+            width: 40px;
+            height: 40px;
+            color: royalblue;
+        }
+
+        .bg-upload-container.drag-over .bg-upload-header svg {
+            color: #4169e1;
+        }
+
+        .bg-upload-header p {
+            margin: 0;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .bg-upload-footer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background-color: var(--background-2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .bg-upload-footer:hover {
+            background-color: var(--hover-1);
+            border-color: royalblue;
+        }
+
+        .bg-upload-footer svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text);
+        }
+
+        .bg-upload-footer p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        #bgFileInput {
+            display: none !important;
+        }
+
+        #bgPreviewContainer {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         a {
             color: #000000;
             text-decoration: none;
@@ -767,6 +913,15 @@
             align-items: center;
             gap: 5px;
         }
+
+        .preview-container { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            width: 100%; 
+            justify-content: center;
+            margin-top: 12px;
+        }
     </style>
 </head>
 
@@ -791,7 +946,11 @@
                         <h1>Informations</h1>
                     </div>
                     <div class="description">
-                        <p>Ce projet est une fusion de deux extensions déjà existante : <a class="underline" href="https://chromewebstore.google.com/detail/obsol%C3%A8te-miaounotes/bkkaabfnclmnaahnmjpnofbccifckmhm" target="_blank">Miaou Notes</a> et <a class="underline" href="https://chromewebstore.google.com/detail/calcule-ta-moyenne-iut-re/jfjbpknmfmdkpajggkahlcnlbokfamin" target="_blank">Calcule ta moyenne</a>.</p>
+                        <p>Ce projet est une fusion de deux extensions déjà existante : <a class="underline"
+                                href="https://chromewebstore.google.com/detail/obsol%C3%A8te-miaounotes/bkkaabfnclmnaahnmjpnofbccifckmhm"
+                                target="_blank">Miaou Notes</a> et <a class="underline"
+                                href="https://chromewebstore.google.com/detail/calcule-ta-moyenne-iut-re/jfjbpknmfmdkpajggkahlcnlbokfamin"
+                                target="_blank">Calcule ta moyenne</a>.</p>
                         <p>Réalisé par :</p>
                         <ul>
                             <li>
@@ -819,16 +978,18 @@
                                     </a>
                                 </div>
                             </li>
+                            <li>
+                                <div class="author">
+                                    <p>Jacques Lucas</p>
+                                    <a href="https://github.com/JacquesLucas07" target="_blank">
+                                        <i class="fa-brands fa-github"></i>
+                                    </a>
+                                    <a href="https://linkedin.com/in/lucas-jacques-76226434a" target="_blank">
+                                        <i class="fa-brands fa-linkedin"></i>
+                                    </a>
+                                </div>
+                            </li>
                         </ul>
-                    </div>
-                </div>
-                <div class="box">
-                    <div class="title">
-                        <h1>Important</h1>
-                    </div>
-                    <div class="description">
-                        <p>⚠️ Une fois que vous changez de thème, vous devez rafraîchir la page pour que les changements soient pris en compte.</p>
-                        <p style="font-style: italic;">Dû à des limitations techniques, l'extension ne peut pas rafraîchir automatiquement la/les page(s) ouverte(s) de l'intranet.</p>
                     </div>
                 </div>
             </div>
@@ -845,12 +1006,93 @@
                         <i class="fa-solid fa-trash"></i>
                         Supprimer tout le cache
                     </button>
-                    <a class="button avis" href="https://chromewebstore.google.com/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj" target="_blank">
+                    <a class="button avis"
+                        href="https://chromewebstore.google.com/detail/better-iut-rcc/jofahdhjofjoackgkaodimfhnbfkgnbj"
+                        target="_blank">
                         <i class="fa-solid fa-star"></i>
                         Donner votre avis !
                     </a>
-                    <div class="theme">
-                        Thème actuel : <span id="current-theme"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="box">
+                <div class="title" style="display:flex; justify-content:space-between; align-items:center;">
+                    <h1>Thèmes</h1>
+                    <div style="margin-left:auto; font-size:14px; color:var(--text);">
+                        <strong>Thème actif :</strong> <span id="current-theme"></span>
+                    </div>
+                </div>
+                <div class="themes-list">
+                    <div class="card">
+                        <h3 class="title">Image de fond personnalisée</h3>
+                        <div class="content">
+                            <p class="text">Importer une image personnalisée qui sera affichée en arrière-plan de
+                                l'intranet. Taille recommandée : large (1920×1080) et < 4MB.</p>
+                        </div>
+                        <div class="preview" style="margin-top:12px;">
+                            <label class="bg-upload-container">
+                                <label for="bgFileInput" class="bg-upload-header" style="cursor:pointer;">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15"
+                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round"></path>
+                                        </g>
+                                    </svg>
+                                    <p>Choisir un fichier...</p>
+                                </label>
+                                <label for="bgFileInput" class="bg-upload-footer" style="cursor:pointer;">
+                                    <svg fill="currentColor" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M15.331 6H8.5v20h15V14.154h-8.169z"></path>
+                                            <path d="M18.153 6h-.009v5.342H23.5v-.002z"></path>
+                                        </g>
+                                    </svg>
+                                    <p id="bgFileName">Aucun fichier sélectionné</p>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M5.16565 10.1534C5.07629 8.99181 5.99473 8 7.15975 8H16.8402C18.0053 8 18.9237 8.9918 18.8344 10.1534L18.142 19.1534C18.0619 20.1954 17.193 21 16.1479 21H7.85206C6.80699 21 5.93811 20.1954 5.85795 19.1534L5.16565 10.1534Z"
+                                                stroke="currentColor" stroke-width="2"></path>
+                                            <path d="M19.5 5H4.5" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round"></path>
+                                            <path
+                                                d="M10 3C10 2.44772 10.4477 2 11 2H13C13.5523 2 14 2.44772 14 3V5H10V3Z"
+                                                stroke="currentColor" stroke-width="2"></path>
+                                        </g>
+                                    </svg>
+                                </label>
+                                <input id="bgFileInput" type="file" accept="image/*" aria-label="Sélectionner une image de fond">
+                            </div>
+
+                            <div id="bgPreviewContainer" class="preview-container" style="display:none;">
+                                <img id="bgPreview" src="" class="image-personnalisee" alt="Aperçu de votre image de fond personnalisée" />
+                                <div style="display:flex; gap:8px; align-items:center; margin-top:12px; width: 100%;">
+                                    <button class="button" id="changeBgBtn" type="button" style="width: 50%;">
+                                        <i class="fa-solid fa-edit"></i>
+                                        Changer l'image
+                                    </button>
+                                    <button class="button button-delete" id="removeBgBtn" type="button"
+                                        title="Supprimer l'image de fond" style="background-color:#f8d7da; color:#721c24; width: 50%;">
+                                        <i class="fa-solid fa-trash"></i>
+                                        <span style="margin-left:6px;">Supprimer</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="themes-list" id="themes-list">
                     </div>
                 </div>
             </div>
@@ -858,12 +1100,13 @@
         <div class="row">
             <div class="box">
                 <div class="title">
-                    <h1>Thèmes</h1>
+                    <h1>Important</h1>
                 </div>
                 <div class="description">
-                    <p style="font-style: italic;">🤖 Note du développeur : Cette fonctionnalité a pris beaucoup trop de temps. J'espère que vous apprécierez le résultat !</p>
-                </div>
-                <div class="themes-list" id="themes-list">
+                    <p>⚠️ Une fois que vous changez de thème, vous devez rafraîchir la page pour que les changements
+                        soient pris en compte.</p>
+                    <p style="font-style: italic;">Dû à des limitations techniques, l'extension ne peut pas rafraîchir
+                        automatiquement la/les page(s) ouverte(s) de l'intranet.</p>
                 </div>
             </div>
         </div>
@@ -872,7 +1115,8 @@
         <div class="credits">
             <div class="logo">
                 <img src="/assets/img/logo.png">
-                <p>Code source disponible sur <a href="https://github.com/PaulBayfield/Better-IUT-RCC" target="_blank">GitHub</a>.</p>
+                <p>Code source disponible sur <a href="https://github.com/PaulBayfield/Better-IUT-RCC"
+                        target="_blank">GitHub</a>.</p>
             </div>
             <p>© <span id="annee">2024</span> Paul Bayfield & Simon Ledoux, tous droits réservés.</p>
         </div>
