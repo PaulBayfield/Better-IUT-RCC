@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.29.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.28.0...v1.29.0) (2025-12-21)
+
+
+### Features
+
+* Mise à jour du déploiement automatique ([df1aed6](https://github.com/PaulBayfield/Better-IUT-RCC/commit/df1aed6bbf3f02ec0755af4d12545063a735baa2))
+
 ## [1.28.0](https://github.com/PaulBayfield/Better-IUT-RCC/compare/v1.27.1...v1.28.0) (2025-12-21)
 
 
