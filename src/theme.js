@@ -281,8 +281,16 @@ async function applyCustomBackgroundCSS() {
         }
     } catch (error) {
         console.error("[Better IUT RCC] Erreur lors de la récupération du CSS pour fond personnalisé", error);
+
         // En cas d'erreur, utiliser un CSS minimal de secours
-        injectCustomBackgroundCSS(getMinimalCustomBackgroundCSS());
+        const cssURL = browser.runtime.getURL('style.css');
+        console.log("Fetching CSS from:", cssURL);
+        const cssResponse = await fetch(cssURL);
+        const cssContent = await cssResponse.text();
+
+        await browser.storage.local.set({ [fallbackCSSKey]: cssContent });
+        console.info("[Better IUT RCC] CSS local enregistré en cache");
+        injectCSS(cssContent);
     }
 }
 
@@ -347,42 +355,6 @@ function filterBackgroundImageRules(cssContent) {
     );
 
     return filtered;
-}
-
-/**
- * Injecte un CSS minimal de secours en cas d'inaccessibilité de l'API de Paul
- *
- * @returns {string}
- */
-function getMinimalCustomBackgroundCSS() {
-    const isDarkTheme = document.querySelector('body').classList.contains('dark-theme');
-    const themePrefix = isDarkTheme ? 'body.rcc.dark-theme' : 'body.rcc:not(.dark-theme)';
-    
-    return `
-        .new-note {
-            background-color: #ea9d34 !important;
-        }
-
-        .new-note td {
-            background-color: #ea9d34 !important;
-        }
-
-        ${themePrefix} .card,
-        ${themePrefix} .media-list,
-        ${themePrefix} .code-preview {
-            background-color: ${isDarkTheme ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.8)'} !important;
-            border-radius: 10px !important;
-            box-shadow: -5px 5px 5px ${isDarkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'} !important;
-        }
-
-        ${themePrefix} .header {
-            background-color: ${isDarkTheme ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.3)'} !important;
-        }
-
-        ${themePrefix} .site-footer {
-            background-color: ${isDarkTheme ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.8)'} !important;
-        }
-    `;
 }
 
 export async function getAvailableThemes() {
