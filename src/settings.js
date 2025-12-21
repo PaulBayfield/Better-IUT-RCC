@@ -69,13 +69,27 @@ document.addEventListener('DOMContentLoaded', async function () {
             button.addEventListener('click', async () => {
                 console.info(`[Better IUT RCC] Activation du thème : ${themeObj.id} (${themeObj.version})`);
 
-                alert("🔄️ Veuillez recharger toutes les pages de l'intranet pour appliquer les modifications.\n\n📝 Dû à des limitations techniques, l'extension ne peut pas rafraîchir automatiquement la/les page(s) ouverte(s) de l'intranet.");
+                // Vérifie si un fond personnalisé est défini avant de changer de thème
+                const { customBackground } = await browser.storage.local.get('customBackground');
+                if (customBackground) {
+                    const confirmRemove = confirm(
+                        "Vous avez actuellement un fond personnalisé.\n\n" +
+                        "Changer de thème supprimera ce fond personnalisé.\n\n" +
+                        "Êtes-vous sûr de vouloir continuer ?"
+                    );
+                    if (!confirmRemove) {
+                        // L'utilisateur a annulé : ne pas changer le thème ni supprimer le fond personnalisé
+                        return;
+                    }
+                }
 
-                // Supprimer le fond personnalisé quand on change de thème
+                // Supprimer le fond personnalisé quand on change de thème (si présent)
                 await browser.storage.local.remove('customBackground');
 
                 // Activer le nouveau thème
                 await browser.storage.sync.set({ theme: themeObj.id });
+
+                alert("🔄️ Veuillez recharger toutes les pages de l'intranet pour appliquer les modifications.\n\n📝 Dû à des limitations techniques, l'extension ne peut pas rafraîchir automatiquement la/les page(s) ouverte(s) de l'intranet.");
                 window.location.reload();
             });
         }
