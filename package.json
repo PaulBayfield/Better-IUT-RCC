@@ -31,7 +31,7 @@
     "npm-build-zip": "^2.0.1",
     "webextension-polyfill": "^0.12.0",
     "webpack": "^5.109.2",
-    "webpack-cli": "^7.2.2"
+    "webpack-cli": "^7.2.3"
   },
   "dependencies": {
     "apexcharts": "^6.10.0"
