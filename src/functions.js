@@ -396,6 +396,19 @@ function createChart(data, type, xaxiscategories, id, height = 245, horizontal =
  * 
  * @returns {Promise<void>}
  */
+function sanitizeExternalHtml(html) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    doc.querySelectorAll('script').forEach(el => el.remove());
+    doc.querySelectorAll('*').forEach(el => {
+        [...el.attributes].forEach(attr => {
+            if (/^on/i.test(attr.name) || (/^(href|src)$/i.test(attr.name) && /^\s*javascript:/i.test(attr.value))) {
+                el.removeAttribute(attr.name);
+            }
+        });
+    });
+    return doc.body.innerHTML;
+}
+
 export async function createBilanCard() {
     console.info("[Better IUT RCC] Création de la carte de bilan...");
 
@@ -414,7 +427,7 @@ export async function createBilanCard() {
         console.info("[Better IUT RCC] > " + profileRequest.status);
         const data = await profileRequest.text();
         const page = document.createElement('div');
-        page.innerHTML = data.trim();
+        page.innerHTML = sanitizeExternalHtml(data.trim());
         const nav = page.querySelector(".nav");
 
         user = nav.children[0].getAttribute('href').split('/')[4].split('/')[0];
@@ -436,7 +449,7 @@ export async function createBilanCard() {
     const before = document.querySelector("#mainContent > div:first-child > div:nth-child(5)");
 
     var card = document.createElement('div');
-    card.innerHTML = bilanData.trim();
+    card.innerHTML = sanitizeExternalHtml(bilanData.trim());
     card.querySelector(".card-header-actions").remove();
     content.insertBefore(card, before);
 }
